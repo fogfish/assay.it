@@ -1,0 +1,112 @@
+---
+// Renders the single-entry screen from /poc/assay-dossier-entry-mockup.html
+// inside a <BrowserFrame>. Content comes from src/collections/dossier-demo.js —
+// edit that file to swap in a real compiled example.
+import { featuredEntry, verdictMeta } from "@/collections/dossier-demo.js";
+
+interface Props {
+  compact?: boolean;
+  maxAssumptions?: number;
+  maxReferences?: number;
+  showBacklinks?: boolean;
+  className?: string;
+}
+
+const {
+  compact = false,
+  maxAssumptions = compact ? 2 : featuredEntry.assumptions.length,
+  maxReferences = compact ? 2 : featuredEntry.references.length,
+  showBacklinks = !compact,
+  className = "",
+} = Astro.props;
+
+const meta = verdictMeta[featuredEntry.verdict];
+---
+
+<div class={`flex flex-col gap-3 h-full ${className}`}>
+  {!compact && (
+    <p class="text-[10px] text-neutral-400 truncate flex-shrink-0">
+      {featuredEntry.breadcrumbDossier} · {featuredEntry.position}
+    </p>
+  )}
+
+  <!-- Verdict banner -->
+  <div
+    class="flex items-center gap-2.5 rounded-lg px-3 py-2.5 flex-shrink-0"
+    style={`background: color-mix(in oklab, ${meta.color} 12%, transparent); border: 1px solid color-mix(in oklab, ${meta.color} 45%, transparent)`}
+  >
+    <span
+      class="w-7 h-7 rounded-full flex items-center justify-center font-brand text-xs font-semibold flex-shrink-0"
+      style={`border: 2px solid ${meta.color}; color: ${meta.color}`}
+    >
+      {meta.stamp}
+    </span>
+    <div class="min-w-0 flex-1">
+      <span class="text-xs font-semibold" style={`color: ${meta.color}`}>{meta.label}</span>
+      <span class="text-[11px] text-neutral-500 dark:text-neutral-400"> — {meta.gloss}</span>
+      {!compact && (
+        <p class="text-[10px] text-neutral-400 mt-0.5">
+          Confidence: {featuredEntry.confidenceLabel} · {featuredEntry.sourceCount} sources · verified {featuredEntry.verifiedDate}
+        </p>
+      )}
+    </div>
+    {!compact && (
+      <span class="text-[9px] flex-shrink-0 rounded px-2 py-1" style={`color: ${meta.color}; border: 1px solid ${meta.color}`}>
+        {featuredEntry.novelty}
+      </span>
+    )}
+  </div>
+
+  <div class="flex-shrink-0">
+    <div class="flex items-baseline gap-2">
+      <h4 class="font-brand text-sm text-neutral-800 dark:text-neutral-100 leading-snug">{featuredEntry.title}</h4>
+      <span class="text-[9px] text-neutral-400 border border-neutral-200 dark:border-neutral-700 rounded-full px-2 py-0.5 flex-shrink-0">{featuredEntry.type}</span>
+    </div>
+    <p class="text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed mt-1.5 border-l-2 pl-3" style="border-color: var(--color-hallmark)">
+      {featuredEntry.thesis}
+    </p>
+  </div>
+
+  <div class="flex-1 min-h-0 overflow-y-auto flex flex-col gap-3">
+    <!-- Assumptions -->
+    <div>
+      <p class="text-[9px] font-semibold uppercase tracking-wider text-neutral-400 mb-1.5">Assumptions</p>
+      <ul class="space-y-1">
+        {featuredEntry.assumptions.slice(0, maxAssumptions).map((a) => (
+          <li class="flex items-start gap-1.5 text-[11px] text-neutral-600 dark:text-neutral-300 leading-snug">
+            <span class="w-2 h-2 rounded-full border border-dashed border-neutral-400 flex-shrink-0 mt-0.5" />
+            {a}
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    {!compact && (
+      <div>
+        <p class="text-[9px] font-semibold uppercase tracking-wider text-neutral-400 mb-1.5">Evaluation</p>
+        <p class="text-[11px] text-neutral-600 dark:text-neutral-300 leading-relaxed">{featuredEntry.evaluation}</p>
+      </div>
+    )}
+
+    <!-- References -->
+    <div>
+      <p class="text-[9px] font-semibold uppercase tracking-wider text-neutral-400 mb-1.5">
+        References · {featuredEntry.references.length}
+      </p>
+      <ul class="space-y-1">
+        {featuredEntry.references.slice(0, maxReferences).map((r) => (
+          <li class="flex items-center gap-2 text-[11px]">
+            <span class="text-primary truncate flex-1">{r.title}</span>
+            <span class="text-neutral-400 text-[10px] flex-shrink-0">{r.src}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    {showBacklinks && (
+      <div class="rounded-lg bg-bg-primary/60 dark:bg-neutral-800/40 px-3 py-2 text-[10px] text-neutral-500 dark:text-neutral-400">
+        Referenced by {featuredEntry.backlinks.count} other dossiers · {featuredEntry.backlinks.dossiers.join(", ")}
+      </div>
+    )}
+  </div>
+</div>

@@ -20,9 +20,10 @@ if (content) {
   // @ts-expect-error
   const words = content.split(" "); // Split text into words
   processedContent = words
-    .map(
-      (word: string) =>
-        `<span class="word" style="display: inline-block; will-change: transform; transform: translateY(10px); opacity: 0; filter: blur(10px);">${word}</span>`,
+    .map((word: string) =>
+      word === "\n"
+        ? "<br />"
+        : `<span class="word" style="display: inline-block; will-change: transform; transform: translateY(10px); opacity: 0; filter: blur(10px);">${word}</span>`,
     )
     .join(" ");
 }

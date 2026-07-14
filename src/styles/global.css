@@ -17,67 +17,86 @@
   --max-screen: 1200px;
   --inner-screen: 800px;
 
-  --color-neutral-50: #f7f9fc;
-  --color-neutral-100: #edf1f8;
-  --color-neutral-200: #dfe4ed;
-  --color-neutral-300: #c5cedb;
-  --color-neutral-400: #92a1b7;
-  --color-neutral-500: #677487;
-  --color-neutral-600: #4f5a6d;
-  --color-neutral-700: #3f4a5a;
-  --color-neutral-800: #2c3542;
-  --color-neutral-900: #19222f;
-  --color-neutral-950: #10161f;
+  /* Warm "paper" neutral scale — replaces the template's cool blue-grays
+     so borders, muted text, and dark-mode surfaces read as warm paper/ink
+     rather than generic SaaS blue-gray. */
+  --color-neutral-50: #faf9f5;
+  --color-neutral-100: #f4f3ec;
+  --color-neutral-200: #e4e2d7;
+  --color-neutral-300: #d3d0c2;
+  --color-neutral-400: #aba795;
+  --color-neutral-500: #8b8672;
+  --color-neutral-600: #6e6a5a;
+  --color-neutral-700: #5d5b4f;
+  --color-neutral-800: #423f36;
+  --color-neutral-900: #2b2924;
+  --color-neutral-950: #1a1815;
 
-  --color-primary: #2d6dc3;
-  --color-primary-rgb: 45, 109, 195;
-  --color-primary-strong: #0066ff;
-  --color-primary-dark: #2d6dc3;
-  --color-primary-light: #8fb9ff;
-  --color-primary-light-dark: #bcd8ff;
-  --color-primary-lighter: #6da7ff;
+  /* Paper & ink — reading surface */
+  --color-ink: #23221c;
+  --color-ink-muted: #5d5b4f;
+  --color-border: #e4e2d7;
+
+  /* Brand accent — "ink blue" */
+  --color-primary: #22506f;
+  --color-primary-rgb: 34, 80, 111;
+  --color-primary-strong: #183d57;
+  --color-primary-dark: #4e7a96;
+  --color-primary-light: #7ca0b5;
+  --color-primary-light-dark: #8fb4c7;
+  --color-primary-lighter: #a9c4d2;
   /* Article-specific variables */
   --color-primary-bg: var(--color-bg-primary-light);
   --color-primary-bg-light: var(--color-bg-secondary);
 
 
-  --color-btn-primary: #2d6dc3;
-  --color-btn-primary-hover: #0066ff;
-  --color-btn-primary-dark: #2871e9;
-  --color-btn-primary-dark-hover: #2d6dc3;
+  --color-btn-primary: #22506f;
+  --color-btn-primary-hover: #183d57;
+  --color-btn-primary-dark: #2e6389;
+  --color-btn-primary-dark-hover: #22506f;
 
-  /* Accent colors */
-  --color-accent: #fad13b;
-  --color-accent-light: #faeb75;
+  /* Secondary accent — "hallmark", metallurgical nod to assay.
+     Decoration only: icons, rules, badges — never body text, never
+     primary buttons (those use --color-primary above). */
+  --color-accent: #a07a2c;
+  --color-accent-light: #c1a976;
+  --color-hallmark: #a07a2c;
+  --color-hallmark-light: #c1a976;
+
+  /* Verdict semantics — functional, not brand */
+  --color-verdict-supported: #2f7a4d;
+  --color-verdict-context: #9a6a14;
+  --color-verdict-contradicted: #a63a2b;
+  --color-verdict-unverifiable: #6e6c60;
 
   /* Background colors */
 
-  --color-bg-primary: #fdfaf5;
-  --color-bg-secondary: #fff;
-  --color-bg-primary-light: #faf9f5;
-  --color-bg-primary-deep: #fefcf4;
+  --color-bg-primary: #fcfcf9;
+  --color-bg-secondary: #ffffff;
+  --color-bg-primary-light: #f4f3ec;
+  --color-bg-primary-deep: #f4f3ec;
 
   --color-bg-primary-dark: #0b1220;
   --color-bg-secondary-dark: #0f1b2d;
 
 
   /* Text colors */
-  --color-text-primary: #2d6dc3;
-  --color-text-secondary: #3f4a5a;
-  --color-text-tertiary: #7a6550;
+  --color-text-primary: #23221c;
+  --color-text-secondary: #5d5b4f;
+  --color-text-tertiary: #7c7a6c;
 
-  --color-text-primary-dark: #3884eb;
-  --color-text-secondary-dark: #c5cedb;
-  --color-text-tertiary-dark: #9bb3d7;
+  --color-text-primary-dark: #f0eee4;
+  --color-text-secondary-dark: #c9c6b8;
+  --color-text-tertiary-dark: #b0ac9c;
 }
 
 /* Dark mode variable overrides */
 html.dark {
-  --color-primary-rgb: 56, 132, 235;
-  --color-primary-light-dark: #3884eb;
-  --color-primary-lighter: #8fb9ff;
-  --color-primary-bg: rgba(56, 132, 235, 0.15);
-  --color-primary-bg-light: rgba(56, 132, 235, 0.05);
+  --color-primary-rgb: 78, 122, 150;
+  --color-primary-light-dark: #8fb4c7;
+  --color-primary-lighter: #a9c4d2;
+  --color-primary-bg: rgba(143, 180, 199, 0.15);
+  --color-primary-bg-light: rgba(143, 180, 199, 0.05);
 }
 
 /* Add typography styles */

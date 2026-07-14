@@ -2,13 +2,13 @@
 import Layout from "@/layouts/Layout.astro";
 import Button from "@/components/ui/Button.astro";
 import { siteConfig } from "@/config/site";
-import { ArrowRight, Bug, Clock3, GitFork, LifeBuoy, Mail, MessageSquare, Send, Sparkles } from "@lucide/astro";
+import { ArrowRight, Bug, Clock3, LifeBuoy, Mail, Send, Sparkles } from "@lucide/astro";
 
 const contactTopics = [
   { value: "general", label: "General inquiry" },
-  { value: "sales", label: "Sales / pricing" },
-  { value: "partnership", label: "Partnership" },
-  { value: "support", label: "Customer support" },
+  { value: "pricing", label: "Pricing" },
+  { value: "confidentiality", label: "Confidential documents" },
+  { value: "teams", label: "Teams waitlist" },
   { value: "bug", label: "Bug report" },
 ];
 
@@ -19,30 +19,18 @@ const channels = [
     text: siteConfig.mail,
     href: `mailto:${siteConfig.mail}`,
   },
-  {
-    icon: GitFork,
-    label: "GitHub",
-    text: "Open an issue",
-    href: siteConfig.social.github,
-  },
-  {
-    icon: MessageSquare,
-    label: "Twitter",
-    text: `@${siteConfig.social.twitterName}`,
-    href: siteConfig.social.twitter,
-  },
 ];
 
 const expectations = [
   { icon: Clock3, title: "Reply window", desc: "Most messages get a response within 1 business day." },
-  { icon: LifeBuoy, title: "Support context", desc: "Share your page, browser, and a short reproduction when reporting issues." },
+  { icon: LifeBuoy, title: "Confidential documents", desc: "Ask before you upload anything sensitive — see the FAQ for what's handled today." },
   { icon: Bug, title: "Template note", desc: "This form is UI-only until you connect your own backend." },
 ];
 ---
 
 <Layout
-  title="Contact - RicoFast"
-  description="Have questions, feedback, or partnership ideas? We'd love to hear from you."
+  title="Contact - assay.it"
+  description="Questions about pricing, confidential documents, or the teams waitlist? Get in touch."
 >
   <main class="site-container py-12 md:py-20">
     <section class="grid gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(420px,1.1fr)] lg:items-start">
@@ -52,13 +40,13 @@ const expectations = [
           Contact
         </p>
         <h1 class="max-w-xl font-brand text-4xl leading-tight tracking-normal text-neutral-800 dark:text-neutral-100 sm:text-5xl lg:text-6xl">
-          Tell us what you are building.
+          Questions before you run your first document?
         </h1>
         <p class="mt-5 max-w-lg text-base leading-8 text-neutral-600 dark:text-neutral-300">
-          Questions, feedback, partnership ideas, or bug reports are all welcome. Send the details and we will point you in the right direction.
+          Pricing, confidential documents, the teams waitlist, or a bug report — send the details and you'll get a straight answer.
         </p>
 
-        <div class="mt-10 grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
+        <div class="mt-10 grid gap-3 max-w-sm">
           {channels.map(({ icon: Icon, label, text, href }, index) => (
             <a
               href={href}

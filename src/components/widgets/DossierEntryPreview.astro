@@ -1,112 +1,238 @@
 ---
-// Renders the single-entry screen from /poc/assay-dossier-entry-mockup.html
-// inside a <BrowserFrame>. Content comes from src/collections/dossier-demo.js —
-// edit that file to swap in a real compiled example.
-import { featuredEntry, verdictMeta } from "@/collections/dossier-demo.js";
+// Renders the single-entry screen from /poc/2026-07-19/assay-theory-entry-v2.html
+// inside a <BrowserFrame>. Pass an `entry` object shaped like the
+// `featuredEntry`s in src/collections/dossier-demo.js — edit that file's
+// named examples (or add a new one) to swap in different content without
+// touching this component. The showXxx props let a call site show just a
+// slice of the entry (e.g. only the assumptions list).
+import { classMeta, examples } from "@/collections/dossier-demo.js";
+
+type HighlightArea =
+  | "breadcrumb"
+  | "banner"
+  | "title"
+  | "assumptions"
+  | "aporias"
+  | "analysis"
+  | "citations";
 
 interface Props {
+  entry?: (typeof examples)["realAnalysis"]["featuredEntry"];
   compact?: boolean;
+  showBreadcrumb?: boolean;
+  showBanner?: boolean;
+  showTitle?: boolean;
+  showAbout?: boolean;
+  showAssumptions?: boolean;
   maxAssumptions?: number;
-  maxReferences?: number;
-  showBacklinks?: boolean;
+  showAporias?: boolean;
+  showAnalysis?: boolean;
+  maxAnalysis?: number;
+  showCitations?: boolean;
+  maxCitations?: number;
+  showPager?: boolean;
+  highlight?: HighlightArea | HighlightArea[];
   className?: string;
 }
 
 const {
+  entry = examples.realAnalysis.featuredEntry,
   compact = false,
-  maxAssumptions = compact ? 2 : featuredEntry.assumptions.length,
-  maxReferences = compact ? 2 : featuredEntry.references.length,
-  showBacklinks = !compact,
+  showBreadcrumb = !compact,
+  showBanner = true,
+  showTitle = true,
+  showAbout = !compact,
+  showAssumptions = true,
+  maxAssumptions = compact ? 2 : entry.assumptions.length,
+  showAporias = !compact,
+  showAnalysis = !compact,
+  maxAnalysis = compact ? 1 : entry.analysis.length,
+  showCitations = true,
+  maxCitations = compact ? 2 : entry.citations.length,
+  showPager = !compact,
+  highlight,
   className = "",
 } = Astro.props;
 
-const meta = verdictMeta[featuredEntry.verdict];
+const meta = classMeta[entry.class];
+
+// "Elevates" one area of the screen — its own opaque card layer with a
+// soft drop shadow, no border — while the rest dims down, so a feature
+// blurb can point at a real, in-context part of the product instead of
+// an isolated fragment. Padding only ever grows inward (box-sizing:
+// border-box keeps the outer box the same width as its siblings) and
+// nothing uses negative margins or transforms, so it can never push the
+// clipped (overflow-hidden) assumptions/analysis/citations column into
+// horizontal scroll.
+const lit = highlight
+  ? Array.isArray(highlight)
+    ? highlight
+    : [highlight]
+  : [];
+const SPOT_BASE =
+  "relative z-20 rounded-lg bg-bg-primary/95 dark:bg-neutral-800/95 shadow-[0_8px_20px_-8px_rgba(15,23,42,0.25)] dark:shadow-[0_8px_20px_-8px_rgba(0,0,0,0.5)]";
+// "banner" already carries its own padding/background, so it only gets
+// the shadow, not a duplicate padding box.
+const SPOT_EXTRA: Record<HighlightArea, string> = {
+  breadcrumb: "px-3 py-1.5",
+  banner: "",
+  title: "px-3 py-2",
+  assumptions: "px-3 py-2",
+  aporias: "px-3 py-2",
+  analysis: "px-3 py-2",
+  citations: "px-3 py-2",
+};
+const spot = (area: HighlightArea) =>
+  lit.includes(area) ? `${SPOT_BASE} ${SPOT_EXTRA[area]}` : "";
+const dim = (area: HighlightArea) =>
+  lit.length && !lit.includes(area) ? "opacity-35 dark:opacity-25" : "";
+// Marks the elevated section so the scroll-into-view script (below) can find
+// it — needed because a highlighted section can sit lower than the card's
+// own clipped (overflow-hidden) viewport (e.g. "citations" is the last thing
+// in the column), and CSS alone can't bring it into view.
+const spotAttrs = (area: HighlightArea) =>
+  lit.includes(area) ? { "data-highlight-active": true } : {};
 ---
 
 <div class={`flex flex-col gap-3 h-full ${className}`}>
-  {!compact && (
-    <p class="text-[10px] text-neutral-400 truncate flex-shrink-0">
-      {featuredEntry.breadcrumbDossier} · {featuredEntry.position}
+  {showBreadcrumb && (
+    <p class={`text-[10px] text-neutral-400 truncate flex-shrink-0 ${spot("breadcrumb")} ${dim("breadcrumb")}`}>
+      {entry.breadcrumbDossier} · {entry.position}
     </p>
   )}
 
-  <!-- Verdict banner -->
-  <div
-    class="flex items-center gap-2.5 rounded-lg px-3 py-2.5 flex-shrink-0"
-    style={`background: color-mix(in oklab, ${meta.color} 12%, transparent); border: 1px solid color-mix(in oklab, ${meta.color} 45%, transparent)`}
-  >
-    <span
-      class="w-7 h-7 rounded-full flex items-center justify-center font-brand text-xs font-semibold flex-shrink-0"
-      style={`border: 2px solid ${meta.color}; color: ${meta.color}`}
+  <!-- Critique banner: Class + Confidence + Summary -->
+  {showBanner && (
+    <div
+      class={`flex gap-2.5 rounded-lg px-3 py-2.5 flex-shrink-0 ${spot("banner")} ${dim("banner")}`}
+      style={`background: color-mix(in oklab, ${meta.color} 12%, transparent); border: 1px solid color-mix(in oklab, ${meta.color} 45%, transparent)`}
     >
-      {meta.stamp}
-    </span>
-    <div class="min-w-0 flex-1">
-      <span class="text-xs font-semibold" style={`color: ${meta.color}`}>{meta.label}</span>
-      <span class="text-[11px] text-neutral-500 dark:text-neutral-400"> — {meta.gloss}</span>
-      {!compact && (
-        <p class="text-[10px] text-neutral-400 mt-0.5">
-          Confidence: {featuredEntry.confidenceLabel} · {featuredEntry.sourceCount} sources · verified {featuredEntry.verifiedDate}
-        </p>
-      )}
-    </div>
-    {!compact && (
-      <span class="text-[9px] flex-shrink-0 rounded px-2 py-1" style={`color: ${meta.color}; border: 1px solid ${meta.color}`}>
-        {featuredEntry.novelty}
+      <span
+        class="w-7 h-7 rounded-full flex items-center justify-center font-brand text-xs font-semibold flex-shrink-0"
+        style={`border: 2px solid ${meta.color}; color: ${meta.color}`}
+      >
+        {meta.stamp}
       </span>
-    )}
-  </div>
-
-  <div class="flex-shrink-0">
-    <div class="flex items-baseline gap-2">
-      <h4 class="font-brand text-sm text-neutral-800 dark:text-neutral-100 leading-snug">{featuredEntry.title}</h4>
-      <span class="text-[9px] text-neutral-400 border border-neutral-200 dark:border-neutral-700 rounded-full px-2 py-0.5 flex-shrink-0">{featuredEntry.type}</span>
+      <div class="min-w-0 flex-1">
+        <div class="flex items-baseline gap-2">
+          <span class="text-xs font-semibold" style={`color: ${meta.color}`}>{meta.label}</span>
+          {!compact && (
+            <span class="text-[10px] text-neutral-500 dark:text-neutral-400 rounded px-1.5 py-0.5 border" style={`border-color: ${meta.color}`}>
+              Confidence: {entry.classConfidence}
+            </span>
+          )}
+        </div>
+        {!compact && <p class="text-[10.5px] text-neutral-600 dark:text-neutral-300 leading-snug mt-1">{entry.classSummary}</p>}
+      </div>
     </div>
-    <p class="text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed mt-1.5 border-l-2 pl-3" style="border-color: var(--color-hallmark)">
-      {featuredEntry.thesis}
-    </p>
-  </div>
+  )}
 
-  <div class="flex-1 min-h-0 overflow-y-auto flex flex-col gap-3">
+  {showTitle && (
+    <div class={`flex-shrink-0 ${spot("title")} ${dim("title")}`}>
+      <h4 class="font-brand text-sm text-neutral-800 dark:text-neutral-100 leading-snug">{entry.title}</h4>
+      <div class="flex flex-wrap gap-1.5 mt-1.5">
+        <span class="text-[8px] uppercase tracking-wide text-neutral-400 border border-neutral-200 dark:border-neutral-700 rounded-full px-1.5 py-0.5">Scope · {entry.facets.scope}</span>
+        <span class="text-[8px] uppercase tracking-wide text-neutral-400 border border-neutral-200 dark:border-neutral-700 rounded-full px-1.5 py-0.5">Mechanism · {entry.facets.mechanism}</span>
+      </div>
+      <p class="text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed mt-1.5 border-l-2 pl-3" style="border-color: var(--color-hallmark)">
+        {entry.thesis}
+      </p>
+    </div>
+  )}
+
+  <div class="dossier-entry-clip flex-1 min-h-0 overflow-hidden flex flex-col gap-3">
+    {showAbout && <p class="text-[11px] text-neutral-600 dark:text-neutral-300 leading-relaxed">{entry.about}</p>}
+
     <!-- Assumptions -->
-    <div>
-      <p class="text-[9px] font-semibold uppercase tracking-wider text-neutral-400 mb-1.5">Assumptions</p>
-      <ul class="space-y-1">
-        {featuredEntry.assumptions.slice(0, maxAssumptions).map((a) => (
-          <li class="flex items-start gap-1.5 text-[11px] text-neutral-600 dark:text-neutral-300 leading-snug">
-            <span class="w-2 h-2 rounded-full border border-dashed border-neutral-400 flex-shrink-0 mt-0.5" />
-            {a}
-          </li>
-        ))}
-      </ul>
-    </div>
-
-    {!compact && (
-      <div>
-        <p class="text-[9px] font-semibold uppercase tracking-wider text-neutral-400 mb-1.5">Evaluation</p>
-        <p class="text-[11px] text-neutral-600 dark:text-neutral-300 leading-relaxed">{featuredEntry.evaluation}</p>
+    {showAssumptions && (
+      <div class={`${spot("assumptions")} ${dim("assumptions")}`} {...spotAttrs("assumptions")}>
+        <p class="text-[9px] font-semibold uppercase tracking-wider text-neutral-400 mb-1.5">Assumptions <span class="font-normal normal-case tracking-normal">· {entry.assumptions.length}</span></p>
+        <ul class="space-y-1">
+          {entry.assumptions.slice(0, maxAssumptions).map((a) => (
+            <li class="flex items-start gap-1.5 text-[11px] text-neutral-600 dark:text-neutral-300 leading-snug">
+              <span class="w-2 h-2 rounded-full border border-dashed border-neutral-400 flex-shrink-0 mt-0.5" />
+              {a}
+            </li>
+          ))}
+        </ul>
       </div>
     )}
 
-    <!-- References -->
-    <div>
-      <p class="text-[9px] font-semibold uppercase tracking-wider text-neutral-400 mb-1.5">
-        References · {featuredEntry.references.length}
-      </p>
-      <ul class="space-y-1">
-        {featuredEntry.references.slice(0, maxReferences).map((r) => (
-          <li class="flex items-center gap-2 text-[11px]">
-            <span class="text-primary truncate flex-1">{r.title}</span>
-            <span class="text-neutral-400 text-[10px] flex-shrink-0">{r.src}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <!-- Addresses aporias -->
+    {showAporias && entry.aporias.length > 0 && (
+      <div class={`${spot("aporias")} ${dim("aporias")}`} {...spotAttrs("aporias")}>
+        <p class="text-[9px] font-semibold uppercase tracking-wider text-neutral-400 mb-1.5">Addresses aporias</p>
+        <div class="flex flex-wrap gap-1.5">
+          {entry.aporias.map((link) => (
+            <span class="inline-flex items-center gap-1 text-[10.5px] text-primary border border-primary/20 dark:border-primary-light/20 rounded px-2 py-1 bg-bg-primary/60 dark:bg-neutral-800/40">
+              <span class="text-neutral-400 italic">{link.rel}</span> {link.title}
+            </span>
+          ))}
+        </div>
+      </div>
+    )}
 
-    {showBacklinks && (
-      <div class="rounded-lg bg-bg-primary/60 dark:bg-neutral-800/40 px-3 py-2 text-[10px] text-neutral-500 dark:text-neutral-400">
-        Referenced by {featuredEntry.backlinks.count} other dossiers · {featuredEntry.backlinks.dossiers.join(", ")}
+    <!-- Critique.Analysis[]: Claim–Evidence–Analysis triples -->
+    {showAnalysis && (
+      <div class={`${spot("analysis")} ${dim("analysis")}`} {...spotAttrs("analysis")}>
+        <p class="text-[9px] font-semibold uppercase tracking-wider text-neutral-400 mb-1.5">Evidence analysis</p>
+        <div class="flex flex-col gap-1.5">
+          {entry.analysis.slice(0, maxAnalysis).map((triple) => (
+            <div class="rounded-lg border border-primary/10 dark:border-neutral-700 overflow-hidden">
+              <p class="text-[11px] font-semibold text-neutral-800 dark:text-neutral-100 leading-snug px-2.5 py-1.5">{triple.claim}</p>
+              <p class="text-[10px] text-neutral-500 dark:text-neutral-400 leading-snug px-2.5 py-1.5 bg-bg-primary-light/60 dark:bg-neutral-900/40 border-y border-primary/10 dark:border-neutral-700">
+                <span class="block text-[8px] font-semibold uppercase tracking-wider text-neutral-400 mb-0.5">Evidence</span>
+                {triple.evidence}
+              </p>
+              <p class="text-[10.5px] text-neutral-600 dark:text-neutral-300 leading-snug px-2.5 py-1.5">
+                <span class="block text-[8px] font-semibold uppercase tracking-wider text-neutral-400 mb-0.5">Analysis</span>
+                {triple.analysis}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+
+    <!-- Citations -->
+    {showCitations && (
+      <div class={`border-t border-neutral-200 dark:border-neutral-700 pt-2 ${spot("citations")} ${dim("citations")}`} {...spotAttrs("citations")}>
+        <p class="text-[9px] font-semibold uppercase tracking-wider text-neutral-400 mb-1.5">
+          Citations · {entry.citations.length}
+        </p>
+        <ul class="space-y-1">
+          {entry.citations.slice(0, maxCitations).map((c) => (
+            <li class="flex items-center gap-2 text-[11px]">
+              <span class="text-primary truncate flex-1">{c.title}</span>
+              <span class="text-neutral-400 text-[10px] flex-shrink-0">{c.src}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+
+    {showPager && (
+      <div class="flex items-center justify-between text-[10px] text-primary flex-shrink-0 mt-auto pt-1">
+        <span class="truncate">← {entry.pager.prev}</span>
+        <span class="truncate text-right">{entry.pager.next} →</span>
       </div>
     )}
   </div>
 </div>
+
+<script>
+  // A highlighted section can sit lower than the card's own clipped
+  // (overflow-hidden, no scrollbar) viewport (e.g. "citations" is the last
+  // thing in the column) — nudge just that inner container's scrollTop,
+  // never the page's. overflow-hidden still accepts a programmatic
+  // scrollTop even though it hides the scrollbar and blocks user scrolling.
+  for (const el of document.querySelectorAll<HTMLElement>("[data-highlight-active]")) {
+    const container = el.closest<HTMLElement>(".dossier-entry-clip");
+    if (!container) continue;
+    const cRect = container.getBoundingClientRect();
+    const eRect = el.getBoundingClientRect();
+    if (eRect.top < cRect.top || eRect.bottom > cRect.bottom) {
+      container.scrollTop += eRect.top - cRect.top - 8;
+    }
+  }
+</script>

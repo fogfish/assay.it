@@ -7,10 +7,37 @@ import Button from "@/components/ui/Button.astro";
 import { ArrowRight } from "@lucide/astro";
 
 const faqItems = [
-  { question: "What exactly counts as one document analysis?", answer: "One uploaded document (up to [PLACEHOLDER] pages / [N] words), including claim extraction, per-claim verification, and the exported one-pager assessment document. Longer documents show a higher estimate before the run — nothing is charged without your approval." },
-  { question: "How is the price calculated?", answer: "By document length and claim count. Assay shows you the exact estimate before the run starts, and you approve it before anything is charged. No subscription, no expiring credits." },
-  { question: "What if a verdict is wrong?", answer: "It can be. That's why every verdict links every source it used. Treat the output as a fast, thorough research assistant whose work you can audit in minutes, not an oracle. [PLACEHOLDER: refund policy for failed/garbage runs — have one, state it.]" },
-  { question: "Can I use it on internal / confidential documents?", answer: "[PLACEHOLDER: answer truthfully — where documents are stored, retention, deletion, whether verification queries could leak internal terms to search engines. For your engineer audience this is a top-3 buying question; if the honest answer today is \"not yet,\" say that and say what's planned.]" },
+  {
+    question: "What exactly counts as one document analysis?",
+    answer:
+      "One uploaded document, including claim extraction, per-claim verification, and the exported one-pager and full assessment document. Longer documents show a higher estimate before the run. Nothing is charged without your approval.",
+  },
+  {
+    question: "Can I use it on internal / confidential documents?",
+    answer:
+      "Yes, if you're comfortable doing so. Access to your document is restricted to you. Your documents are processed within our own isolated AWS infrastructure, and access to the production environment is restricted to the service owner. We do not use your documents to train AI models. That said, no online service can promise zero risk. If your organisation has strict security or compliance requirements (for example, policies that prohibit uploading confidential information to third-party services), you should follow those policies before using the service. If you have specific security or compliance questions, feel free to get in touch.",
+  },
+  {
+    question: "What models does it use?",
+    answer:
+      "The service uses Anthropic models. Your content is not used to train models.",
+  },
+  {
+    question: "How is this different from ChatGPT / Gemini deep research?",
+    answer:
+      'Deep research tools answer a question you pose. Assay interrogates a document someone else wrote: it inventories the author\'s claims and checks each one independently. It\'s the difference between "tell me about X" and "is this document about X telling the truth."',
+  },
+  {
+    question: "What if a verdict is wrong?",
+    answer:
+      "It can be. That's why every verdict links every source it used. Treat the output as a fast, thorough research assistant whose work you can audit in minutes, not an oracle. [PLACEHOLDER: refund policy for failed/garbage runs — have one, state it.]",
+  },
+  {
+    question: "Is there a free way to evaluate it?",
+    answer:
+      "The full example analysis of Amazon Prime Video above is public — that's real output, not a mockup.",
+    // "The full example analysis of Amazon Prime Video above is public — that's real output, not a mockup. Sign up to the service to get first analysis for free.",
+  },
 ];
 ---
 
@@ -27,27 +54,46 @@ const faqItems = [
 
   <PricingSection showHeader={false} />
 
-  <div class="w-full border-b border-dashed border-neutral-200 dark:border-neutral-700 my-8 site-container"></div>
+  <div
+    class="w-full border-b border-dashed border-neutral-200 dark:border-neutral-700 my-8 site-container"
+  >
+  </div>
 
   <!-- Pricing FAQ -->
   <section class="py-16 md:py-24 site-container">
     <h2 class="text-3xl font-brand text-center mb-8">Pricing FAQ</h2>
     <div class="max-w-2xl mx-auto" data-aos="fade-up-xs" data-aos-once="true">
-      {faqItems.map((item, index) => (
-        <AccordionItem question={item.question} answer={item.answer} index={index} />
-      ))}
+      {
+        faqItems.map((item, index) => (
+          <AccordionItem
+            question={item.question}
+            answer={item.answer}
+            index={index}
+          />
+        ))
+      }
     </div>
   </section>
 
   <!-- CTA -->
-  <section class="py-16 md:py-24 site-container" data-aos="fade-up-xs" data-aos-once="true">
+  <section
+    class="py-16 md:py-24 site-container"
+    data-aos="fade-up-xs"
+    data-aos-once="true"
+  >
     <div class="max-w-2xl mx-auto text-center">
-      <h2 class="text-3xl md:text-4xl font-brand mb-4">The document is 40 pages. The claims that matter fit on one.</h2>
+      <h2 class="text-3xl md:text-4xl font-brand mb-4">
+        The document is 40 pages. <br /> The claims that matter fit on one.
+      </h2>
       <p class="text-neutral-600 dark:text-neutral-300 mb-8 leading-relaxed">
         Run the whitepaper through Assay before your next decision meeting.
       </p>
       <div class="flex flex-wrap justify-center gap-3">
-        <Button url="/sign-up" type="fill" className="text-lg px-8 py-3">
+        <Button
+          url="https://app.assay.it"
+          type="fill"
+          className="text-lg px-8 py-3"
+        >
           Analyze a document <ArrowRight size={18} />
         </Button>
         <Button url="/contact" className="text-lg px-8 py-3">

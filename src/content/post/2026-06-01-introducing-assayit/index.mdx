@@ -1,0 +1,66 @@
+---
+title: "The Whitepaper Said 40% Faster. It Took Me Six Hours to Find Out It Didn't."
+description: "Manual fact-checking and generic AI summaries both fail when the cost of being wrong is high. It led me to building Assay, a tool that extracts a document's claims and researches each one separately for evidence, not vibes."
+publishDate: 2026-06-01
+read: 5
+tags: ["Announcement", "Product"]
+img: "/assets/article-cover-paper-st1.jpg"
+img_alt: "abstract paper"
+featured: true
+---
+
+## The job nobody puts in the job description
+
+I'm a principal engineer at a large e-commerce company. If you asked me to describe what I actually do all day, the honest answer isn't "write code." It's "write documents that make expensive decisions defensible."
+
+RFCs. ADRs. Build-vs-buy recommendations. One-pagers that go to people who will not read the appendix and will remember, eighteen months from now, that I was the one who said this was a good idea.
+
+Every one of those documents starts the same way: with a pile of reading material I cannot take at face value. A vendor whitepaper claiming "our database is 10× faster". Engineering blog post from companies that may or may not have our traffic profile explaining "this architecture scales infinitely". A benchmark with a methodology section that is conspicuously short. A conference talk transcript. An internal doc from a team that evaluated something adjacent two years ago and whose author has since left.
+
+Somewhere in that pile is the sentence that will end up in my document as "we chose X because." My job is to make sure that sentence is true.
+
+
+## Where it goes wrong
+
+Here's the part that took me years to admit: the reading is not the hard part. The verification is the hard part, and there is no good way to do it.
+
+**Manual checking doesn't scale past a couple of documents**. A single vendor whitepaper contains twenty or thirty load-bearing claims. Checking one of them properly by finding the primary source, by checking the data, by understanding whether the benchmark conditions resemble anything like production, checking whether a later post quietly walked it back, takes fifteen minutes if you're lucky. Multiply that out and you have an afternoon gone on one document, in a week where you have four of them.
+
+So you triage. You spot-check the two claims that feel shakiest and you let the rest through. That's the compromise everyone makes, and it works right up until it doesn't. The claim that blows up in production is never the one that looked shaky. It's the one that looked boring.
+
+**Generic AI research tools give you the wrong artifact**. I tried all of them. Ask ChatGPT or Gemini or Perplexity to research a topic and you get a competent summary. The summary is a wall of text that averages the internet's opinion and hands it back to you with confident formatting. But a summary is not a verdict. It flattens the disagreement between sources instead of surfacing it, which is exactly backwards: the disagreement is the signal. And it operates at the level of the topic, never at the level of the individual claim. I don't need to know what the internet thinks about event sourcing in general. I need to know whether this specific sentence in this specific document survives contact with evidence.
+
+
+## Eventually I stopped looking for the right tool
+
+I have started building something for my own decision making where being wrong is expensive.. So I built a pipeline that does the tedious part: pull out every claim, research each one, show me the evidence. https://assay.it is that pipeline, cleaned up so you can use it too. Assay asks: "Which claims matter, and are they actually true?" That's a much harder question but it's the one that matters.
+
+Instead of reading documents line by line, I extract the claims that actually matter. Each important claim can then trigger its own investigation, looking for supporting evidence, contradictory evidence, outdated assumptions, and missing context. The result isn't another AI-generated essay. It's an evidence-backed analysis I can use to write a decision document with confidence.
+
+
+## What Assay does
+
+You give it a document. It gives you back an analysis.
+
+**It extracts the claims**. Not a summary. It produces the actual assertions the author is making, pulled out and listed. This alone changes how you read. Instead of eyeballing forty pages hoping the important part jumps out, you look at the twenty-five things this author wants you to believe, laid flat, in one place.
+
+**It finds the load-bearing ones**. Every serious document rests on hypotheses (things asserted but not proven here) and tensions (unresolved contradictions the author steps around). These are where decisions go wrong. Assay identifies them explicitly, including the ones the author would rather you skimmed past.
+
+**It researches each one, separately**. This is the part that makes Assay different from a chat window. For every hypothesis and every tension, Assay spawns its own deep research agent. Twenty claims means twenty parallel investigations, each returning evidence for, evidence against, and what the sources actually say versus what the document says they say.
+
+**It produces a verdict, not a vibe**. The output is an analytical document: claim, evidence, contradiction, confidence. Structured so you can lift it into your RFC and cite it, because the citations are already there.
+
+## Who this is for
+
+You write documents that other people's budgets depend on. You've read a benchmark and thought "that's not our workload." You've cited something and then quietly gone back to double-check it. You've been the person in the room who asks where a number came from and watched the room go quiet.
+
+If you're looking for a tool that reads things for you so you don't have to think, this isn't it. Assay is for people who are already doing the thinking and are tired of doing “archaeology”.
+
+## Building in public
+
+Assay is a small product built by one engineer. There isn't a marketing department. There isn't a sales team. It's simply the software I built because I was tired of spending hours manually verifying documents before I could confidently reference them.
+
+Now I'm trying to find other people who have the same problem.
+
+If you've ever found yourself opening twenty browser tabs just to verify three paragraphs of a vendor whitepaper, there's a good chance I built an Assay for you! Try this out at https://app.assay.it or check out a real analysis of the famous Amazon Prime Video paper “Scaling up the Prime Video audio/video monitoring service and reducing costs by 90%”. 
+

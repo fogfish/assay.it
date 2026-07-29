@@ -2,13 +2,38 @@
 import Layout from "@/layouts/Layout.astro";
 import PageHeader from "@/components/elements/PageHeader.astro";
 import Button from "@/components/ui/Button.astro";
-import { ArrowRight, Scale, CircleQuestionMark, Link2, User, FileCheck, ShieldCheck, UserCheck } from "@lucide/astro";
+import {
+  ArrowRight,
+  Scale,
+  CircleQuestionMark,
+  Link2,
+  User,
+  FileCheck,
+  ShieldCheck,
+  UserCheck,
+} from "@lucide/astro";
 
 const values = [
-  { icon: Scale, title: "Evidence over confidence", desc: "Verdicts are evidence-backed judgments, not a manufactured certainty score. Every one links its sources so you can disagree with it." },
-  { icon: CircleQuestionMark, title: "Honest about unverifiable", desc: "When no independent source exists, Assay says so instead of guessing. Knowing what rests on the author's word alone is half the value." },
-  { icon: Link2, title: "Cite everything", desc: "No verdict without a citation. The evidence trail is part of the deliverable, so you can check the checker in minutes." },
-  { icon: User, title: "Small by design", desc: "Built and run by one engineer. No growth targets to hit, no roadmap shaped by anyone but the people actually using it." },
+  {
+    icon: Scale,
+    title: "Evidence over confidence",
+    desc: "Verdicts are evidence-backed judgments, not a manufactured certainty score. Every one links its sources so you can disagree with it.",
+  },
+  {
+    icon: CircleQuestionMark,
+    title: "Honest about unverifiable",
+    desc: "When no independent source exists, Assay says so instead of guessing. Knowing what rests on the author's word alone is half the value.",
+  },
+  {
+    icon: Link2,
+    title: "Cite everything",
+    desc: "No verdict without a citation. The evidence trail is part of the deliverable, so you can check the checker in minutes.",
+  },
+  {
+    icon: User,
+    title: "Small by design",
+    desc: "Built and run by one engineer. No growth targets to hit, no roadmap shaped by anyone but the people actually using it.",
+  },
 ];
 
 const personas = [
@@ -32,68 +57,119 @@ const personas = [
 
   <section class="site-container max-w-3xl mx-auto pb-24">
     <article class="space-y-10">
-
       <!-- Founder note -->
       <div data-aos="fade-up-xs" data-aos-once="true">
-        <h2 class="text-2xl font-brand text-neutral-800 dark:text-neutral-100 mb-4">Why I built this</h2>
-        <div class="space-y-4 text-neutral-600 dark:text-neutral-300 leading-relaxed">
+        <h2
+          class="text-2xl font-brand text-neutral-800 dark:text-neutral-100 mb-4"
+        >
+          Why I built this
+        </h2>
+        <div
+          class="space-y-4 text-neutral-600 dark:text-neutral-300 leading-relaxed"
+        >
           <p>
-            I'm [PLACEHOLDER: your name] ([PLACEHOLDER: link to LinkedIn/GitHub]), a principal engineer at a large e-commerce company. A meaningful part of my job is writing decision documents, and every one of them starts with reading material I can't take at face value.
+            I'm a principal engineer at a large e-commerce company. A meaningful
+            part of my job is writing decision documents, and every one of them
+            starts with reading material I can't take at face value.
           </p>
           <p>
-            I used to spend [PLACEHOLDER: honest number] hours fact-checking a single vendor whitepaper before I'd cite it in my work. So I built a pipeline that does the tedious part: pull out every claim, research each one, show me the evidence. I've used it for my own decisions for [PLACEHOLDER: honest duration]. Assay is that pipeline, cleaned up so you can use it too.
+            I used to spend half of a day fact-checking a single vendor
+            whitepaper before I'd cite it in my work. So I built a pipeline that
+            does the tedious part: pull out every claim, research each one, show
+            me the evidence. I've used it for my own decisions for over a year.
+            Assay is that pipeline, cleaned up so you can use it too.
           </p>
           <p>
-            It's a small product built by one person. It charges from the first document because each analysis runs frontier models hard — but you'll always see a full example dossier and the exact price before you commit a cent.
+            It's a small product built by one person. It charges from the first
+            document because each analysis runs frontier models hard but you'll
+            always see a full example analysis and the exact price before you
+            commit a cent. If it saves you one bad architecture bet, it's paid
+            for itself for years.
           </p>
           <p>
-            If it saves you one bad architecture bet, it's paid for itself for years.
+            If it saves you one bad architecture bet, it's paid for itself for
+            years.
           </p>
-          <p class="text-neutral-500 dark:text-neutral-400">— [PLACEHOLDER: your name]</p>
+          <p class="text-neutral-500 dark:text-neutral-400">
+            — <a
+              class="text-primary hover:text-primary/80 dark:hover:text-primary/80"
+              href="https://www.linkedin.com/in/dmkolesnikov">Dmitry</a
+            >
+          </p>
         </div>
       </div>
 
-      <div class="w-full border-b border-dashed border-neutral-200 dark:border-neutral-700"></div>
+      <div
+        class="w-full border-b border-dashed border-neutral-200 dark:border-neutral-700"
+      >
+      </div>
 
       <!-- Values -->
       <div data-aos="fade-up-xs" data-aos-delay="100" data-aos-once="true">
-        <h2 class="text-2xl font-brand text-neutral-800 dark:text-neutral-100 mb-6">What I care about</h2>
+        <h2
+          class="text-2xl font-brand text-neutral-800 dark:text-neutral-100 mb-6"
+        >
+          What I care about
+        </h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {values.map((v) => (
-            <div class="p-5 rounded-xl bg-bg-secondary dark:bg-bg-secondary-dark border border-primary/10 dark:border-neutral-700">
-              <v.icon class="w-5 h-5 text-primary mb-3" />
-              <h3 class="text-sm font-semibold text-neutral-800 dark:text-neutral-100 mb-1">{v.title}</h3>
-              <p class="text-sm text-neutral-500 dark:text-neutral-400">{v.desc}</p>
-            </div>
-          ))}
+          {
+            values.map((v) => (
+              <div class="p-5 rounded-xl bg-bg-secondary dark:bg-bg-secondary-dark border border-primary/10 dark:border-neutral-700">
+                <v.icon class="w-5 h-5 text-primary mb-3" />
+                <h3 class="text-sm font-semibold text-neutral-800 dark:text-neutral-100 mb-1">
+                  {v.title}
+                </h3>
+                <p class="text-sm text-neutral-500 dark:text-neutral-400">
+                  {v.desc}
+                </p>
+              </div>
+            ))
+          }
         </div>
       </div>
 
-      <div class="w-full border-b border-dashed border-neutral-200 dark:border-neutral-700"></div>
+      <div
+        class="w-full border-b border-dashed border-neutral-200 dark:border-neutral-700"
+      >
+      </div>
 
       <!-- Who it's for -->
       <div data-aos="fade-up-xs" data-aos-delay="100" data-aos-once="true">
-        <h2 class="text-2xl font-brand text-neutral-800 dark:text-neutral-100 mb-4">Who it's for</h2>
+        <h2
+          class="text-2xl font-brand text-neutral-800 dark:text-neutral-100 mb-4"
+        >
+          Who it's for
+        </h2>
         <p class="text-neutral-600 dark:text-neutral-300 leading-relaxed mb-6">
-          Staff and principal engineers reading and writing RFCs, ADRs, and build-vs-buy recommendations. Architects evaluating vendors. Anyone whose name goes on a decision document that someone else will read in two years and judge.
+          Staff and principal engineers reading and writing RFCs, ADRs, and
+          build-vs-buy recommendations. Architects evaluating vendors. Anyone
+          whose name goes on a decision document that someone else will read in
+          two years and judge.
         </p>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          {personas.map((p) => (
-            <div class="flex flex-col items-center p-4 rounded-xl bg-bg-secondary dark:bg-bg-secondary-dark border border-primary/10 dark:border-neutral-700 text-center">
-              <p.icon class="w-5 h-5 text-primary mb-2" />
-              <span class="text-sm font-semibold text-neutral-800 dark:text-neutral-100">{p.label}</span>
-            </div>
-          ))}
+          {
+            personas.map((p) => (
+              <div class="flex flex-col items-center p-4 rounded-xl bg-bg-secondary dark:bg-bg-secondary-dark border border-primary/10 dark:border-neutral-700 text-center">
+                <p.icon class="w-5 h-5 text-primary mb-2" />
+                <span class="text-sm font-semibold text-neutral-800 dark:text-neutral-100">
+                  {p.label}
+                </span>
+              </div>
+            ))
+          }
         </div>
       </div>
 
-      <div class="flex flex-wrap gap-4" data-aos="fade-up-xs" data-aos-delay="200" data-aos-once="true">
-        <Button url="/sign-up" type="fill">
+      <div
+        class="flex flex-wrap gap-4"
+        data-aos="fade-up-xs"
+        data-aos-delay="200"
+        data-aos-once="true"
+      >
+        <Button url="https://app.assay.it" type="fill">
           Analyze a document <ArrowRight size={16} />
         </Button>
-        <Button url="/contact">
-          Ask a question
-        </Button>
+        <Button url="/contact"> Ask a question </Button>
       </div>
     </article>
   </section>

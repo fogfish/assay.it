@@ -5,10 +5,10 @@ import SectionHeader from "@/components/elements/SectionHeader.astro";
 import Pricing from "@/components/sections/Pricing.astro";
 import FAQ from "@/components/sections/FAQ.astro";
 import Button from "@/components/ui/Button.astro";
-import Badge from "@/components/ui/Badge.astro";
 import BrowserFrame from "@/components/ui/BrowserFrame.astro";
 import DossierIndexPreview from "@/components/widgets/DossierIndexPreview.astro";
 import DossierEntryPreview from "@/components/widgets/DossierEntryPreview.astro";
+import { examples } from "@/collections/dossier-demo.js";
 import {
   Search,
   Clock,
@@ -23,8 +23,6 @@ import {
   Bot,
   Quote,
   Award,
-  CircleCheck,
-  CircleX,
   ArrowRight,
   User,
 } from "@lucide/astro";
@@ -34,17 +32,17 @@ const faqItems = [
   {
     question: "What exactly counts as one document analysis?",
     answer:
-      "One uploaded document (up to [PLACEHOLDER] pages / [N] words), including claim extraction, per-claim verification, and the exported one-pager assessment document. Longer documents show a higher estimate before the run — nothing is charged without your approval.",
+      "One uploaded document, including claim extraction, per-claim verification, and the exported one-pager and full assessment document. Longer documents show a higher estimate before the run. Nothing is charged without your approval.",
   },
   {
     question: "Can I use it on internal / confidential documents?",
     answer:
-      '[PLACEHOLDER: answer truthfully — where documents are stored, retention, deletion, whether verification queries could leak internal terms to search engines. For your engineer audience this is a top-3 buying question; if the honest answer today is "not yet," say that and say what\'s planned.]',
+      "Yes, if you're comfortable doing so. Access to your document is restricted to you. Your documents are processed within our own isolated AWS infrastructure, and access to the production environment is restricted to the service owner. We do not use your documents to train AI models. That said, no online service can promise zero risk. If your organisation has strict security or compliance requirements (for example, policies that prohibit uploading confidential information to third-party services), you should follow those policies before using the service. If you have specific security or compliance questions, feel free to get in touch.",
   },
   {
     question: "What models does it use?",
     answer:
-      "[PLACEHOLDER: Anthropic Claude — Sonnet for extraction, Opus for verification runs — adjust to reality]. Your content is not used to train models.",
+      "The service uses Anthropic models. Your content is not used to train models.",
   },
   {
     question: "How is this different from ChatGPT / Gemini deep research?",
@@ -59,7 +57,8 @@ const faqItems = [
   {
     question: "Is there a free way to evaluate it?",
     answer:
-      "The full example dossier above is public — that's real output, not a mockup. [PLACEHOLDER: plus whatever you decide: first run for €1, one free analysis with email, etc.]",
+      "The full example analysis of Amazon Prime Video above is public — that's real output, not a mockup.",
+    // "The full example analysis of Amazon Prime Video above is public — that's real output, not a mockup. Sign up to the service to get first analysis for free.",
   },
 ];
 
@@ -73,7 +72,7 @@ const problems = [
   {
     icon: Clock,
     title: "Finding where takes all day",
-    desc: "So you check it — claim by claim, tab by tab, hours per document. Or you don't, and hope the claim you skipped isn't the one that fails in production.",
+    desc: "So you check it claim by claim, tab by tab, hours per document. Or you don't, and hope the claim you skipped isn't the one that fails in production.",
   },
   {
     icon: TriangleAlert,
@@ -88,19 +87,19 @@ const steps = [
     icon: FileSearch,
     step: "01",
     title: "Extract",
-    desc: "Assay reads the full document and isolates every substantive claim the author stated or implied. It doesn't summarize — it builds a claim inventory. Typically [PLACEHOLDER: e.g. “15–40”] claims per document.",
+    desc: "Assay reads the full document and isolates every substantive claim the author stated or implied. It doesn't summarize. It builds a claim inventory. Typically 9 - 12 claims per document.",
   },
   {
     icon: ScanSearch,
     step: "02",
     title: "Verify",
-    desc: "Each claim gets its own research run against public sources: documentation, independent benchmarks, issue trackers, papers, postmortems. Not a single search — an agent per claim.",
+    desc: "Each claim gets its own research run against public sources: documentation, independent benchmarks, issue trackers, papers, postmortems. Not a single search, an agent per claim!",
   },
   {
     icon: FileCheck,
     step: "03",
     title: "Deliver",
-    desc: "You get a paper: every claim, a verdict (Supported / Contradicted / Unverifiable / Context-dependent), the evidence, and links to every source — so you can check the checker.",
+    desc: "You get a paper: every claim, a verdict (Supported / Contradicted / Unverifiable), the evidence, and links to every source, so you can check the checker.",
   },
 ];
 
@@ -119,7 +118,7 @@ const limits = [
   {
     icon: UserCheck,
     title: "It won't read your mind",
-    desc: "Assay checks what the document says against what the internet knows. Whether the technology fits your context is still your call — the dossier just makes it an informed one.",
+    desc: "Assay checks what the document says against what the internet knows. Whether the technology fits your context is still your call. The analysis just makes it an informed one.",
   },
 ];
 
@@ -131,34 +130,10 @@ const personas = [
   { icon: UserCheck, label: "Anyone whose name goes on the doc" },
 ];
 
-// Verdict legend (used in the Example section preview)
-const verdicts = [
-  {
-    icon: CircleCheck,
-    label: "Supported",
-    color: "var(--color-verdict-supported)",
-  },
-  {
-    icon: TriangleAlert,
-    label: "Context-dependent",
-    color: "var(--color-verdict-context)",
-  },
-  {
-    icon: CircleX,
-    label: "Contradicted",
-    color: "var(--color-verdict-contradicted)",
-  },
-  {
-    icon: CircleQuestionMark,
-    label: "Unverifiable",
-    color: "var(--color-verdict-unverifiable)",
-  },
-];
-
 // Credibility strip
 const credibility = [
   { icon: Award, text: "Built by a principal engineer" },
-  { icon: Bot, text: "Runs on Anthropic Claude" },
+  { icon: Bot, text: "Runs on Anthropic models" },
   { icon: Quote, text: "Every verdict cites its sources" },
 ];
 ---
@@ -197,8 +172,8 @@ const credibility = [
   <!-- 3. Problem -->
   <section class="py-16 md:py-24 site-container">
     <SectionHeader
-      title="You already know the document is lying to you somewhere. \n Finding where takes all day."
-      description=" Every technology decision starts with reading material you can't take at face value — and can't cite without checking it first."
+      title="You already know the document is lying to you somewhere. \n Finding <i>where</i> takes all day."
+      description=" Every technology decision starts with reading material \n you can't take at face value and can't cite without checking it first."
     />
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
       {
@@ -260,9 +235,8 @@ const credibility = [
     <p
       class="text-center text-sm text-neutral-500 dark:text-neutral-400 mt-8 max-w-xl mx-auto"
     >
-      Typical run time: [PLACEHOLDER: e.g. "7–12 minutes"] for a [PLACEHOLDER:
-      e.g. "30-page"] document. Long enough to get coffee, short enough to run
-      before the meeting.
+      Typical run time: 9–10 minutes for a 10-page document. <br /> Long enough to
+      get coffee, short enough to run before the meeting.
     </p>
   </section>
 
@@ -271,81 +245,60 @@ const credibility = [
   >
   </div>
 
-  <!-- 5. Product preview -->
-  <section class="py-16 md:py-24 site-container">
-    <SectionHeader
-      title="Inside a dossier"
-      description="A preview of the interface — a public essay analyzed end-to-end, from the dossier overview down to a single hypothesis."
-    />
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-      <div data-aos="fade-up-sm" data-aos-once="true">
-        <BrowserFrame url="assay.it/dossier">
-          <div class="p-5 md:p-6 h-[360px] md:h-[440px]">
-            <DossierIndexPreview />
-          </div>
-        </BrowserFrame>
-        <p class="text-center text-xs text-neutral-400 dark:text-neutral-500 mt-3">Dossier overview</p>
-      </div>
-      <div data-aos="fade-up-sm" data-aos-delay="150" data-aos-once="true">
-        <BrowserFrame url="assay.it/dossier/4">
-          <div class="p-5 md:p-6 h-[360px] md:h-[440px]">
-            <DossierEntryPreview />
-          </div>
-        </BrowserFrame>
-        <p class="text-center text-xs text-neutral-400 dark:text-neutral-500 mt-3">Inside a hypothesis</p>
-      </div>
-    </div>
-    <p class="text-center text-xs text-neutral-400 dark:text-neutral-500 mt-6 max-w-xl mx-auto">
-      Illustrative preview, not a live analysis — see a real one below once it's published.
-    </p>
-  </section>
-
-  <div
-    class="w-full border-b border-dashed border-neutral-200 dark:border-neutral-700 my-4 site-container"
-  >
-  </div>
-
-  <!-- 6. Example -->
+  <!-- 5. Example -->
   <section id="example" class="py-16 md:py-24 site-container scroll-mt-24">
     <SectionHeader
       title="See a real analysis"
-      description="We're running a real, well-known public document through Assay end-to-end. The full claim-by-claim dossier — verdicts, evidence, every source — will be published here as an ungated page."
+      description="A document analyzed end-to-end. Overview and a single hypothesis, browsable below."
     />
-    <div
-      class="max-w-3xl mx-auto mt-8 p-8 md:p-10 rounded-2xl border border-dashed border-primary/25 dark:border-neutral-700 bg-bg-secondary dark:bg-bg-secondary-dark text-center"
-      data-aos="fade-up-sm"
-      data-aos-once="true"
-    >
-      <Badge variant="accent" size="lg">Coming soon</Badge>
-      <h3
-        class="text-xl md:text-2xl font-brand text-neutral-800 dark:text-neutral-100 mt-4 mb-3"
-      >
-        First public dossier: [PLACEHOLDER: name of a real, well-known public
-        document]
-      </h3>
-      <p
-        class="text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed max-w-xl mx-auto mb-8"
-      >
-        Every claim gets one of four verdicts, each linked to the evidence
-        behind it:
-      </p>
-
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
-        {
-          verdicts.map((v) => (
-            <div class="flex flex-col items-center gap-2 p-3 rounded-lg border border-primary/10 dark:border-neutral-700 bg-bg-primary/40 dark:bg-neutral-800/40">
-              <v.icon class="w-5 h-5" style={`color: ${v.color}`} />
-              <span class="text-xs font-medium" style={`color: ${v.color}`}>
-                {v.label}
-              </span>
-            </div>
-          ))
-        }
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+      <div data-aos="fade-up-sm" data-aos-once="true">
+        <BrowserFrame url="https://app.assay.it">
+          <div class="p-5 md:p-6 h-[500px] md:h-[500px]">
+            <DossierIndexPreview dossier={examples.heroPrimeVideo} />
+          </div>
+        </BrowserFrame>
+        <p
+          class="text-center text-xs text-neutral-400 dark:text-neutral-500 mt-3"
+        >
+          Analysis overview as "one-pager"
+        </p>
       </div>
-
-      <div class="flex flex-wrap justify-center gap-3">
+      <div data-aos="fade-up-sm" data-aos-delay="150" data-aos-once="true">
+        <BrowserFrame url="https://app.assay.it">
+          <div class="p-5 md:p-6 h-[500px] md:h-[500px]">
+            <DossierEntryPreview entry={examples.realPrimeVideoHypothesis} />
+          </div>
+        </BrowserFrame>
+        <p
+          class="text-center text-xs text-neutral-400 dark:text-neutral-500 mt-3"
+        >
+          Inside a hypothesis
+        </p>
+      </div>
+    </div>
+    <div class="flex flex-col items-center gap-3 mt-8">
+      <p
+        class="text-center text-xs text-neutral-400 dark:text-neutral-500 max-w-xl"
+      >
+        Illustrative example — analyze your own document to generate real
+        verdicts.
+      </p>
+      <div
+        class="flex flex-wrap gap-3 justify-center sm:justify-start"
+        data-aos="fade-up-sm"
+        data-aos-delay="600"
+        data-aos-duration="500"
+        data-aos-once="true"
+      >
         <Button url="/sign-up" type="fill">
-          Run your own document <ArrowRight size={16} />
+          Run Your Own Document <ArrowRight size={16} />
+        </Button>
+        <Button
+          url="/assets/examples/amazon-prime-video-short.html"
+          target="_blank"
+        >
+          See Full Real Example
         </Button>
       </div>
     </div>
@@ -434,7 +387,7 @@ const credibility = [
   <!-- 9. Pricing -->
   <Pricing
     title="Pay per document"
-    description="See the cost before you run it. No subscription, no expiring credits."
+    description="See the cost before you run it. No subscription. No expiring credits."
   />
 
   <div
@@ -456,7 +409,12 @@ const credibility = [
         <span
           class="flex items-center justify-center w-11 h-11 rounded-full bg-primary/10 flex-shrink-0"
         >
-          <User class="w-5 h-5 text-primary" />
+          <img
+            src="/assets/founder.jpg"
+            alt="Dmitry Kolesnikov"
+            class="w-10 h-10 rounded-full object-cover"
+          />
+          <!-- <User class="w-5 h-5 text-primary" /> -->
         </span>
         <div>
           <h2 class="text-xl font-brand text-neutral-800 dark:text-neutral-100">
@@ -472,28 +430,29 @@ const credibility = [
         class="space-y-4 text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed"
       >
         <p>
-          I'm [PLACEHOLDER: your name] ([PLACEHOLDER: link to LinkedIn/GitHub]),
-          a principal engineer at a large e-commerce company. A meaningful part
-          of my job is writing decision documents — and every one of them starts
-          with reading material I can't take at face value.
+          I'm a principal engineer at a large e-commerce company. A meaningful
+          part of my job is writing decision documents and every one of them
+          starts with reading material I can't take at face value.
         </p>
         <p>
-          I used to spend [PLACEHOLDER: honest number] hours fact-checking a
-          single vendor whitepaper before I'd cite it in my work. So I built a
-          pipeline that does the tedious part: pull out every claim, research
-          each one, show me the evidence. I've used it for my own decisions for
-          [PLACEHOLDER: honest duration]. Assay is that pipeline, cleaned up so
-          you can use it too.
+          I used to spend half of a day fact-checking a single vendor whitepaper
+          before I'd cite it in my work. So I built a pipeline that does the
+          tedious part: pull out every claim, research each one, show me the
+          evidence. I've used it for my own decisions for over a year. Assay is
+          that pipeline, cleaned up so you can use it too.
         </p>
         <p>
           It's a small product built by one person. It charges from the first
-          document because each analysis runs frontier models hard — but you'll
-          always see a full example dossier and the exact price before you
+          document because each analysis runs frontier models hard but you'll
+          always see a full example analysis and the exact price before you
           commit a cent. If it saves you one bad architecture bet, it's paid for
           itself for years.
         </p>
         <p class="text-neutral-500 dark:text-neutral-400">
-          — [PLACEHOLDER: your name]
+          — <a
+            class="text-primary hover:text-primary/80 dark:hover:text-primary/80"
+            href="https://www.linkedin.com/in/dmkolesnikov">Dmitry</a
+          >
         </p>
       </div>
     </div>
@@ -520,7 +479,7 @@ const credibility = [
         data-aos-once="true"
         data-aos-delay="200"
       >
-        The document is 40 pages. The claims that matter fit on one.
+        The document is 40 pages. <br /> The claims that matter fit on one.
       </h2>
       <p
         class="text-neutral-600 dark:text-neutral-300 mb-8 leading-relaxed"

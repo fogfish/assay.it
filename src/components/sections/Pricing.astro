@@ -15,104 +15,167 @@ const {
   showHeader = true,
 } = Astro.props;
 
+// claims extracted, per-claim verification runs, exported dossier, source links, library persistence
 const payAsYouGoFeatures = [
-  "Claim extraction + per-claim verification + exported one-pager",
-  "Markdown, plain text [PLACEHOLDER: + PDF/DOCX if actually live]",
-  "Powered by Anthropic Claude (Sonnet + Opus)",
+  "Support Markdowns and plain text",
+  "Per-claim deep verification run",
+  "Claim-by-claim verdicts and citations",
+  "Export analysis as HTML reports",
+  "Unlimited storage",
+  "24/7 support via email",
   "Your documents are never used for training and can be deleted anytime",
 ];
 
 const teamsFeatures = [
   "Monthly plans for recurring analysis",
-  "Shared dossier libraries across a team",
-  "API access",
+  "Shared Libraries across a team",
+  "Team's research and analysis memory",
+  "Seats per user, with role-based access control",
+  "API and MCP access",
 ];
 ---
 
 <section class="pricing-section">
-  {showHeader && (
-    <div class="site-container pt-16 md:pt-20" data-aos="fade-up-xs" data-aos-once="true">
-      <SectionHeader title={title} description={description} />
-    </div>
-  )}
+  {
+    showHeader && (
+      <div
+        class="site-container pt-16 md:pt-20"
+        data-aos="fade-up-xs"
+        data-aos-once="true"
+      >
+        <SectionHeader title={title} description={description} />
+      </div>
+    )
+  }
 
   <!-- Pricing Cards -->
   <div class="site-container pb-16">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
       <!-- Pay as you go -->
       <div
-        class="relative p-6 md:p-8 rounded-2xl border border-primary shadow-lg bg-bg-secondary dark:bg-bg-secondary-dark"
+        class="relative p-6 md:p-8 rounded-2xl border border-primary shadow-lg bg-bg-secondary dark:bg-bg-secondary-dark flex flex-col"
         data-aos="fade-up-sm"
         data-aos-once="true"
       >
+        <!-- 
         <div class="popular-badge absolute -top-3.5 left-1/2 -translate-x-1/2 z-10">
           <span class="popular-badge__pill">
             <Sparkles class="w-3.5 h-3.5" stroke-width={2.25} />
             <span class="popular-badge__label font-brand">Available now</span>
           </span>
         </div>
+        -->
 
-        <h3 class="text-xl font-semibold text-neutral-800 dark:text-neutral-100 mb-1">Pay as you go</h3>
+        <h3
+          class="text-xl font-semibold text-neutral-800 dark:text-neutral-100 mb-1"
+        >
+          Pay as you go
+        </h3>
         <p class="text-sm text-neutral-500 dark:text-neutral-400 mb-4">
-          ~€[PLACEHOLDER] per document
+          about $1.90 per document
         </p>
 
         <div class="mb-6">
-          <span class="text-4xl font-brand text-neutral-800 dark:text-neutral-100">
-            €[PLACEHOLDER]
+          <span
+            class="text-4xl font-brand text-neutral-800 dark:text-neutral-100"
+          >
+            $1.90
           </span>
-          <span class="text-sm text-neutral-400 ml-1">/ document, typical [30-page] doc</span>
+          <span class="text-sm text-neutral-400 ml-1"
+            >/ document, typical 10-page doc</span
+          >
         </div>
 
-        <p class="text-sm text-neutral-500 dark:text-neutral-400 mb-6 leading-relaxed">
-          Assay shows you the exact estimate before the run starts, and you approve it. No subscription, no expiring credits.
+        <p
+          class="text-sm text-neutral-500 dark:text-neutral-400 mb-6 leading-relaxed"
+        >
+          Assay shows you the exact estimate before the run starts, and you
+          approve it. No subscription, no expiring credits.
         </p>
 
         <ul class="space-y-3 mb-8">
-          {payAsYouGoFeatures.map((feature) => (
-            <li class="flex items-start gap-2">
-              <Check class="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-              <span class="text-sm text-neutral-600 dark:text-neutral-300">{feature}</span>
-            </li>
-          ))}
+          {
+            payAsYouGoFeatures.map((feature) => (
+              <li class="flex items-start gap-2">
+                <Check class="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                <span class="text-sm text-neutral-600 dark:text-neutral-300">
+                  {feature}
+                </span>
+              </li>
+            ))
+          }
         </ul>
 
-        <Button url="/sign-up" type="fill" className="w-full justify-center">
-          Analyze a document <ArrowRight size={16} />
-        </Button>
+        <div class="mt-auto">
+          <Button
+            url="/sign-up"
+            type="fill"
+            className="w-full max-w-none justify-center"
+          >
+            Analyze a document <ArrowRight size={16} />
+          </Button>
+          <p class="text-xs mt-3 text-center invisible" aria-hidden="true">
+            &nbsp;
+          </p>
+        </div>
       </div>
 
       <!-- Teams -->
       <div
-        class="relative p-6 md:p-8 rounded-2xl border border-dashed border-primary/20 dark:border-neutral-700 bg-bg-secondary dark:bg-bg-secondary-dark"
+        class="relative p-6 md:p-8 rounded-2xl border border-dashed border-primary/20 dark:border-neutral-700 bg-bg-secondary dark:bg-bg-secondary-dark flex flex-col"
         data-aos="fade-up-sm"
         data-aos-delay="100"
         data-aos-once="true"
       >
-        <h3 class="text-xl font-semibold text-neutral-800 dark:text-neutral-100 mb-1">Teams</h3>
-        <p class="text-sm text-neutral-500 dark:text-neutral-400 mb-4">Coming when it's ready</p>
+        <h3
+          class="text-xl font-semibold text-neutral-800 dark:text-neutral-100 mb-1"
+        >
+          Teams
+        </h3>
+        <p class="text-sm text-neutral-500 dark:text-neutral-400 mb-4">
+          Coming when it's ready
+        </p>
 
         <div class="mb-6">
-          <span class="text-4xl font-brand text-neutral-400 dark:text-neutral-500">Soon</span>
+          <span
+            class="text-4xl font-brand text-neutral-400 dark:text-neutral-500"
+            >Soon</span
+          >
         </div>
 
-        <p class="text-sm text-neutral-500 dark:text-neutral-400 mb-6 leading-relaxed">
-          Monthly plans, shared dossier libraries, and API access are in development.
+        <p
+          class="text-sm text-neutral-500 dark:text-neutral-400 mb-6 leading-relaxed"
+        >
+          Monthly plans, shared document libraries, and API access are in
+          development. Everything in Pay-as-you-go, plus:
         </p>
 
         <ul class="space-y-3 mb-8">
-          {teamsFeatures.map((feature) => (
-            <li class="flex items-start gap-2">
-              <Check class="w-4 h-4 text-neutral-300 dark:text-neutral-600 mt-0.5 flex-shrink-0" />
-              <span class="text-sm text-neutral-400 dark:text-neutral-500">{feature}</span>
-            </li>
-          ))}
+          {
+            teamsFeatures.map((feature) => (
+              <li class="flex items-start gap-2">
+                <Check class="w-4 h-4 text-neutral-300 dark:text-neutral-600 mt-0.5 flex-shrink-0" />
+                <span class="text-sm text-neutral-400 dark:text-neutral-500">
+                  {feature}
+                </span>
+              </li>
+            ))
+          }
         </ul>
 
-        <Button url="/contact" className="w-full justify-center">
-          Leave your email <Mail size={16} />
-        </Button>
-        <p class="text-xs text-neutral-400 dark:text-neutral-500 mt-3 text-center">We'll tell you when it exists — not before.</p>
+        <div class="mt-auto">
+          <Button
+            url="https://docs.google.com/forms/d/e/1FAIpQLSd7yx0G3h5Tx3z6bIsoMBI2Zu4gEX-aWJuw_BHv6nsKLRc2EQ/viewform"
+            className="w-full max-w-none justify-center"
+          >
+            Leave your email <Mail size={16} />
+          </Button>
+          <p
+            class="text-xs text-neutral-400 dark:text-neutral-500 mt-3 text-center"
+          >
+            We'll tell you when it exists — not before.
+          </p>
+        </div>
       </div>
     </div>
   </div>
@@ -161,7 +224,7 @@ const teamsFeatures = [
       linear-gradient(#000 0 0) content-box,
       linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
-            mask-composite: exclude;
+    mask-composite: exclude;
     pointer-events: none;
   }
 
@@ -194,8 +257,13 @@ const teamsFeatures = [
   }
 
   @keyframes popular-shine {
-    0%        { transform: translateX(-120%); }
-    55%, 100% { transform: translateX(220%); }
+    0% {
+      transform: translateX(-120%);
+    }
+    55%,
+    100% {
+      transform: translateX(220%);
+    }
   }
 
   :global(.dark) .popular-badge__pill {

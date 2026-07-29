@@ -2,96 +2,104 @@
 import Layout from "@/layouts/Layout.astro";
 import PageHeader from "@/components/elements/PageHeader.astro";
 import Button from "@/components/ui/Button.astro";
+import BrowserFrame from "@/components/ui/BrowserFrame.astro";
+import DossierIndexPreview from "@/components/widgets/DossierIndexPreview.astro";
+import DossierEntryPreview from "@/components/widgets/DossierEntryPreview.astro";
+import { examples } from "@/collections/dossier-demo.js";
 import {
   FileSearch, ScanSearch, FileCheck, Scale, Link2, ShieldAlert,
-  ArrowRight, Check, CircleCheck, TriangleAlert, CircleX, CircleQuestionMark,
-  FileText, BookOpen, GitBranch, FlaskConical,
+  ArrowRight, Check,
 } from "@lucide/astro";
 
 const featureModules = [
   {
     icon: FileSearch,
     title: "Claim extraction, not summarization",
-    desc: "Assay reads the full document and isolates every substantive claim the author stated or implied — the vendor's performance numbers, the migration story's savings, the benchmark's methodology. It builds a claim inventory, not a summary.",
-    points: ["Typically [PLACEHOLDER: e.g. \"15–40\"] claims per document", "Captures implied claims, not just explicit numbers", "Works on whitepapers, benchmarks, blog posts, design docs", "The claim inventory is the input to every downstream verdict"],
+    desc: "Assay reads the full document and isolates every substantive claim the author stated, the vendor's performance numbers, the migration story's savings, the benchmark's methodology. It builds a claim inventory, not a summary.",
+    points: [
+      "Typically 9 - 10 claims per 10 page document",
+      "Works on whitepapers, benchmarks, blog posts, design docs",
+      "The claim inventory is the input to downstream validation",
+    ],
     direction: "left",
     visual: "extract",
+    url: "https://app.assay.it",
   },
   {
     icon: ScanSearch,
-    title: "An independent research agent per claim",
-    desc: "Each claim gets its own research run against public sources — documentation, independent benchmarks, issue trackers, papers, postmortems. Not one search across the whole document, but a dedicated verification pass per claim.",
-    points: ["One research agent per claim, run independently", "Cross-references documentation, benchmarks, issue trackers, papers", "Runs on Anthropic Claude (Sonnet + Opus)", "Typical run time: [PLACEHOLDER: e.g. \"7–12 minutes\"] for a [PLACEHOLDER: e.g. \"30-page\"] document"],
+    title: "An independent validation of each claim",
+    desc: "Each claim gets its own deep validation against public documentation, academic papers, articles, blogs and web sources. Not one search across the whole document, but a dedicated verification pass per claim.",
+    points: [
+      "Each claim is validated independently",
+      "Runs on Anthropic models",
+      "Typical run time: 9–10 minutes for a 10-page document",
+    ],
     direction: "right",
     visual: "verify",
+    url: "https://app.assay.it",
   },
   {
     icon: FileCheck,
     title: "A decision-ready one-pager",
-    desc: "You get a paper: every claim, a verdict, the evidence behind it, and links to every source — so you can check the checker before you cite it in your own work.",
-    points: ["Claim-by-claim verdict with citations", "Exported as Markdown, plain text [PLACEHOLDER: + PDF/DOCX if actually live]", "Every source linked — audit the verdict in minutes", "Built for RFCs, ADRs, and build-vs-buy write-ups"],
+    desc: "You get a paper: every claim, a verdict, the evidence behind it, and links to every source, so you can check the checker before you cite it in your own work.",
+    points: [
+      "Claim-by-claim verdict with citations",
+      "Exported as Markdown or styled HTML",
+      "Provides both one-pager executive summary and detailed analysis",
+    ],
     direction: "left",
     visual: "deliver",
+    url: "https://app.assay.it",
   },
   {
     icon: Scale,
     title: "Four verdicts, not a confidence score",
     desc: "Every claim resolves to one of four states — no vague percentage, no false precision. You know exactly how much weight a claim can bear.",
-    points: ["Supported — confirmed by an independent source", "Context-dependent — true only under conditions the author didn't mention", "Contradicted — an independent source says otherwise", "Unverifiable — no independent source exists, and Assay says so instead of guessing"],
+    points: [
+      "Supported — confirmed by prior art or an independent source",
+      "Contested — evidence is mixed or context-dependent",
+      "Contradicted — current evidence disagrees with the claim",
+      "Unverifiable — no independent source exists, and Assay says so instead of guessing",
+    ],
     direction: "right",
     visual: "verdicts",
+    url: "https://app.assay.it",
   },
   {
     icon: Link2,
     title: "Every verdict cites its sources",
     desc: "No verdict without a citation. Documentation pages, benchmark repos, issue threads, postmortems — the evidence trail is part of the deliverable, not an afterthought.",
-    points: ["Every verdict links the evidence behind it", "Disagree with a verdict? Check the same sources Assay did", "No claim is marked Supported or Contradicted without a source", "Treat it as a research assistant you can audit, not an oracle"],
+    points: [
+      "Every verdict links the evidence behind it",
+      "Disagree with a verdict? Check the same sources Assay did",
+      "Treat it as a research assistant you can audit, not an oracle",
+    ],
     direction: "left",
     visual: "sources",
+    url: "https://app.assay.it",
   },
   {
     icon: ShieldAlert,
     title: "Won't oversell what it can't do",
     desc: "A verification tool that oversells itself would be a bad joke. Assay tells you when it doesn't know, and leaves the judgment calls to you.",
-    points: ["No “absolute certainty” — verdicts are evidence-backed judgments", "Unverifiable means unverifiable, not “probably fine”", "Won't tell you if the technology fits your context — that's still your call", "[PLACEHOLDER: refund policy for failed/garbage runs]"],
+    points: [
+      "No “absolute certainty” — verdicts are evidence-backed judgments",
+      "Unverifiable means unverifiable, not “probably fine”",
+      "Won't tell you if the technology fits your context — that's still your call",
+    ],
     direction: "right",
     visual: "limits",
+    url: "https://app.assay.it",
   },
 ];
 
-const claimRows = [
-  { text: "Reduces p99 latency by 40%", verdict: "contradicted" },
-  { text: "SOC 2 Type II certified", verdict: "supported" },
-  { text: "Costs 3x less than self-hosting", verdict: "context" },
-  { text: "Used by 500+ enterprise teams", verdict: "unverifiable" },
-];
-
-const verdictMeta = {
-  supported: { icon: CircleCheck, label: "Supported", color: "var(--color-verdict-supported)" },
-  context: { icon: TriangleAlert, label: "Context-dependent", color: "var(--color-verdict-context)" },
-  contradicted: { icon: CircleX, label: "Contradicted", color: "var(--color-verdict-contradicted)" },
-  unverifiable: { icon: CircleQuestionMark, label: "Unverifiable", color: "var(--color-verdict-unverifiable)" },
-};
-
-const sourceTypes = [
-  { icon: BookOpen, label: "Documentation" },
-  { icon: FlaskConical, label: "Benchmarks" },
-  { icon: GitBranch, label: "Issue trackers" },
-  { icon: FileText, label: "Papers & postmortems" },
-];
-
-const citations = [
-  "[1] docs.vendor.com/benchmarks/methodology",
-  "[2] github.com/vendor/repo/issues/482",
-  "[3] arxiv.org/abs/[PLACEHOLDER]",
-  "[4] status.vendor.com/incidents/2026-02",
-];
-
-const limitLines = [
-  "No manufactured confidence scores",
-  "No guessing when evidence is missing",
-  "No verdict on whether it fits your context",
-];
+// The same claim, followed end to end: appears in the dossier list, gets
+// opened, its assumptions get checked, it resolves to a verdict, and that
+// verdict cites its sources. "limits" switches back to the dossier index,
+// scoped to the Problems section — that's where Unverifiable/Critical gap
+// verdicts live in this schema, not on a Hypothesis entry page.
+const dossier = examples.features.dossier;
+const claim = examples.features.featuredEntry;
 ---
 
 <Layout
@@ -101,7 +109,7 @@ const limitLines = [
   <section class="site-container my-12">
     <PageHeader
       title="From document to verified one-pager"
-      description="Claim extraction, per-claim verification, and a verdict system built to be audited — not trusted blindly."
+      description="Claim extraction, per-claim verification. \n A verdict system built to be audited — not trusted blindly."
     />
   </section>
 
@@ -126,97 +134,49 @@ const limitLines = [
           </ul>
         </div>
 
-        <!-- Visual -->
+        <!-- Visual: the same real screen shown on the homepage — full -->
+        <!-- BrowserFrame, full detail — with the area this feature is -->
+        <!-- about elevated (ring + glow) and the rest dimmed, so nothing -->
+        <!-- is cropped out of context. -->
         <div class="flex-1 min-w-0 w-full" data-aos={mod.direction === 'right' ? 'fade-right-sm' : 'fade-left-sm'} data-aos-delay="200" data-aos-once="true">
-          <div class="relative rounded-2xl bg-bg-secondary dark:bg-bg-secondary-dark border border-primary/10 dark:border-neutral-700 h-[280px] md:h-[340px] overflow-hidden p-6">
+          <BrowserFrame url={mod.url}>
+            <div class="p-5 md:p-6 h-[360px] md:h-[440px]">
 
-            <!-- 1. Claim inventory -->
-            {mod.visual === "extract" && (
-              <div class="h-full flex flex-col gap-2.5">
-                <div class="text-[10px] uppercase tracking-wider text-primary/60 mb-1">Claim inventory · vendor-whitepaper.pdf</div>
-                {claimRows.map((c) => (
-                  <div class="flex items-center gap-2 rounded-md border border-dashed border-primary/30 bg-primary/5 px-3 py-2">
-                    <FileSearch class="w-3.5 h-3.5 text-primary/70 flex-shrink-0" />
-                    <span class="text-[11px] text-neutral-600 dark:text-neutral-300 truncate">{c.text}</span>
-                  </div>
-                ))}
-              </div>
-            )}
+              <!-- 1. Extract: the dossier's claim inventory -->
+              {mod.visual === "extract" && (
+                <DossierEntryPreview entry={examples.realPrimeVideoHypothesis} />
+              )}
 
-            <!-- 2. Verify: sources converge on a claim -->
-            {mod.visual === "verify" && (
-              <div class="h-full flex flex-col items-center justify-center gap-4">
-                <div class="px-4 py-2 rounded-lg border border-primary/40 bg-primary/10 text-[11px] font-medium text-primary text-center max-w-[220px] truncate">
-                  “Costs 3x less than self-hosting”
-                </div>
-                <div class="grid grid-cols-2 gap-2 w-full max-w-[260px]">
-                  {sourceTypes.map((s) => (
-                    <div class="flex items-center gap-1.5 rounded-md border border-primary/15 dark:border-neutral-700 bg-bg-primary/40 dark:bg-neutral-800/40 px-2 py-1.5">
-                      <s.icon class="w-3.5 h-3.5 text-primary/70 flex-shrink-0" />
-                      <span class="text-[10px] text-neutral-500 dark:text-neutral-400 truncate">{s.label}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+              <!-- 2. Verify: opened this claim, each assumption checkable on its own -->
+              {mod.visual === "verify" && (
+                <DossierEntryPreview entry={examples.realPrimeVideoHypothesis} highlight={["banner", "title"]} />
+              )}
 
-            <!-- 3. Deliver: verdict table -->
-            {mod.visual === "deliver" && (
-              <div class="h-full flex flex-col gap-2">
-                <div class="text-[10px] uppercase tracking-wider text-primary/60 mb-1">Dossier · claim-by-claim</div>
-                {claimRows.map((c) => {
-                  const meta = verdictMeta[c.verdict as keyof typeof verdictMeta];
-                  return (
-                    <div class="flex items-center gap-2 rounded-md border border-primary/10 dark:border-neutral-700 bg-bg-primary/40 dark:bg-neutral-800/40 px-3 py-2">
-                      <span class="text-[11px] text-neutral-600 dark:text-neutral-300 flex-1 truncate">{c.text}</span>
-                      <meta.icon class="w-3.5 h-3.5 flex-shrink-0" style={`color: ${meta.color}`} />
-                      <span class="text-[9px] font-medium flex-shrink-0" style={`color: ${meta.color}`}>{meta.label}</span>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
+              <!-- 3. Deliver: the verdict + thesis pairing is the one-pager -->
+              {mod.visual === "deliver" && (
+                <DossierIndexPreview dossier={examples.heroPrimeVideo} />
+              )}
 
-            <!-- 4. Verdict legend -->
-            {mod.visual === "verdicts" && (
-              <div class="h-full grid grid-cols-2 gap-3 content-center">
-                {Object.values(verdictMeta).map((v) => (
-                  <div class="flex flex-col items-center gap-2 p-4 rounded-lg border border-primary/10 dark:border-neutral-700 bg-bg-primary/40 dark:bg-neutral-800/40">
-                    <v.icon class="w-6 h-6" style={`color: ${v.color}`} />
-                    <span class="text-xs font-medium text-center" style={`color: ${v.color}`}>{v.label}</span>
-                  </div>
-                ))}
-              </div>
-            )}
+              <!-- 4. Verdicts: the dossier list, where all four standings sit
+              side by side in the heat map and the row chips -->
+              {mod.visual === "verdicts" && (
+                <DossierIndexPreview dossier={dossier} highlight={["glance"]} />
+              )}
 
-            <!-- 5. Sources / citations -->
-            {mod.visual === "sources" && (
-              <div class="h-full flex flex-col justify-center gap-3 font-mono text-[11px] text-neutral-600 dark:text-neutral-300">
-                {citations.map((c) => (
-                  <div class="flex items-center gap-2">
-                    <Link2 class="w-3.5 h-3.5 text-primary/70 flex-shrink-0" />
-                    <span class="truncate">{c}</span>
-                  </div>
-                ))}
-              </div>
-            )}
+              <!-- 5. Sources: every citation behind this claim's verdict -->
+              {mod.visual === "sources" && (
+                <DossierEntryPreview entry={examples.realPrimeVideoHypothesis} highlight="citations" />
+              )}
 
-            <!-- 6. Honest limits -->
-            {mod.visual === "limits" && (
-              <div class="h-full flex flex-col items-center justify-center gap-4">
-                <ShieldAlert class="w-8 h-8 text-accent mb-1" />
-                <ul class="space-y-2.5">
-                  {limitLines.map((line) => (
-                    <li class="flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400">
-                      <span class="w-1 h-1 rounded-full bg-accent flex-shrink-0"></span>
-                      {line}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+              <!-- 6. Limits: back to the dossier list, scoped to the Problems
+              section — Critical gap / Unverified live there, not on a
+              Hypothesis entry page -->
+              {mod.visual === "limits" && (
+                <DossierIndexPreview dossier={dossier} showHypotheses={false} highlight="entries" />
+              )}
 
-          </div>
+            </div>
+          </BrowserFrame>
         </div>
       </div>
     </section>
@@ -232,10 +192,10 @@ const limitLines = [
         Read a real example dossier, then run your own document when you're ready.
       </p>
       <div class="flex flex-wrap justify-center gap-3">
-        <Button url="/#example" type="fill" className="text-lg px-8 py-3">
+        <Button url="/assets/examples/amazon-prime-video-short.html" type="fill" className="text-lg px-8 py-3">
           See a real analysis <ArrowRight size={18} />
         </Button>
-        <Button url="/sign-up" className="text-lg px-8 py-3">
+        <Button url="https://app.assay.it" className="text-lg px-8 py-3">
           Analyze a document
         </Button>
       </div>

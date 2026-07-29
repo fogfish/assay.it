@@ -6,13 +6,13 @@ export const siteConfig = {
 	title: "assay.it",
 	author: "assay.it",
 	url: SITE_URL,
-	mail: "hello@assay.it",
+	mail: "ask@assay.it",
 	utm: {
 		source: `${SITE_URL}`,
 		medium: "referral",
 		campaign: "navigation",
 	},
-	meta:{
+	meta: {
 		title: "assay.it — Verify every claim before you build on it.",
 		description: "Paste a whitepaper, benchmark, or engineering blog post. Assay extracts every claim the author makes and checks it against public sources. Verdicts, citations, and a decision-ready one-pager in minutes.",
 		keywords: "claim verification, whitepaper fact checking, vendor benchmark verification, technical due diligence, AI research agent, RFC decision document",
@@ -20,7 +20,7 @@ export const siteConfig = {
 		twitterHandle: "",
 	},
 	// social links
-	social:{
+	social: {
 		twitter: "",
 		twitterName: "",
 		github: "",

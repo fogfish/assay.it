@@ -96,7 +96,7 @@ export const examples = {
         title: "Real-Time Quality Detection via Continuous Stream Inspection",
         facet: "general",
         claim:
-          "Continuous in-stream perceptual defect detection for block corruption and audio-video sync is a well-deployed commercial practice confirmed by Amazon Prime Video and multiple QC tool vendors, but the claim that detection enables real-time remediation is unsubstantiated by any cited source, and the CacheFly and IEEE cloud-cost literature frames the computational overhead as an unresolved trade-off rather than a justified one.",
+          "Deploying automated perceptual quality analysis on every customer stream enables real-time defect detection and remediation... assurance from reactive testing to proactive continuous monitoring... Continuous in-stream perceptual defect detection for block corruption and audio-video sync is a well-deployed but the claim that detection enables real-time remediation is unsubstantiated by any cited source...",
         priorArt: "established",
         confidence: "high",
         citations: 5,

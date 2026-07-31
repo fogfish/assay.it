@@ -1,5 +1,6 @@
 ---
 import { siteConfig } from '@/config/site.js';
+import StructuredData from '@/components/widgets/StructuredData.astro';
 export interface Props {
   title?: string;
   description?: string;
@@ -17,6 +18,34 @@ const {
   ogImage = "/og.jpg",
   twitterHandle = siteConfig.social.twitterName || '',
 } = Astro.props;
+
+// Sitewide structured data: brand identity + site-level metadata.
+const sameAs = Object.values(siteConfig.social)
+  .filter((v) => typeof v === 'string' && v.startsWith('http'));
+
+const orgId = `${siteConfig.url}#organization`;
+
+const siteSchema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": orgId,
+    name: siteConfig.title,
+    url: siteConfig.url,
+    logo: new URL('/favicon.png', siteConfig.url).href,
+    description: siteConfig.meta.description,
+    ...(sameAs.length ? { sameAs } : {}),
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${siteConfig.url}#website`,
+    name: siteConfig.title,
+    url: siteConfig.url,
+    description: siteConfig.meta.description,
+    publisher: { "@id": orgId },
+  },
+];
 ---
 
 <!-- Meta Tags -->
@@ -46,3 +75,6 @@ const {
 <meta name="twitter:image" content={ogImage} />
 <meta name="twitter:site" content={twitterHandle} />
 <meta name="twitter:creator" content={twitterHandle} />
+
+<!-- Structured Data (JSON-LD) -->
+<StructuredData data={siteSchema} />

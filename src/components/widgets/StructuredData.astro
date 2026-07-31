@@ -1,0 +1,14 @@
+---
+// Emits a JSON-LD structured-data block (schema.org).
+// Pass a single schema object or an array of objects via `data`.
+export interface Props {
+  data: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const { data } = Astro.props;
+
+// Escape `<` so a string value can never terminate the <script> element.
+const json = JSON.stringify(data).replace(/</g, "\\u003c");
+---
+
+<script type="application/ld+json" is:inline set:html={json} />

@@ -13,7 +13,7 @@ export const siteConfig = {
 		campaign: "navigation",
 	},
 	meta: {
-		title: "assay.it — Verify every claim before you build on it.",
+		title: "Assay It — Verify every claim before you build on it.",
 		description: "Paste a whitepaper, benchmark, or engineering blog post. Assay extracts every claim the author makes and checks it against public sources. Verdicts, citations, and a decision-ready one-pager in minutes.",
 		keywords: "claim verification, whitepaper fact checking, vendor benchmark verification, technical due diligence, AI research agent, RFC decision document",
 		image: `${SITE_URL}/og.jpg`,

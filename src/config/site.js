@@ -14,8 +14,8 @@ export const siteConfig = {
 	},
 	meta: {
 		title: "Assay It — Verify every claim before you build on it.",
-		description: "Paste a whitepaper, benchmark, or engineering blog post. Assay extracts every claim the author makes and checks it against public sources. Verdicts, citations, and a decision-ready one-pager in minutes.",
-		keywords: "claim verification, whitepaper fact checking, vendor benchmark verification, technical due diligence, AI research agent, RFC decision document",
+		description: "Paste a whitepaper or blog post. Assay extracts claim and checks it. Verdicts and citations as decision one-pager in minutes.",
+		keywords: "claim verification, whitepaper fact checking, vendor benchmark verification, technical due diligence, AI research agent, RFC decision document, document review",
 		image: `${SITE_URL}/og.jpg`,
 		twitterHandle: "",
 	},

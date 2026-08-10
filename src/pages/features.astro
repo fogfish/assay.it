@@ -6,10 +6,19 @@ import BrowserFrame from "@/components/ui/BrowserFrame.astro";
 import DossierIndexPreview from "@/components/widgets/DossierIndexPreview.astro";
 import DossierEntryPreview from "@/components/widgets/DossierEntryPreview.astro";
 import { examples } from "@/collections/dossier-demo.js";
+import { getCollection } from "astro:content";
+import { ANALYSIS_BASE, analysisPath, featuredAnalysis } from "@/utils/analysis.js";
 import {
   FileSearch, ScanSearch, FileCheck, Scale, Link2, ShieldAlert,
   ArrowRight, Check,
 } from "@lucide/astro";
+
+// The published example the closing CTA points at — resolved from the
+// analysis collection so no slug is hardcoded here.
+const featuredEntry = featuredAnalysis(await getCollection("analysis"));
+const featuredExample = featuredEntry
+  ? analysisPath(featuredEntry.id)
+  : ANALYSIS_BASE;
 
 const featureModules = [
   {
@@ -192,7 +201,7 @@ const claim = examples.features.featuredEntry;
         Read a real example dossier, then run your own document when you're ready.
       </p>
       <div class="flex flex-wrap justify-center gap-3">
-        <Button url="/assets/examples/amazon-prime-video-short.html" type="fill" className="text-lg px-8 py-3">
+        <Button url={featuredExample} type="fill" className="text-lg px-8 py-3">
           See a real analysis <ArrowRight size={18} />
         </Button>
         <Button url="https://app.assay.it" className="text-lg px-8 py-3">

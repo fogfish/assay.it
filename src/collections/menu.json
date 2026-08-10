@@ -8,6 +8,10 @@
 		"url": "/features"
 	},
 	{
+		"name": "Examples",
+		"url": "/analysis"
+	},
+	{
 		"name": "Pricing",
 		"url": "/pricing"
 	},

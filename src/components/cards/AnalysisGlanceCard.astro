@@ -1,0 +1,155 @@
+---
+import { legend } from "@/collections/verdicts.js";
+// The at-a-glance card, at reading size.
+//
+// This is deliberately the same card the app prints at the top of a
+// dossier (see DossierIndexPreview.astro, which renders it at preview
+// scale): same two tracks, same heat-bar grammar, same legend. The
+// article previews the product UI so that clicking through to
+// app.assay.it reads as continuity rather than a context switch.
+import HeatBar from "@/components/ui/HeatBar.astro";
+import { formatDate } from "@/utils/analysis.js";
+import { FileText } from "@lucide/astro";
+
+interface Track {
+	total: number;
+	segments: { standing?: string; friction?: string; count: number }[];
+}
+
+interface Props {
+	source: {
+		title: string;
+		type: string;
+		author?: string;
+		publisher?: string;
+		url?: string;
+		// Absent only on a shelved entry, which never reaches this card.
+		analyzedDate?: Date;
+	};
+	glance?: {
+		hypotheses: Track & { novel: number };
+		problems: Track & { openGap: number };
+	};
+	className?: string;
+}
+
+const { source, glance, className = "" } = Astro.props;
+
+const byline = [source.type, source.author, source.publisher]
+	.filter(Boolean)
+	.join(" · ");
+
+const analyzedDate = source.analyzedDate;
+
+const tracks = glance
+	? [
+			{
+				label: "Hypotheses",
+				track: glance.hypotheses,
+				// Novelty is a hallmark-gold "find" flag, never part of the
+				// risk-colored heat grammar.
+				flag:
+					glance.hypotheses.novel > 0
+						? { text: `${glance.hypotheses.novel} novel ◆`, gold: true }
+						: { text: "none novel", gold: false },
+			},
+			{
+				label: "Problems",
+				track: glance.problems,
+				flag: {
+					text:
+						glance.problems.openGap > 0
+							? `${glance.problems.openGap} open gap${
+									glance.problems.openGap > 1 ? "s" : ""
+								}`
+							: "none open",
+					gold: false,
+				},
+			},
+		]
+	: [];
+---
+
+<div
+  class={`rounded-2xl border border-primary/15 dark:border-neutral-700 bg-bg-secondary dark:bg-neutral-900 px-5 py-5 sm:px-6 ${className}`}
+>
+  <!-- The analyzed document -->
+  <div class="flex items-start gap-2.5">
+    <FileText class="w-4 h-4 text-primary flex-shrink-0 mt-1" />
+    <div class="min-w-0">
+      <p
+        class="font-brand text-lg leading-snug text-neutral-800 dark:text-neutral-100"
+      >
+        {
+          source.url ? (
+            <a
+              href={source.url}
+              target="_blank"
+              rel="noopener nofollow"
+              class="hover:text-primary dark:hover:text-primary-light transition-colors"
+            >
+              {source.title}
+            </a>
+          ) : (
+            source.title
+          )
+        }
+      </p>
+      <p class="mt-0.5 text-xs text-neutral-500 dark:text-neutral-400">
+        {byline}
+        {
+          analyzedDate && (
+            <>
+              {byline && " · "}analyzed{" "}
+              <time datetime={new Date(analyzedDate).toISOString()}>
+                {formatDate(analyzedDate)}
+              </time>
+            </>
+          )
+        }
+      </p>
+    </div>
+  </div>
+
+  {
+    tracks.length > 0 && (
+      <div class="mt-5 space-y-2.5">
+        {tracks.map((t) => (
+          <div class="flex items-center gap-3">
+            <span class="w-[105px] flex-shrink-0 text-[13px] font-medium text-neutral-700 dark:text-neutral-200">
+              {t.label}
+              <span class="text-neutral-400 font-normal"> · {t.track.total}</span>
+            </span>
+            <HeatBar track={t.track} height={12} className="flex-1" />
+            <span
+              class="w-[86px] flex-shrink-0 text-right text-[11px] whitespace-nowrap"
+              style={
+                t.flag.gold
+                  ? "color: var(--color-hallmark)"
+                  : "color: var(--color-text-tertiary)"
+              }
+            >
+              {t.flag.text}
+            </span>
+          </div>
+        ))}
+
+        <div class="flex flex-wrap gap-x-4 gap-y-1.5 pt-3 mt-3 border-t border-dashed border-neutral-200 dark:border-neutral-700">
+          {legend.map((l) => (
+            <span class="inline-flex items-center gap-1.5 text-[11px] text-neutral-500 dark:text-neutral-400">
+              <span
+                class="w-2 h-2 rounded-sm flex-shrink-0"
+                style={`background: ${l.color}`}
+              />
+              {l.label}
+            </span>
+          ))}
+          <span class="inline-flex items-center gap-1.5 text-[11px] text-neutral-500 dark:text-neutral-400">
+            <span style="color: var(--color-hallmark)">◆</span> Novel — no prior
+            art
+          </span>
+        </div>
+      </div>
+    )
+  }
+</div>

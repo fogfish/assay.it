@@ -32,38 +32,16 @@
 //     of that grammar entirely — it's a hallmark-gold "find" flag, not a
 //     risk signal.
 
-export const standingMeta = {
-  supported: { label: "Supported", color: "var(--color-verdict-supported)" },
-  contested: { label: "Contested", color: "var(--color-verdict-context)" },
-  contradicted: {
-    label: "Contradicted",
-    color: "var(--color-verdict-contradicted)",
-  },
-  unverifiable: {
-    label: "Unverifiable",
-    color: "var(--color-verdict-unverifiable)",
-  },
-};
-
-export const frictionMeta = {
-  solved: { label: "Solved problem", color: "var(--color-verdict-supported)" },
-  gap: { label: "Critical gap", color: "var(--color-verdict-contradicted)" },
-  unverified: {
-    label: "Unverified",
-    color: "var(--color-verdict-unverifiable)",
-  },
-};
-
-export const classMeta = {
-  established: {
-    label: "Established",
-    stamp: "A",
-    color: "var(--color-verdict-supported)",
-  },
-  extended: { label: "Extended", stamp: "E", color: "var(--color-primary)" },
-  novel: { label: "Novel", stamp: "N", color: "var(--color-hallmark)" },
-  contested: { label: "Contested", stamp: "C", color: "var(--color-verdict-context)" },
-};
+// The verdict vocabularies and their shared color grammar now live in
+// src/collections/verdicts.js, so the published /analysis pages and these
+// in-app previews cannot drift apart. Re-exported here because the
+// preview components have always imported them from this module.
+export {
+  classMeta,
+  frictionMeta,
+  legend,
+  standingMeta,
+} from "@/collections/verdicts.js";
 
 export const examples = {
   // ── Hero (index only) + Homepage "See a real analysis" (index + entry) ──

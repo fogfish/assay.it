@@ -28,6 +28,10 @@ The project is a static-first front-end template. It includes demo pricing, demo
 - Tailwind CSS v4 design token system in `src/styles/global.css`.
 - Light and dark modes with persisted user preference.
 - MDX blog and changelog powered by Astro Content Layer.
+- Analysis examples gallery: a shelf of at-a-glance cards at `/analysis`, plus
+  a per-example editorial landing page wrapping each dossier, with the
+  app-exported reports and a generated 1200x630 share card per entry. See
+  `docs/plan/11-analysis-gallery.md`.
 - Reusable section, UI, card, layout, and widget components.
 - SEO foundations: meta layout, Open Graph image, sitemap, RSS, robots.txt, canonical site URL support.
 - Demo contact form with local UI behavior.
@@ -56,6 +60,12 @@ The project is a static-first front-end template. It includes demo pricing, demo
 | `/` | SaaS landing page | `src/pages/index.astro` |
 | `/features` | Feature overview | `src/pages/features.astro` |
 | `/pricing` | Demo pricing page | `src/pages/pricing.astro` |
+| `/analysis` | Examples gallery | `src/pages/analysis/index.astro` |
+| `/analysis/[slug]` | Per-example landing page | `src/pages/analysis/[slug]/index.astro` |
+| `/analysis/[slug]/one-pager.html` | App-exported one-pager | `src/pages/analysis/[slug]/one-pager.html.ts` |
+| `/analysis/[slug]/full-report.html` | App-exported full dossier | `src/pages/analysis/[slug]/full-report.html.ts` |
+| `/analysis/[slug]/og.png` | Generated share card | `src/pages/analysis/[slug]/og.png.ts` |
+| `/analysis/rss.xml` | Analyses feed | `src/pages/analysis/rss.xml.js` |
 | `/blog` | Blog index | `src/pages/blog/index.astro` |
 | `/blog/[slug]` | Blog article pages | `src/pages/blog/[...slug].astro` |
 | `/blog/page/[page]` | Paginated blog archive | `src/pages/blog/page/[page].astro` |
@@ -249,6 +259,20 @@ Current entries:
 - `v0.3.0-content-system.mdx`
 - `v0.2.0-design-polish.mdx`
 - `v0.1.0-initial-preview.mdx`
+
+### Analyses
+
+Location: `src/content/analysis/<slug>/`
+
+Each folder holds `index.md` (frontmatter defines the landing page, the
+markdown body is the lede) plus the report HTML exported from the app.
+
+The frontmatter is semi-structured: `glance`, `standout`, `findings` and
+`methodology` are copied verbatim from real pipeline output, and only the
+editorial frame is written by hand. `pnpm build` fails if a published entry
+is missing its run data.
+
+Full field reference and authoring workflow: `docs/plan/11-analysis-gallery.md`.
 
 ## Component System
 

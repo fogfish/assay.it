@@ -26,6 +26,7 @@ Primary docs:
 | Icons | `@lucide/astro` |
 | Motion | AOS, CSS animation, `motion` dependency |
 | SEO | `@astrojs/sitemap`, `@astrojs/rss`, custom meta components |
+| OG images | `satori` + `sharp`, generated per analysis at build time |
 | Type checking | TypeScript, `astro check` |
 | Lint/format | Biome |
 | Images | Static assets, `sharp` |
@@ -50,21 +51,28 @@ pnpm astro
 ```text
 src/
   assets/js/main.js        Header behavior, dark mode, mobile menu, AOS init
+  assets/fonts/            TTFs for build-time OG rendering only (not served)
   collections/             JSON data for menu, social links, tech stack
+                           verdicts.js  shared verdict colour grammar
+                           dossier-demo.js  placeholder content for app previews
   components/
-    cards/                 BlogCard, TechStackCard
+    cards/                 BlogCard, TechStackCard, AnalysisCard,
+                           AnalysisGlanceCard, FindingRow
     elements/              PageHeader, SectionHeader, SeparatorLine
     home/                  HeroSection
-    sections/              Header, Footer, Pricing, FAQ, BlogSection
-    ui/                    Button, Badge, Logo, BrowserFrame, PricingToggle, etc.
+    sections/              Header, Footer, Pricing, FAQ, BlogSection,
+                           AnalysisStandout, AnalysisMethodology, AnalysisCta
+    ui/                    Button, Badge, Logo, BrowserFrame, HeatBar, etc.
     widgets/               Toc, Pagination, ToTop, TrackGa, OptimizedImage, etc.
   config/site.js           Site identity, metadata, social URLs, email
   content/
     post/                  Blog MDX entries
     changelog/             Changelog MDX entries
+    analysis/              One folder per analyzed document (index.md + reports)
   layouts/                 Layout, PageLayout, PostLayout, Meta
   pages/                   Astro routes
   styles/                  Global tokens, article styles, AOS overrides
+  utils/                   analysis.js, og-card.js, reports.js
   content.config.js        Content Layer schemas
 public/
   assets/                  Template images and icons
@@ -86,6 +94,11 @@ Current routes include:
 - `/`
 - `/features`
 - `/pricing`
+- `/analysis` (examples gallery)
+- `/analysis/[slug]` (per-example landing page)
+- `/analysis/[slug]/one-pager.html`, `/analysis/[slug]/full-report.html`
+- `/analysis/[slug]/og.png`
+- `/analysis/rss.xml`
 - `/blog`
 - `/blog/[slug]`
 - `/blog/page/[page]`
@@ -143,6 +156,14 @@ Blog posts live in `src/content/post/<slug>/index.mdx`.
 
 Changelog entries live in `src/content/changelog/*.mdx`.
 
+Analysis examples live in `src/content/analysis/<slug>/index.md`, with the
+app-exported report HTML in the same folder. See
+`docs/plan/11-analysis-gallery.md` before editing them — in particular the
+placeholder discipline: everything in `glance`, `standout`, `findings` and
+`methodology` is copied verbatim from real pipeline output, and only the
+editorial frame (title, kicker, description, lede) is written by hand.
+Never author an evidence or analysis band that the pipeline did not produce.
+
 ## Component Conventions
 
 - Page-level sections go in `src/components/sections/`.
@@ -150,8 +171,13 @@ Changelog entries live in `src/content/changelog/*.mdx`.
 - Structural text/layout helpers go in `src/components/elements/`.
 - Repeated cards go in `src/components/cards/`.
 - Page utilities go in `src/components/widgets/`.
+- Non-component helpers go in `src/utils/`.
 - Site identity should come from `src/config/site.js` when practical.
 - Navigation comes from `src/collections/menu.json`.
+- Verdict labels and colors come from `src/collections/verdicts.js` — it is
+  shared by the published `/analysis` pages and the in-app previews, so the
+  two cannot drift. Add raw hex to `verdictHex` when adding a verdict, since
+  the OG renderer cannot resolve CSS custom properties.
 
 ## Styling Conventions
 
@@ -188,8 +214,13 @@ Relevant files:
 - `src/components/widgets/Meta.astro`
 - `src/components/widgets/TrackGa.astro`
 - `src/pages/rss.xml.js`
+- `src/pages/analysis/rss.xml.js`
+- `src/utils/og-card.js` and `src/pages/analysis/[slug]/og.png.ts`
 - `public/og.jpg`
 - `public/robots.txt`
+
+`Layout.astro` forwards `url`, `ogImage` and `ogType` to `Meta.astro`; both
+the canonical URL and `og:image` are resolved to absolute URLs there.
 
 Environment variables:
 

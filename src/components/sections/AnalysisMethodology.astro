@@ -1,0 +1,49 @@
+---
+// The methodology strip — how the analysis was produced, and the run's
+// own numbers. Every figure here comes from the run; each is optional so
+// a strip never prints a count nobody measured.
+import { formatDate } from "@/utils/analysis.js";
+
+interface Props {
+	methodology: {
+		claims?: number;
+		sources?: number;
+		duration?: string;
+		note?: string;
+	};
+	analyzedDate?: Date;
+}
+
+const { methodology, analyzedDate } = Astro.props;
+
+const plural = (n: number, one: string) => `${n} ${n === 1 ? one : `${one}s`}`;
+
+const stats = [
+	methodology.claims != null && plural(methodology.claims, "claim"),
+	methodology.sources != null && plural(methodology.sources, "source"),
+	methodology.duration,
+	analyzedDate && `analyzed ${formatDate(analyzedDate)}`,
+].filter(Boolean);
+---
+
+<section
+  class="mt-12 rounded-2xl bg-bg-primary-light dark:bg-neutral-900/60 border border-dashed border-primary/15 dark:border-neutral-700 px-5 py-5 sm:px-6"
+>
+  <p class="text-[13.5px] leading-relaxed text-neutral-600 dark:text-neutral-400">
+    <b class="font-semibold text-neutral-800 dark:text-neutral-200"
+      >How this analysis was produced.</b
+    > Assay extracted every substantive claim from the source document, then ran
+    an independent research pass per claim against public sources — vendor docs,
+    independent benchmarks, papers, postmortems. <b
+      class="font-semibold text-neutral-800 dark:text-neutral-200"
+      >{stats.join(" · ")}.</b
+    >
+    {methodology.note && <span>{methodology.note}</span>} Verdicts are
+    evidence-backed judgments, not oracles; every citation is linked so you can
+    check the checker. <a
+      href="/features"
+      class="text-primary dark:text-primary-light hover:underline whitespace-nowrap"
+      >How Assay works &rarr;</a
+    >
+  </p>
+</section>

@@ -1,0 +1,50 @@
+---
+// The CTA band at the foot of an analysis. The reader has just watched a
+// claim get checked, so the offer is the same pipeline pointed at their
+// document — with the price stated, because the pricing page states it.
+//
+// Price copy tracks src/components/sections/Pricing.astro. If the figure
+// there changes, change it here too.
+import Button from "@/components/ui/Button.astro";
+import { ArrowRight } from "@lucide/astro";
+
+interface Props {
+	/** Route to the exported full report, when the folder ships one. */
+	reportUrl?: string;
+	reportLabel?: string;
+}
+
+const { reportUrl, reportLabel = "Open the full dossier" } = Astro.props;
+---
+
+<!-- No reveal animation here on purpose: this is the page's conversion
+     step, and AOS starts an element at opacity 0. A reader who arrives with
+     JS blocked, or whose scroll never fires the observer, must still see
+     the offer. -->
+<section
+  class="mt-12 rounded-2xl border border-primary/20 dark:border-neutral-700 bg-bg-secondary dark:bg-neutral-900 px-6 py-8 text-center"
+>
+  <h2
+    class="font-brand text-2xl sm:text-3xl text-neutral-800 dark:text-neutral-100"
+  >
+    Reading a document you don&rsquo;t fully trust?
+  </h2>
+  <p
+    class="mt-3 mx-auto max-w-xl text-[15px] leading-relaxed text-neutral-600 dark:text-neutral-400"
+  >
+    Run it through the same pipeline. Claim-by-claim verdicts with citations,
+    about &euro;2.40 for a typical 5-page document, with the estimate shown
+    before the run starts.
+  </p>
+
+  <div class="mt-6 flex flex-wrap justify-center gap-3">
+    <Button url="https://app.assay.it" type="fill">
+      Analyze your document <ArrowRight size={16} />
+    </Button>
+    {reportUrl && <Button url={reportUrl}>{reportLabel}</Button>}
+  </div>
+
+  <p class="mt-4 text-xs text-neutral-500 dark:text-neutral-400">
+    No subscription. Nothing charged without your approval.
+  </p>
+</section>

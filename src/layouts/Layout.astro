@@ -8,9 +8,14 @@ interface Props {
   title?: string | undefined;
   description?: string | undefined;
   keywords?: string | undefined;
+  /** Canonical URL — defaults to the site root in Meta. */
+  url?: string | undefined;
+  /** Per-page share card, absolute or site-root-relative. */
+  ogImage?: string | undefined;
+  ogType?: "website" | "article" | undefined;
 }
 
-const { title, description, keywords } = Astro.props;
+const { title, description, keywords, url, ogImage, ogType } = Astro.props;
 
 import "../styles/global.css";
 import "aos/dist/aos.css";
@@ -22,7 +27,14 @@ import "../styles/article-enhancements.css";
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <Meta title={title} description={description} keywords={keywords} />
+    <Meta
+      title={title}
+      description={description}
+      keywords={keywords}
+      url={url}
+      ogImage={ogImage}
+      ogType={ogType}
+    />
     <TrackGa />
     <!-- Used to add dark mode right away, adding here prevents any flicker -->
     <script is:inline>

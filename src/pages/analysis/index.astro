@@ -1,0 +1,217 @@
+---
+// The gallery: a shelf of at-a-glance cards, each carrying its headline
+// finding. Shelved ("soon") entries sit at the end of the shelf.
+import { getCollection } from "astro:content";
+import AnalysisCard from "@/components/cards/AnalysisCard.astro";
+import Button from "@/components/ui/Button.astro";
+import StructuredData from "@/components/widgets/StructuredData.astro";
+import { siteConfig } from "@/config/site.js";
+import Layout from "@/layouts/Layout.astro";
+import {
+  ANALYSIS_BASE,
+  analysisPath,
+  genreSlug,
+  genresOf,
+  isPublished,
+  sortAnalyses,
+} from "@/utils/analysis.js";
+import { ArrowRight, Rss } from "@lucide/astro";
+import Badge from "@/components/ui/Badge.astro";
+
+const entries = sortAnalyses(await getCollection("analysis"));
+const genres = genresOf(entries);
+
+const title = "Famous documents, claim-checked — assay.it";
+const description =
+  "Canonical whitepapers, benchmarks, and blog posts — the ones whole industries quote — analyzed claim by claim against public sources.";
+
+const schema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Famous documents, claim-checked",
+    description,
+    url: new URL(ANALYSIS_BASE, siteConfig.url).href,
+    publisher: { "@id": `${siteConfig.url}#organization` },
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: entries.filter(isPublished).map((e, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: e.data.title,
+        url: new URL(analysisPath(e.id), siteConfig.url).href,
+      })),
+    },
+  },
+];
+---
+
+<Layout
+  title={title}
+  description={description}
+  url={`${ANALYSIS_BASE}/`}
+  ogType="website"
+>
+  <StructuredData data={schema} />
+
+  <section class="site-container max-w-4xl my-10 md:my-14">
+    <!-- <p
+      class="text-[11.5px] font-semibold uppercase tracking-wider mb-2.5"
+      style="color: var(--color-hallmark)"
+    >
+      The gallery
+    </p> -->
+    <div
+      class="flex flex-wrap gap-2 justify-center sm:justify-start mb-6"
+      data-aos="fade-up-xs"
+      data-aos-delay="100"
+      data-aos-duration="500"
+      data-aos-once="true"
+    >
+      <Badge variant="accent">Analyzed documents</Badge>
+    </div>
+    <h1
+      class="font-brand text-3xl sm:text-4xl lg:text-5xl leading-tight text-neutral-800 dark:text-neutral-100"
+    >
+      Famous documents, claim-checked
+    </h1>
+    <p
+      class="mt-4 max-w-2xl text-[17px] leading-relaxed text-neutral-600 dark:text-neutral-400"
+    >
+      Canonical whitepapers, benchmarks, and blog posts — the ones whole
+      industries quote — analyzed claim by claim against public sources. Every
+      dossier below is real pipeline output.
+    </p>
+
+    {
+      genres.length > 1 && (
+        <nav
+          class="mt-7 flex flex-wrap gap-2"
+          aria-label="Filter by genre"
+          data-analysis-filters
+        >
+          <button
+            type="button"
+            class="analysis-chip is-on"
+            data-filter="all"
+            aria-pressed="true"
+          >
+            All · {entries.length}
+          </button>
+          {genres.map((g) => (
+            <button
+              type="button"
+              class="analysis-chip"
+              data-filter={genreSlug(g.name)}
+              aria-pressed="false"
+            >
+              {g.name} · {g.count}
+            </button>
+          ))}
+        </nav>
+      )
+    }
+
+    <div class="mt-8 space-y-5">
+      {
+        entries.map((entry, i) => (
+          <AnalysisCard
+            entry={entry}
+            data-aos="fade-up-xs"
+            data-aos-delay={Math.min(i, 3) * 100}
+          />
+        ))
+      }
+    </div>
+
+    <!-- No email capture: there is no backend behind this site. The feed
+         and the app are the two real next steps. -->
+    <div
+      class="mt-10 rounded-2xl border border-dashed border-primary/20 dark:border-neutral-700 bg-bg-primary-light dark:bg-neutral-900/60 px-6 py-6 flex flex-wrap items-center gap-5"
+    >
+      <div class="flex-1 min-w-[260px]">
+        <p class="font-semibold text-neutral-800 dark:text-neutral-200">
+          New analyses, as they&rsquo;re published
+        </p>
+        <p class="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
+          Every new dossier lands in the feed. Or bring your own document and
+          skip the queue.
+        </p>
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <Button url={`${ANALYSIS_BASE}/rss.xml`}>
+          <Rss size={15} /> Feed
+        </Button>
+        <Button url="https://app.assay.it" type="fill">
+          Analyze a document <ArrowRight size={16} />
+        </Button>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .analysis-chip {
+    font-size: 13px;
+    border-radius: 20px;
+    padding: 5px 14px;
+    border: 1px solid var(--color-neutral-200);
+    background: var(--color-bg-secondary);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition:
+      border-color 0.2s,
+      color 0.2s,
+      background 0.2s;
+  }
+
+  .analysis-chip:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  .analysis-chip.is-on {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    background: color-mix(in oklab, var(--color-primary) 8%, transparent);
+  }
+
+  :global(html.dark) .analysis-chip {
+    border-color: var(--color-neutral-700);
+    background: var(--color-bg-secondary-dark);
+    color: var(--color-text-secondary-dark);
+  }
+
+  :global(html.dark) .analysis-chip.is-on {
+    border-color: var(--color-primary-light);
+    color: var(--color-primary-light);
+  }
+</style>
+
+<script>
+  // Genre filtering. Client-side because the shelf is small and static —
+  // no route per facet, no reload, and the unfiltered page is what
+  // crawlers and no-JS readers get.
+  const bar = document.querySelector<HTMLElement>("[data-analysis-filters]");
+  if (bar) {
+    const chips = [...bar.querySelectorAll<HTMLButtonElement>("[data-filter]")];
+    const cards = [
+      ...document.querySelectorAll<HTMLElement>("[data-analysis-card]"),
+    ];
+
+    for (const chip of chips) {
+      chip.addEventListener("click", () => {
+        const want = chip.dataset.filter;
+        for (const c of chips) {
+          const on = c === chip;
+          c.classList.toggle("is-on", on);
+          c.setAttribute("aria-pressed", String(on));
+        }
+        for (const card of cards) {
+          const show = want === "all" || card.dataset.genre === want;
+          card.classList.toggle("hidden", !show);
+        }
+      });
+    }
+  }
+</script>

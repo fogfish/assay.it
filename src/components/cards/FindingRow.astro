@@ -1,0 +1,67 @@
+---
+// One compact findings row: title, one-line summary, verdict chip.
+//
+// A row with `more: true` carries no verdict and links onward to the full
+// dossier — it is the "…and 5 more hypotheses and problems" row, not a
+// finding in its own right.
+import { verdictMeta } from "@/collections/verdicts.js";
+
+interface Props {
+	finding: {
+		title: string;
+		summary?: string;
+		verdict?: string;
+		more: boolean;
+	};
+	/** Where the title links, if anywhere — normally the full dossier. */
+	href?: string;
+	last?: boolean;
+}
+
+const { finding, href, last = false } = Astro.props;
+const meta = finding.verdict ? verdictMeta[finding.verdict] : null;
+---
+
+<div
+  class:list={[
+    "flex items-start gap-3 sm:gap-4 py-3.5",
+    !last && "border-b border-dashed border-neutral-200 dark:border-neutral-700",
+  ]}
+>
+  <div class="flex-1 min-w-0">
+    <h3
+      class="font-brand text-[17px] leading-snug text-neutral-800 dark:text-neutral-100"
+    >
+      {
+        href ? (
+          <a
+            href={href}
+            class="hover:text-primary dark:hover:text-primary-light transition-colors"
+          >
+            {finding.title}
+          </a>
+        ) : (
+          finding.title
+        )
+      }
+    </h3>
+    {
+      finding.summary && (
+        <p class="mt-1 text-sm leading-relaxed text-neutral-500 dark:text-neutral-400">
+          {finding.summary}
+        </p>
+      )
+    }
+  </div>
+
+  {
+    meta && (
+      <span
+        class="flex-shrink-0 w-[108px] text-center text-[11px] font-semibold rounded-md px-2 py-1 mt-0.5"
+        style={`color: ${meta.color}; background: color-mix(in oklab, ${meta.color} 10%, transparent); border: 1px solid color-mix(in oklab, ${meta.color} 45%, transparent)`}
+      >
+        {meta.label}
+      </span>
+    )
+  }
+</div>

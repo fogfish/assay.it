@@ -7,6 +7,7 @@ export interface Props {
   keywords?: string;
   url?: string;
   ogImage?: string;
+  ogType?: "website" | "article";
   twitterHandle?: string;
 }
 
@@ -16,8 +17,14 @@ const {
   keywords = "",
   url = siteConfig.url, //
   ogImage = "/og.jpg",
+  ogType = "website",
   twitterHandle = siteConfig.social.twitterName || '',
 } = Astro.props;
+
+// Crawlers resolve neither relative og:image paths nor relative canonicals,
+// so both are made absolute against the configured site URL.
+const canonicalUrl = new URL(url, siteConfig.url).href;
+const ogImageUrl = new URL(ogImage, siteConfig.url).href;
 
 // Sitewide structured data: brand identity + site-level metadata.
 const sameAs = Object.values(siteConfig.social)
@@ -59,20 +66,23 @@ const siteSchema = [
 <meta name="description" content={description} />
 <meta name="keywords" content={keywords} />
 <meta name="author" content={siteConfig.author} />
+<link rel="canonical" href={canonicalUrl} />
 
 <!-- Open Graph Tags -->
-<meta property="og:type" content="website" />
+<meta property="og:type" content={ogType} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:url" content={url} />
-<meta property="og:image" content={ogImage} />
-<meta property="og:site_name" content={title} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:image" content={ogImageUrl} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:site_name" content={siteConfig.title} />
 
 <!-- Twitter Meta Tags -->
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
-<meta name="twitter:image" content={ogImage} />
+<meta name="twitter:image" content={ogImageUrl} />
 <meta name="twitter:site" content={twitterHandle} />
 <meta name="twitter:creator" content={twitterHandle} />
 

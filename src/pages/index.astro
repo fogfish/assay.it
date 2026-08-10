@@ -9,6 +9,8 @@ import BrowserFrame from "@/components/ui/BrowserFrame.astro";
 import DossierIndexPreview from "@/components/widgets/DossierIndexPreview.astro";
 import DossierEntryPreview from "@/components/widgets/DossierEntryPreview.astro";
 import { examples } from "@/collections/dossier-demo.js";
+import { getCollection } from "astro:content";
+import { ANALYSIS_BASE, analysisPath, featuredAnalysis } from "@/utils/analysis.js";
 import {
   Search,
   Clock,
@@ -26,6 +28,11 @@ import {
   ArrowRight,
   User,
 } from "@lucide/astro";
+
+// The published example this page's CTAs point at — resolved from the
+// analysis collection so no slug is hardcoded here.
+const featured = featuredAnalysis(await getCollection("analysis"));
+const featuredExample = featured ? analysisPath(featured.id) : ANALYSIS_BASE;
 
 // FAQ data
 const faqItems = [
@@ -294,12 +301,7 @@ const credibility = [
         <Button url="https://app.assay.it" type="fill">
           Run Your Own Document <ArrowRight size={16} />
         </Button>
-        <Button
-          url="/assets/examples/amazon-prime-video-short.html"
-          target="_blank"
-        >
-          See Full Real Example
-        </Button>
+        <Button url={featuredExample}>See Full Real Example</Button>
       </div>
     </div>
   </section>

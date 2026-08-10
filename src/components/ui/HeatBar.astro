@@ -1,0 +1,44 @@
+---
+// The heat bar — one at-a-glance track rendered as a single segmented
+// strip. This is the site's ownable share-card visual: it appears on the
+// gallery cards, on the landing-page at-a-glance card, and (redrawn in
+// the same proportions) on every generated OG image.
+//
+// Pass a glance track straight from an analysis entry's frontmatter; both
+// verdict vocabularies resolve through the shared grammar in
+// src/collections/verdicts.js.
+import { barSegments } from "@/utils/analysis.js";
+
+interface Props {
+	track?: {
+		total: number;
+		segments: { standing?: string; friction?: string; count: number }[];
+	};
+	/** Bar height in px — 8 on gallery cards, 12 at article size. */
+	height?: number;
+	className?: string;
+}
+
+const { track, height = 12, className = "" } = Astro.props;
+const segments = barSegments(track);
+---
+
+<div
+  class={`flex rounded-full overflow-hidden ${className}`}
+  style={`height: ${height}px`}
+>
+  {
+    segments.length > 0 ? (
+      segments.map((s) => (
+        <span
+          class="block h-full"
+          style={`width: ${s.pct}%; background: ${s.color}`}
+          title={`${s.label} · ${s.count}`}
+        />
+      ))
+    ) : (
+      /* No pipeline output yet — an empty trough, not a fabricated bar. */
+      <span class="block h-full w-full bg-neutral-200 dark:bg-neutral-700" />
+    )
+  }
+</div>

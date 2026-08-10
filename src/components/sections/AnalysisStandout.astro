@@ -1,0 +1,90 @@
+---
+// The standout finding — one claim, rendered as the full stamped triple:
+// verdict head, the claim in quotes, evidence band, analysis band.
+//
+// This is the block that gets screenshotted into a LinkedIn post, quoted
+// in an HN comment, and pulled into a featured snippet, so it is the one
+// place on the page where the product's verdict typography is reproduced
+// at full reading size rather than preview scale.
+//
+// Editorial rule for whoever fills this in: it must be the *most-cited*
+// claim of the source document, not the most damning verdict we found.
+// "The claim everyone quotes, checked" is the hook; "we found the worst
+// thing" is clickbait.
+import { verdictMeta } from "@/collections/verdicts.js";
+
+interface Props {
+	standout: {
+		heading: string;
+		verdict: string;
+		verdictLabel?: string;
+		claim: string;
+		evidence: string;
+		analysis: string;
+	};
+}
+
+const { standout } = Astro.props;
+const meta = verdictMeta[standout.verdict] ?? verdictMeta.unverifiable;
+const label = standout.verdictLabel ?? meta.label;
+---
+
+<section class="mt-12">
+  <h2
+    class="font-brand text-2xl sm:text-3xl text-neutral-800 dark:text-neutral-100"
+  >
+    {standout.heading}
+  </h2>
+
+  <figure
+    class="mt-5 rounded-2xl overflow-hidden bg-bg-secondary dark:bg-neutral-900"
+    style={`border: 1px solid color-mix(in oklab, ${meta.color} 55%, transparent)`}
+  >
+    <!-- Verdict head -->
+    <div
+      class="flex items-center gap-3 px-4 sm:px-5 py-3"
+      style={`background: color-mix(in oklab, ${meta.color} 12%, transparent)`}
+    >
+      <span
+        class="w-7 h-7 flex-shrink-0 rounded-full flex items-center justify-center font-brand text-sm bg-bg-secondary dark:bg-neutral-900"
+        style={`border: 2px solid ${meta.color}; color: ${meta.color}`}
+        aria-hidden="true">{meta.stamp}</span
+      >
+      <span
+        class="text-sm sm:text-[15px] font-semibold"
+        style={`color: ${meta.color}`}>{label}</span
+      >
+    </div>
+
+    <!-- The claim, in the document's own words -->
+    <blockquote
+      class="px-4 sm:px-5 pt-4 pb-3 text-lg sm:text-xl font-brand leading-snug text-neutral-800 dark:text-neutral-100"
+    >
+      &ldquo;{standout.claim}&rdquo;
+    </blockquote>
+
+    <!-- Evidence band -->
+    <div
+      class="px-4 sm:px-5 py-3 bg-bg-primary-light dark:bg-neutral-950/40 border-y border-primary/10 dark:border-neutral-700"
+    >
+      <span
+        class="block text-[10px] font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-1"
+        >Evidence</span
+      >
+      <p class="text-sm leading-relaxed text-neutral-600 dark:text-neutral-300">
+        {standout.evidence}
+      </p>
+    </div>
+
+    <!-- Analysis band -->
+    <figcaption class="px-4 sm:px-5 py-3">
+      <span
+        class="block text-[10px] font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-1"
+        >Analysis</span
+      >
+      <p class="text-sm leading-relaxed text-neutral-600 dark:text-neutral-300">
+        {standout.analysis}
+      </p>
+    </figcaption>
+  </figure>
+</section>

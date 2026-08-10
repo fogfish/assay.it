@@ -1,0 +1,257 @@
+---
+// The per-example landing page: an editorial article wrapping the dossier,
+// not the dossier itself.
+//
+// Top to bottom — search-intent H1 → lede → at-a-glance card (the same
+// card the app prints, so clicking through feels like continuity) → the
+// standout finding as a full stamped triple → all-findings rows →
+// methodology strip → CTA band → related links.
+//
+// Content comes from src/content/analysis/<slug>/index.md. Frontmatter
+// carries the run's real output; the markdown body carries the lede.
+import { getCollection, render } from "astro:content";
+import AnalysisGlanceCard from "@/components/cards/AnalysisGlanceCard.astro";
+import FindingRow from "@/components/cards/FindingRow.astro";
+import AnalysisCta from "@/components/sections/AnalysisCta.astro";
+import AnalysisMethodology from "@/components/sections/AnalysisMethodology.astro";
+import AnalysisStandout from "@/components/sections/AnalysisStandout.astro";
+import StructuredData from "@/components/widgets/StructuredData.astro";
+import { siteConfig } from "@/config/site.js";
+import Layout from "@/layouts/Layout.astro";
+import {
+  ANALYSIS_BASE,
+  analysisPath,
+  ogPath,
+  relatedFor,
+  reportPath,
+} from "@/utils/analysis.js";
+import Badge from "@/components/ui/Badge.astro";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("analysis");
+  // Shelved ("soon") entries get a gallery card but no page.
+  const published = entries.filter((e) => e.data.status !== "soon");
+  return published.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry, all: entries },
+  }));
+}
+
+const { entry, all } = Astro.props;
+const { data } = entry;
+const { Content } = await render(entry);
+
+const path = analysisPath(entry.id);
+const pageUrl = new URL(path, siteConfig.url).href;
+const related = relatedFor(entry, all);
+
+const fullReport = data.reports.full ? reportPath(entry.id, "full") : undefined;
+const onePager = data.reports.onePager
+  ? reportPath(entry.id, "onePager")
+  : undefined;
+
+const orgId = `${siteConfig.url}#organization`;
+
+// Article + Breadcrumbs. The standout finding is also emitted as a Claim
+// review so the verdict itself is machine-readable, which is what gives
+// the block a chance at a featured snippet.
+const schema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: data.title,
+    description: data.description,
+    datePublished: data.publishDate.toISOString(),
+    dateModified: data.publishDate.toISOString(),
+    url: pageUrl,
+    mainEntityOfPage: { "@type": "WebPage", "@id": pageUrl },
+    author: {
+      "@type": "Organization",
+      name: siteConfig.author,
+      url: siteConfig.url,
+    },
+    publisher: { "@id": orgId },
+    image: new URL(ogPath(entry.id), siteConfig.url).href,
+    about: {
+      "@type": "CreativeWork",
+      name: data.source.title,
+      ...(data.source.author ? { author: data.source.author } : {}),
+      ...(data.source.url ? { url: data.source.url } : {}),
+    },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: siteConfig.url },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Examples",
+        item: new URL(ANALYSIS_BASE, siteConfig.url).href,
+      },
+      { "@type": "ListItem", position: 3, name: data.title, item: pageUrl },
+    ],
+  },
+];
+---
+
+<Layout
+  title={`${data.title} — assay.it`}
+  description={data.description}
+  url={path}
+  ogImage={ogPath(entry.id)}
+  ogType="article"
+>
+  <StructuredData data={schema} />
+
+  <article class="inner-container my-10 md:my-14">
+    <!-- Breadcrumb -->
+    <nav
+      class="text-[13px] text-neutral-500 dark:text-neutral-400 mb-6"
+      aria-label="Breadcrumb"
+    >
+      <a href="/" class="text-primary dark:text-primary-light hover:underline"
+        >assay.it</a
+      >
+      <span class="mx-1.5">›</span>
+      <a
+        href={`${ANALYSIS_BASE}/`}
+        class="text-primary dark:text-primary-light hover:underline">Examples</a
+      >
+      <span class="mx-1.5">›</span>
+      <span>{data.source.type}</span>
+    </nav>
+
+    {
+      data.kicker && (
+        // <p
+        //   class="text-[11.5px] font-semibold uppercase tracking-wider mb-2.5"
+        //   style="color: var(--color-hallmark)"
+        // >
+        //   {data.kicker}
+        // </p>
+        <div
+          class="flex flex-wrap gap-2 justify-center sm:justify-start mb-6"
+          data-aos="fade-up-xs"
+          data-aos-delay="100"
+          data-aos-duration="500"
+          data-aos-once="true"
+        >
+          <Badge variant="accent">{data.kicker}</Badge>
+        </div>
+      )
+    }
+
+    <h1
+      class="font-brand text-3xl sm:text-4xl leading-tight text-neutral-800 dark:text-neutral-100"
+    >
+      {data.title}
+    </h1>
+
+    <!-- Lede: the markdown body of index.md -->
+    <div class="analysis-lede mt-4">
+      <Content />
+    </div>
+
+    <AnalysisGlanceCard
+      source={data.source}
+      glance={data.glance}
+      className="mt-7"
+    />
+
+    {data.standout && <AnalysisStandout standout={data.standout} />}
+
+    {
+      data.findings.length > 0 && (
+        <section class="mt-12">
+          <h2 class="font-brand text-2xl sm:text-3xl text-neutral-800 dark:text-neutral-100">
+            All findings
+          </h2>
+          <div class="mt-3">
+            {data.findings.map((finding, i) => (
+              <FindingRow
+                finding={finding}
+                href={finding.more ? fullReport : undefined}
+                last={i === data.findings.length - 1}
+              />
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    <AnalysisMethodology
+      methodology={data.methodology}
+      analyzedDate={data.source.analyzedDate}
+    />
+
+    <AnalysisCta reportUrl={fullReport ?? onePager} />
+
+    <!-- Always links back to the shelf, even before there are neighbours
+         to cross-link — this is the page's only route onward to the rest
+         of the gallery. -->
+    <nav class="mt-10 text-[15px] text-neutral-600 dark:text-neutral-400">
+      {
+        related.length > 0 && (
+          <>
+            <b class="font-semibold text-neutral-800 dark:text-neutral-200">
+              More analyzed documents:
+            </b>{" "}
+            {related.map((e) => (
+              <>
+                <a
+                  href={analysisPath(e.id)}
+                  class="text-primary dark:text-primary-light hover:underline"
+                >
+                  {e.data.source.title}
+                </a>
+                <span class="mx-1.5">·</span>
+              </>
+            ))}
+          </>
+        )
+      }
+      <a
+        href={`${ANALYSIS_BASE}/`}
+        class="text-primary dark:text-primary-light hover:underline"
+      >
+        {related.length > 0 ? "All examples" : "Browse all analyzed documents"}
+        &nbsp;&rarr;
+      </a>
+    </nav>
+  </article>
+</Layout>
+
+<style>
+  /* The lede is authored as markdown, so its paragraphs are styled here
+     rather than with per-element utilities. Deliberately narrower in tone
+     than .article-content: this is a two-paragraph opening, not a body. */
+  .analysis-lede :global(p) {
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+  }
+
+  .analysis-lede :global(p + p) {
+    margin-top: 0.9rem;
+  }
+
+  :global(html.dark) .analysis-lede :global(p) {
+    color: var(--color-text-secondary-dark);
+  }
+
+  .analysis-lede :global(strong) {
+    color: var(--color-text-primary);
+    font-weight: 600;
+  }
+
+  :global(html.dark) .analysis-lede :global(strong) {
+    color: var(--color-text-primary-dark);
+  }
+
+  .analysis-lede :global(a) {
+    color: var(--color-primary);
+    text-decoration: underline;
+  }
+</style>

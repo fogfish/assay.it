@@ -3,11 +3,12 @@
 // inside a <BrowserFrame>. Pass a `dossier` object shaped like the ones in
 // src/collections/dossier-demo.js — edit that file's named examples (or add
 // a new one) to swap in different content without touching this component.
+import { examples } from "@/collections/dossier-demo.js";
 import {
-  examples,
   frictionMeta,
+  legend,
   standingMeta,
-} from "@/collections/dossier-demo.js";
+} from "@/collections/verdicts.js";
 import { FileText } from "@lucide/astro";
 
 type HighlightArea = "toolbar" | "abstract" | "glance" | "entries";
@@ -69,19 +70,8 @@ const dim = (area: HighlightArea) =>
 
 // One shared color grammar across both heat-map tracks and both row-chip
 // vocabularies — green=holds, amber=contested, brick=fails, gray=unknown.
-// Novelty is deliberately not part of this grammar (see dossier-demo.js).
-const legend = [
-  {
-    color: "var(--color-verdict-supported)",
-    label: "Holds — supported / solved",
-  },
-  { color: "var(--color-verdict-context)", label: "Contested" },
-  {
-    color: "var(--color-verdict-contradicted)",
-    label: "Fails — contradicted / open gap",
-  },
-  { color: "var(--color-verdict-unverifiable)", label: "Unverifiable" },
-];
+// Novelty is deliberately not part of this grammar (see verdicts.js), and
+// the legend itself is shared with the published /analysis pages.
 ---
 
 <div class={`flex flex-col gap-3 h-full ${className}`}>

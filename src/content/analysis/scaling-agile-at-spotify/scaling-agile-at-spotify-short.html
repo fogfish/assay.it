@@ -1,0 +1,2509 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Scaling Autonomy: What Works, What Breaks, and What Remains Unsolved in Large-Scale Agile…</title>
+  <style>
+    html {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      box-sizing: border-box;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: inherit;
+    }
+
+    strong,
+    b {
+      font-weight: 700;
+    }
+
+    body {
+      margin: 0;
+      color: #2C2C2C;
+      font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.5;
+      background-color: #FCFCF9;
+    }
+
+    @media print {
+      body {
+        background-color: #fff;
+      }
+    }
+
+    body::backdrop {
+      background-color: #FCFCF9;
+    }
+
+    body {
+      font-family: 'Source Sans 3', 'Segoe UI', system-ui, sans-serif;
+    }
+
+    .css-1iicfe9 {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+      flex-direction: column;
+      min-height: 100vh;
+      background-color: #FCFCF9;
+    }
+
+    .css-3f5ost-MuiAppBar-root {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+      flex-direction: column;
+      width: 100%;
+      box-sizing: border-box;
+      -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+      flex-shrink: 0;
+      position: fixed;
+      z-index: 1100;
+      top: 0;
+      left: auto;
+      right: 0;
+      --AppBar-background: #4A6FA5;
+      --AppBar-color: #fff;
+      background-color: var(--AppBar-background);
+      color: var(--AppBar-color);
+      background-color: #FCFCF9;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      height: 56px;
+      z-index: 1100;
+    }
+
+    @media print {
+      .css-3f5ost-MuiAppBar-root {
+        position: absolute;
+      }
+    }
+
+    .css-4iblz0-MuiPaper-root-MuiAppBar-root {
+      background-color: #FCFCF9;
+      color: #2C2C2C;
+      -webkit-transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+      transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+      box-shadow: var(--Paper-shadow);
+      background-image: var(--Paper-overlay);
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+      flex-direction: column;
+      width: 100%;
+      box-sizing: border-box;
+      -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+      flex-shrink: 0;
+      position: fixed;
+      z-index: 1100;
+      top: 0;
+      left: auto;
+      right: 0;
+      --AppBar-background: #4A6FA5;
+      --AppBar-color: #fff;
+      background-color: var(--AppBar-background);
+      color: var(--AppBar-color);
+      background-color: #FCFCF9;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      height: 56px;
+      z-index: 1100;
+    }
+
+    @media print {
+      .css-4iblz0-MuiPaper-root-MuiAppBar-root {
+        position: absolute;
+      }
+    }
+
+    .css-ixnjfe-MuiToolbar-root {
+      position: relative;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-align-items: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      padding-left: 16px;
+      padding-right: 16px;
+      min-height: 48px;
+      height: 56px;
+      min-height: 56px;
+      padding-left: 16px;
+      padding-right: 16px;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-align-items: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      gap: 8px;
+    }
+
+    @media (min-width:600px) {
+      .css-ixnjfe-MuiToolbar-root {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+    }
+
+    .css-1eiehgf {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-align-items: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      gap: 8px;
+      background: none;
+      border: none;
+      padding: 0px;
+      cursor: pointer;
+    }
+
+    .css-1eiehgf:hover {
+      opacity: 0.75;
+    }
+
+    .css-1uqsr26 {
+      width: 24px;
+      height: auto;
+      display: block;
+    }
+
+    .css-1oz01v0-MuiTypography-root {
+      margin: 0;
+      font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+      font-weight: 400;
+      font-size: 0.875rem;
+      line-height: 1.43;
+      font-weight: 700;
+      color: #2C2C2C;
+      white-space: nowrap;
+    }
+
+    .css-i9gxme {
+      -webkit-box-flex: 1;
+      -webkit-flex-grow: 1;
+      -ms-flex-positive: 1;
+      flex-grow: 1;
+    }
+
+    .css-z71su3-MuiIconButton-root {
+      text-align: center;
+      -webkit-flex: 0 0 auto;
+      -ms-flex: 0 0 auto;
+      flex: 0 0 auto;
+      font-size: 1.5rem;
+      padding: 8px;
+      border-radius: 50%;
+      color: rgba(0, 0, 0, 0.54);
+      -webkit-transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+      transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+      --IconButton-hoverBg: rgba(0, 0, 0, 0.04);
+      padding: 5px;
+      font-size: 1.125rem;
+      border-radius: 0;
+      color: #2C2C2C;
+    }
+
+    .css-z71su3-MuiIconButton-root:hover {
+      background-color: var(--IconButton-hoverBg);
+    }
+
+    @media (hover: none) {
+      .css-z71su3-MuiIconButton-root:hover {
+        background-color: transparent;
+      }
+    }
+
+    .css-z71su3-MuiIconButton-root.Mui-disabled {
+      background-color: transparent;
+      color: rgba(0, 0, 0, 0.26);
+    }
+
+    .css-z71su3-MuiIconButton-root.MuiIconButton-loading {
+      color: transparent;
+    }
+
+    .css-1xhvipb-MuiButtonBase-root-MuiIconButton-root {
+      display: -webkit-inline-box;
+      display: -webkit-inline-flex;
+      display: -ms-inline-flexbox;
+      display: inline-flex;
+      -webkit-align-items: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      -webkit-justify-content: center;
+      justify-content: center;
+      position: relative;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      background-color: transparent;
+      outline: 0;
+      border: 0;
+      margin: 0;
+      border-radius: 0;
+      padding: 0;
+      cursor: pointer;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      vertical-align: middle;
+      -moz-appearance: none;
+      -webkit-appearance: none;
+      -webkit-text-decoration: none;
+      text-decoration: none;
+      color: inherit;
+      text-align: center;
+      -webkit-flex: 0 0 auto;
+      -ms-flex: 0 0 auto;
+      flex: 0 0 auto;
+      font-size: 1.5rem;
+      padding: 8px;
+      border-radius: 50%;
+      color: rgba(0, 0, 0, 0.54);
+      -webkit-transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+      transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+      --IconButton-hoverBg: rgba(0, 0, 0, 0.04);
+      padding: 5px;
+      font-size: 1.125rem;
+      border-radius: 0;
+      color: #2C2C2C;
+    }
+
+    .css-1xhvipb-MuiButtonBase-root-MuiIconButton-root::-moz-focus-inner {
+      border-style: none;
+    }
+
+    .css-1xhvipb-MuiButtonBase-root-MuiIconButton-root.Mui-disabled {
+      pointer-events: none;
+      cursor: default;
+    }
+
+    @media print {
+      .css-1xhvipb-MuiButtonBase-root-MuiIconButton-root {
+        -webkit-print-color-adjust: exact;
+        color-adjust: exact;
+      }
+    }
+
+    .css-1xhvipb-MuiButtonBase-root-MuiIconButton-root:hover {
+      background-color: var(--IconButton-hoverBg);
+    }
+
+    @media (hover: none) {
+      .css-1xhvipb-MuiButtonBase-root-MuiIconButton-root:hover {
+        background-color: transparent;
+      }
+    }
+
+    .css-1xhvipb-MuiButtonBase-root-MuiIconButton-root.Mui-disabled {
+      background-color: transparent;
+      color: rgba(0, 0, 0, 0.26);
+    }
+
+    .css-1xhvipb-MuiButtonBase-root-MuiIconButton-root.MuiIconButton-loading {
+      color: transparent;
+    }
+
+    .css-1xtf9nq-MuiSvgIcon-root {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      width: 1em;
+      height: 1em;
+      display: inline-block;
+      -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+      flex-shrink: 0;
+      -webkit-transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+      transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+      fill: currentColor;
+      font-size: 1.25rem;
+      font-size: 1.375rem;
+    }
+
+    .css-1x9rqqx {
+      -webkit-box-flex: 1;
+      -webkit-flex-grow: 1;
+      -ms-flex-positive: 1;
+      flex-grow: 1;
+      margin-top: 56px;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+      flex-direction: column;
+    }
+
+    .css-117alah {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      -webkit-justify-content: center;
+      justify-content: center;
+      -webkit-align-items: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -webkit-box-flex: 1;
+      -webkit-flex-grow: 1;
+      -ms-flex-positive: 1;
+      flex-grow: 1;
+    }
+
+    .css-qvog3j-MuiCircularProgress-root {
+      display: inline-block;
+      -webkit-animation: animation-61bdi0 1.4s linear infinite;
+      animation: animation-61bdi0 1.4s linear infinite;
+      color: #4A6FA5;
+    }
+
+    @-webkit-keyframes animation-61bdi0 {
+      0% {
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+
+      100% {
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes animation-61bdi0 {
+      0% {
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+
+      100% {
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+    }
+
+    .css-54pwck-MuiCircularProgress-svg {
+      display: block;
+    }
+
+    .css-19t5dcl-MuiCircularProgress-circle {
+      stroke: currentColor;
+      stroke-dasharray: 80px, 200px;
+      stroke-dashoffset: 0;
+      -webkit-animation: animation-1o38n3e 1.4s ease-in-out infinite;
+      animation: animation-1o38n3e 1.4s ease-in-out infinite;
+    }
+
+    @-webkit-keyframes animation-1o38n3e {
+      0% {
+        stroke-dasharray: 1px, 200px;
+        stroke-dashoffset: 0;
+      }
+
+      50% {
+        stroke-dasharray: 100px, 200px;
+        stroke-dashoffset: -15px;
+      }
+
+      100% {
+        stroke-dasharray: 1px, 200px;
+        stroke-dashoffset: -126px;
+      }
+    }
+
+    @keyframes animation-1o38n3e {
+      0% {
+        stroke-dasharray: 1px, 200px;
+        stroke-dashoffset: 0;
+      }
+
+      50% {
+        stroke-dasharray: 100px, 200px;
+        stroke-dashoffset: -15px;
+      }
+
+      100% {
+        stroke-dasharray: 1px, 200px;
+        stroke-dashoffset: -126px;
+      }
+    }
+
+    .css-1lb6n3v {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      -webkit-justify-content: center;
+      justify-content: center;
+      -webkit-align-items: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .css-1xz0io7-MuiIconButton-root {
+      text-align: center;
+      -webkit-flex: 0 0 auto;
+      -ms-flex: 0 0 auto;
+      flex: 0 0 auto;
+      font-size: 1.5rem;
+      padding: 8px;
+      border-radius: 50%;
+      color: rgba(0, 0, 0, 0.54);
+      -webkit-transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+      transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+      --IconButton-hoverBg: rgba(0, 0, 0, 0.04);
+      padding: 5px;
+      font-size: 1.125rem;
+      border-radius: 0;
+      padding: 4px;
+    }
+
+    .css-1xz0io7-MuiIconButton-root:hover {
+      background-color: var(--IconButton-hoverBg);
+    }
+
+    @media (hover: none) {
+      .css-1xz0io7-MuiIconButton-root:hover {
+        background-color: transparent;
+      }
+    }
+
+    .css-1xz0io7-MuiIconButton-root.Mui-disabled {
+      background-color: transparent;
+      color: rgba(0, 0, 0, 0.26);
+    }
+
+    .css-1xz0io7-MuiIconButton-root.MuiIconButton-loading {
+      color: transparent;
+    }
+
+    .css-10jz5mu-MuiButtonBase-root-MuiIconButton-root {
+      display: -webkit-inline-box;
+      display: -webkit-inline-flex;
+      display: -ms-inline-flexbox;
+      display: inline-flex;
+      -webkit-align-items: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      -webkit-justify-content: center;
+      justify-content: center;
+      position: relative;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      background-color: transparent;
+      outline: 0;
+      border: 0;
+      margin: 0;
+      border-radius: 0;
+      padding: 0;
+      cursor: pointer;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      vertical-align: middle;
+      -moz-appearance: none;
+      -webkit-appearance: none;
+      -webkit-text-decoration: none;
+      text-decoration: none;
+      color: inherit;
+      text-align: center;
+      -webkit-flex: 0 0 auto;
+      -ms-flex: 0 0 auto;
+      flex: 0 0 auto;
+      font-size: 1.5rem;
+      padding: 8px;
+      border-radius: 50%;
+      color: rgba(0, 0, 0, 0.54);
+      -webkit-transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+      transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+      --IconButton-hoverBg: rgba(0, 0, 0, 0.04);
+      padding: 5px;
+      font-size: 1.125rem;
+      border-radius: 0;
+      padding: 4px;
+    }
+
+    .css-10jz5mu-MuiButtonBase-root-MuiIconButton-root::-moz-focus-inner {
+      border-style: none;
+    }
+
+    .css-10jz5mu-MuiButtonBase-root-MuiIconButton-root.Mui-disabled {
+      pointer-events: none;
+      cursor: default;
+    }
+
+    @media print {
+      .css-10jz5mu-MuiButtonBase-root-MuiIconButton-root {
+        -webkit-print-color-adjust: exact;
+        color-adjust: exact;
+      }
+    }
+
+    .css-10jz5mu-MuiButtonBase-root-MuiIconButton-root:hover {
+      background-color: var(--IconButton-hoverBg);
+    }
+
+    @media (hover: none) {
+      .css-10jz5mu-MuiButtonBase-root-MuiIconButton-root:hover {
+        background-color: transparent;
+      }
+    }
+
+    .css-10jz5mu-MuiButtonBase-root-MuiIconButton-root.Mui-disabled {
+      background-color: transparent;
+      color: rgba(0, 0, 0, 0.26);
+    }
+
+    .css-10jz5mu-MuiButtonBase-root-MuiIconButton-root.MuiIconButton-loading {
+      color: transparent;
+    }
+
+    .css-1dgrroa-MuiAvatar-root {
+      position: relative;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-align-items: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      -webkit-justify-content: center;
+      justify-content: center;
+      -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+      font-size: 1.25rem;
+      line-height: 1;
+      border-radius: 50%;
+      overflow: hidden;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      width: 28px;
+      height: 28px;
+    }
+
+    .css-1su80sj-MuiAvatar-img {
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      object-fit: cover;
+      color: transparent;
+      text-indent: 10000px;
+    }
+
+    .css-1ylu0bo {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+      flex-direction: column;
+      -webkit-box-flex: 1;
+      -webkit-flex-grow: 1;
+      -ms-flex-positive: 1;
+      flex-grow: 1;
+    }
+
+    .css-1oxh0ar {
+      background: linear-gradient(180deg, #f5f5f3, #e8e8e6);
+    }
+
+    .css-tpqtpo {
+      max-width: 856px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 32px;
+      padding-right: 32px;
+    }
+
+    .css-1ipmz7l-MuiTypography-root {
+      margin: 0;
+      font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+      font-weight: 400;
+      font-size: 0.75rem;
+      line-height: 2.66;
+      text-transform: uppercase;
+      color: rgba(0, 0, 0, 0.6);
+      letter-spacing: 1px;
+      padding-top: 8px;
+      display: block;
+    }
+
+    .css-4jqaqo {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+      flex-direction: row;
+      gap: 24px;
+      overflow-x: auto;
+      padding-top: 8px;
+      padding-bottom: 24px;
+    }
+
+    .css-4jqaqo::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    .css-4jqaqo::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+
+    .css-4jqaqo::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.2);
+      border-radius: 0;
+    }
+
+    .css-4pgx5e {
+      width: 140px;
+      aspect-ratio: 210/297;
+      -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+      flex-shrink: 0;
+      background-color: #E8EEF2;
+      border-top: 3px solid #22506F;
+      box-sizing: border-box;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+      flex-direction: column;
+      -webkit-align-items: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      -webkit-justify-content: center;
+      justify-content: center;
+      gap: 8px;
+      padding-left: 16px;
+      padding-right: 16px;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+      -webkit-transition: box-shadow 0.15s;
+      transition: box-shadow 0.15s;
+    }
+
+    .css-4pgx5e:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
+    }
+
+    .css-4pgx5e:focus-visible {
+      outline: 2px solid #4A6FA5;
+      outline-offset: 2px;
+    }
+
+    .css-zmgf8s {
+      font-size: 2rem;
+      color: #22506F;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+    }
+
+    .css-1wf9xwn-MuiSvgIcon-root {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      width: 1em;
+      height: 1em;
+      display: inline-block;
+      -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+      flex-shrink: 0;
+      -webkit-transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+      transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+      fill: currentColor;
+      font-size: 1.25rem;
+      font-size: 1.375rem;
+      font-size: inherit;
+    }
+
+    .css-fqeey9-MuiTypography-root {
+      margin: 0;
+      font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+      font-weight: 400;
+      font-size: 0.75rem;
+      line-height: 1.66;
+      color: #2C2C2C;
+      font-weight: 500;
+    }
+
+    .css-136jpkp-MuiTypography-root {
+      margin: 0;
+      font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+      font-weight: 400;
+      font-size: 0.75rem;
+      line-height: 1.66;
+      color: rgba(0, 0, 0, 0.6);
+      font-weight: 400;
+      font-size: 0.7rem;
+    }
+
+    .css-nns57p {
+      width: 140px;
+      aspect-ratio: 210/297;
+      -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+      flex-shrink: 0;
+      background-color: #fcfcf9;
+      border-top: 3px solid transparent;
+      box-sizing: border-box;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+      flex-direction: column;
+      -webkit-align-items: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      -webkit-justify-content: center;
+      justify-content: center;
+      gap: 8px;
+      padding-left: 16px;
+      padding-right: 16px;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+      -webkit-transition: box-shadow 0.15s;
+      transition: box-shadow 0.15s;
+    }
+
+    .css-nns57p:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
+    }
+
+    .css-nns57p:focus-visible {
+      outline: 2px solid #4A6FA5;
+      outline-offset: 2px;
+    }
+
+    .css-177jlhj {
+      font-size: 2rem;
+      color: #2C2C2C;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+    }
+
+    .css-37kfi {
+      background-color: #fcfcf9;
+      -webkit-box-flex: 1;
+      -webkit-flex-grow: 1;
+      -ms-flex-positive: 1;
+      flex-grow: 1;
+    }
+
+    .css-lgex1h {
+      max-width: 856px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 32px;
+      padding-right: 32px;
+      padding-top: 24px;
+      padding-bottom: 32px;
+    }
+
+    .css-1a28saq-MuiTypography-root {
+      margin: 0;
+      font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+      font-weight: 400;
+      font-size: 0.75rem;
+      line-height: 2.66;
+      text-transform: uppercase;
+      color: rgba(0, 0, 0, 0.6);
+      letter-spacing: 1px;
+    }
+
+    .css-c4l6wt {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      -webkit-justify-content: center;
+      justify-content: center;
+      padding-top: 48px;
+      padding-bottom: 48px;
+    }
+
+    .css-uuwngn-MuiTypography-root {
+      margin: 0;
+      font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+      font-weight: 400;
+      font-size: 0.875rem;
+      line-height: 1.43;
+    }
+
+    .css-1fx36vt {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 24px;
+      padding-top: 16px;
+      padding-bottom: 8px;
+    }
+
+    .css-meikcj {
+      position: relative;
+      min-width: 0;
+    }
+
+    .css-m0gtnd {
+      width: 100%;
+      min-width: 0;
+      aspect-ratio: 210/297;
+      position: relative;
+      background-color: #fcfcf9;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+      flex-direction: column;
+      cursor: pointer;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.14);
+      -webkit-transition: box-shadow 0.15s, -webkit-transform 0.15s;
+      transition: box-shadow 0.15s, transform 0.15s;
+      overflow: hidden;
+    }
+
+    .css-m0gtnd:hover {
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.20);
+      -webkit-transform: translateY(-2px);
+      -moz-transform: translateY(-2px);
+      -ms-transform: translateY(-2px);
+      transform: translateY(-2px);
+    }
+
+    .css-m0gtnd:focus-visible {
+      outline: 2px solid #4A6FA5;
+      outline-offset: 2px;
+    }
+
+    .css-qi7bhb {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      z-index: 1;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-align-items: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      -webkit-justify-content: center;
+      justify-content: center;
+      background-color: #e0e0e0;
+      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.30);
+    }
+
+    .css-1ttrfqi-MuiSvgIcon-root {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      width: 1em;
+      height: 1em;
+      display: inline-block;
+      -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+      flex-shrink: 0;
+      -webkit-transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+      transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+      fill: currentColor;
+      font-size: 1.25rem;
+      font-size: 1.375rem;
+      font-size: 19.2px;
+      color: #757575;
+    }
+
+    .css-1yiagsi-MuiTypography-root {
+      margin: 0;
+      font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+      font-weight: 400;
+      font-size: 0.75rem;
+      line-height: 1.66;
+      padding-left: 12px;
+      padding-right: 12px;
+      padding-top: 12px;
+      -webkit-box-flex: 1;
+      -webkit-flex-grow: 1;
+      -ms-flex-positive: 1;
+      flex-grow: 1;
+      min-width: 0;
+      min-height: 0;
+      position: relative;
+      color: rgba(0, 0, 0, 0.6);
+      font-size: 0.5rem;
+      line-height: 1.45;
+      overflow: hidden;
+      overflow-wrap: anywhere;
+    }
+
+    .css-1yiagsi-MuiTypography-root::after {
+      content: "";
+      position: absolute;
+      inset-inline: 0;
+      bottom: 0;
+      height: 1.4em;
+      background: linear-gradient(to bottom, transparent, #fcfcf9);
+      pointer-events: none;
+    }
+
+    .css-1yiagsi-MuiTypography-root p,
+    .css-1yiagsi-MuiTypography-root ul,
+    .css-1yiagsi-MuiTypography-root ol,
+    .css-1yiagsi-MuiTypography-root blockquote,
+    .css-1yiagsi-MuiTypography-root pre,
+    .css-1yiagsi-MuiTypography-root table {
+      margin: 0px;
+      margin-bottom: 4px;
+    }
+
+    .css-1yiagsi-MuiTypography-root h1,
+    .css-1yiagsi-MuiTypography-root h2,
+    .css-1yiagsi-MuiTypography-root h3,
+    .css-1yiagsi-MuiTypography-root h4,
+    .css-1yiagsi-MuiTypography-root h5,
+    .css-1yiagsi-MuiTypography-root h6 {
+      margin: 0px;
+      margin-bottom: 4px;
+      font-size: 0.6rem;
+      font-weight: 600;
+      color: #2C2C2C;
+    }
+
+    .css-1yiagsi-MuiTypography-root ul,
+    .css-1yiagsi-MuiTypography-root ol {
+      padding-left: 16px;
+    }
+
+    .css-1yiagsi-MuiTypography-root li {
+      margin-bottom: 2px;
+    }
+
+    .css-1yiagsi-MuiTypography-root code {
+      font-family: "Fira Code", "Courier New", monospace;
+      background-color: rgba(0, 0, 0, 0.04);
+      padding-left: 3.2px;
+      padding-right: 3.2px;
+      font-size: 0.95em;
+    }
+
+    .css-1yiagsi-MuiTypography-root pre {
+      background-color: rgba(0, 0, 0, 0.04);
+      padding: 4px;
+      overflow: hidden;
+    }
+
+    .css-1yiagsi-MuiTypography-root blockquote {
+      border-left: 2px solid;
+      border-color: rgba(0, 0, 0, 0.12);
+      padding-left: 8px;
+      color: #6E6E6C;
+    }
+
+    .css-1yiagsi-MuiTypography-root a {
+      color: #4A6FA5;
+    }
+
+    .css-1wwuxn5 {
+      padding-left: 12px;
+      padding-right: 12px;
+      padding-top: 6px;
+      padding-bottom: 6px;
+      background-color: rgba(0, 0, 0, 0.04);
+      border-top: 1px solid rgba(0, 0, 0, 0.07);
+    }
+
+    .css-1jmo8eb-MuiTypography-root {
+      margin: 0;
+      font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+      font-weight: 500;
+      font-size: 0.875rem;
+      line-height: 1.57;
+      color: #2C2C2C;
+      font-weight: 600;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      overflow-wrap: anywhere;
+      line-height: 1.25;
+      font-size: 0.95rem;
+    }
+
+    .css-1xxomen-MuiTypography-root {
+      margin: 0;
+      font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+      font-weight: 400;
+      font-size: 0.75rem;
+      line-height: 1.66;
+      display: block;
+      color: #6E6E6C;
+      font-size: 0.65rem;
+      line-height: 1.2;
+      margin-top: 2px;
+    }
+
+    .css-17fpyow {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      z-index: 1;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-align-items: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      -webkit-justify-content: center;
+      justify-content: center;
+      background-color: #C97B7B;
+      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.30);
+    }
+
+    .css-1f27fv4-MuiSvgIcon-root {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      width: 1em;
+      height: 1em;
+      display: inline-block;
+      -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+      flex-shrink: 0;
+      -webkit-transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+      transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+      fill: currentColor;
+      font-size: 1.25rem;
+      font-size: 1.375rem;
+      font-size: 19.2px;
+      color: #fff;
+    }
+
+    .css-9aw0tl {
+      max-width: 840px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 24px;
+      padding-right: 24px;
+      padding-top: 40px;
+      padding-bottom: 80px;
+    }
+
+    .css-1xslc0w {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: justify;
+      -webkit-justify-content: space-between;
+      justify-content: space-between;
+      -webkit-align-items: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .css-byjdi0-MuiTypography-root {
+      margin: 0;
+      font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+      font-weight: 400;
+      font-size: 0.875rem;
+      line-height: 1.43;
+      font-size: 13px;
+      color: #5D5B4F;
+    }
+
+    .css-5kgc65-MuiLink-root {
+      -webkit-text-decoration: underline;
+      text-decoration: underline;
+      text-decoration-color: var(--Link-underlineColor);
+      --Link-underlineColor: rgba(74, 111, 165, 0.4);
+      color: #22506F;
+    }
+
+    .css-5kgc65-MuiLink-root:hover {
+      text-decoration-color: inherit;
+    }
+
+    .css-a4x5io-MuiTypography-root-MuiLink-root {
+      margin: 0;
+      font: inherit;
+      line-height: inherit;
+      letter-spacing: inherit;
+      color: #4A6FA5;
+      -webkit-text-decoration: underline;
+      text-decoration: underline;
+      text-decoration-color: var(--Link-underlineColor);
+      --Link-underlineColor: rgba(74, 111, 165, 0.4);
+      color: #22506F;
+    }
+
+    .css-a4x5io-MuiTypography-root-MuiLink-root:hover {
+      text-decoration-color: inherit;
+    }
+
+    .css-7zykkv {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      gap: 8px;
+      -webkit-align-items: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -webkit-flex: none;
+      -ms-flex: none;
+      flex: none;
+    }
+
+    .css-s7sxwm-MuiLink-root {
+      -webkit-text-decoration: underline;
+      text-decoration: underline;
+      text-decoration-color: var(--Link-underlineColor);
+      --Link-underlineColor: rgba(74, 111, 165, 0.4);
+      font-size: 13px;
+      -webkit-text-decoration: none;
+      text-decoration: none;
+      border: 1px solid #E4E2D7;
+      border-radius: 6px;
+      padding-left: 12.8px;
+      padding-right: 12.8px;
+      padding-top: 7.2px;
+      padding-bottom: 7.2px;
+      color: #22506F;
+      white-space: nowrap;
+    }
+
+    .css-s7sxwm-MuiLink-root:hover {
+      text-decoration-color: inherit;
+    }
+
+    .css-s7sxwm-MuiLink-root:hover {
+      border-color: #22506F;
+      background-color: #E8EEF2;
+    }
+
+    .css-1n60d82-MuiTypography-root-MuiLink-root {
+      margin: 0;
+      font: inherit;
+      line-height: inherit;
+      letter-spacing: inherit;
+      color: #4A6FA5;
+      -webkit-text-decoration: underline;
+      text-decoration: underline;
+      text-decoration-color: var(--Link-underlineColor);
+      --Link-underlineColor: rgba(74, 111, 165, 0.4);
+      font-size: 13px;
+      -webkit-text-decoration: none;
+      text-decoration: none;
+      border: 1px solid #E4E2D7;
+      border-radius: 6px;
+      padding-left: 12.8px;
+      padding-right: 12.8px;
+      padding-top: 7.2px;
+      padding-bottom: 7.2px;
+      color: #22506F;
+      white-space: nowrap;
+    }
+
+    .css-1n60d82-MuiTypography-root-MuiLink-root:hover {
+      text-decoration-color: inherit;
+    }
+
+    .css-1n60d82-MuiTypography-root-MuiLink-root:hover {
+      border-color: #22506F;
+      background-color: #E8EEF2;
+    }
+
+    .css-cfc7gv-MuiButton-root {
+      font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+      font-weight: 500;
+      font-size: 0.875rem;
+      line-height: 1.75;
+      text-transform: uppercase;
+      min-width: 64px;
+      padding: 6px 16px;
+      border: 0;
+      border-radius: 0;
+      -webkit-transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+      transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+      padding: 6px 8px;
+      color: var(--variant-textColor);
+      background-color: var(--variant-textBg);
+      --variant-textColor: #4A6FA5;
+      --variant-outlinedColor: #4A6FA5;
+      --variant-outlinedBorder: rgba(74, 111, 165, 0.5);
+      --variant-containedColor: #fff;
+      --variant-containedBg: #4A6FA5;
+      -webkit-transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+      transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+      text-transform: none;
+      border-radius: 0;
+      font-size: 13.5px;
+      text-transform: none;
+      border-radius: 6px;
+      padding-left: 14px;
+      padding-right: 14px;
+      padding-top: 7.2px;
+      padding-bottom: 7.2px;
+      color: #22506F;
+      background-color: transparent;
+      border: 1px solid #E4E2D7;
+    }
+
+    .css-cfc7gv-MuiButton-root:hover {
+      -webkit-text-decoration: none;
+      text-decoration: none;
+    }
+
+    .css-cfc7gv-MuiButton-root.Mui-disabled {
+      color: rgba(0, 0, 0, 0.26);
+    }
+
+    .css-cfc7gv-MuiButton-root::before {
+      content: "\200b";
+      width: 0;
+      overflow: hidden;
+    }
+
+    @media (hover: hover) {
+      .css-cfc7gv-MuiButton-root:hover {
+        --variant-containedBg: rgb(51, 77, 115);
+        --variant-textBg: rgba(74, 111, 165, 0.04);
+        --variant-outlinedBorder: #4A6FA5;
+        --variant-outlinedBg: rgba(74, 111, 165, 0.04);
+      }
+    }
+
+    .css-cfc7gv-MuiButton-root.MuiButton-loading {
+      color: transparent;
+    }
+
+    .css-cfc7gv-MuiButton-root:hover {
+      border-color: #22506F;
+      background-color: #E8EEF2;
+    }
+
+    .css-dndpzp-MuiButtonBase-root-MuiButton-root {
+      display: -webkit-inline-box;
+      display: -webkit-inline-flex;
+      display: -ms-inline-flexbox;
+      display: inline-flex;
+      -webkit-align-items: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      -webkit-justify-content: center;
+      justify-content: center;
+      position: relative;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      background-color: transparent;
+      outline: 0;
+      border: 0;
+      margin: 0;
+      border-radius: 0;
+      padding: 0;
+      cursor: pointer;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      vertical-align: middle;
+      -moz-appearance: none;
+      -webkit-appearance: none;
+      -webkit-text-decoration: none;
+      text-decoration: none;
+      color: inherit;
+      font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+      font-weight: 500;
+      font-size: 0.875rem;
+      line-height: 1.75;
+      text-transform: uppercase;
+      min-width: 64px;
+      padding: 6px 16px;
+      border: 0;
+      border-radius: 0;
+      -webkit-transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+      transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+      padding: 6px 8px;
+      color: var(--variant-textColor);
+      background-color: var(--variant-textBg);
+      --variant-textColor: #4A6FA5;
+      --variant-outlinedColor: #4A6FA5;
+      --variant-outlinedBorder: rgba(74, 111, 165, 0.5);
+      --variant-containedColor: #fff;
+      --variant-containedBg: #4A6FA5;
+      -webkit-transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+      transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+      text-transform: none;
+      border-radius: 0;
+      font-size: 13.5px;
+      text-transform: none;
+      border-radius: 6px;
+      padding-left: 14px;
+      padding-right: 14px;
+      padding-top: 7.2px;
+      padding-bottom: 7.2px;
+      color: #22506F;
+      background-color: transparent;
+      border: 1px solid #E4E2D7;
+    }
+
+    .css-dndpzp-MuiButtonBase-root-MuiButton-root::-moz-focus-inner {
+      border-style: none;
+    }
+
+    .css-dndpzp-MuiButtonBase-root-MuiButton-root.Mui-disabled {
+      pointer-events: none;
+      cursor: default;
+    }
+
+    @media print {
+      .css-dndpzp-MuiButtonBase-root-MuiButton-root {
+        -webkit-print-color-adjust: exact;
+        color-adjust: exact;
+      }
+    }
+
+    .css-dndpzp-MuiButtonBase-root-MuiButton-root:hover {
+      -webkit-text-decoration: none;
+      text-decoration: none;
+    }
+
+    .css-dndpzp-MuiButtonBase-root-MuiButton-root.Mui-disabled {
+      color: rgba(0, 0, 0, 0.26);
+    }
+
+    .css-dndpzp-MuiButtonBase-root-MuiButton-root::before {
+      content: "\200b";
+      width: 0;
+      overflow: hidden;
+    }
+
+    @media (hover: hover) {
+      .css-dndpzp-MuiButtonBase-root-MuiButton-root:hover {
+        --variant-containedBg: rgb(51, 77, 115);
+        --variant-textBg: rgba(74, 111, 165, 0.04);
+        --variant-outlinedBorder: #4A6FA5;
+        --variant-outlinedBg: rgba(74, 111, 165, 0.04);
+      }
+    }
+
+    .css-dndpzp-MuiButtonBase-root-MuiButton-root.MuiButton-loading {
+      color: transparent;
+    }
+
+    .css-dndpzp-MuiButtonBase-root-MuiButton-root:hover {
+      border-color: #22506F;
+      background-color: #E8EEF2;
+    }
+
+    .css-1tn2zf3-MuiButton-startIcon {
+      display: inherit;
+      margin-right: 8px;
+      margin-left: -4px;
+    }
+
+    .css-1tn2zf3-MuiButton-startIcon>*:nth-of-type(1) {
+      font-size: 20px;
+    }
+
+    .css-0 {}
+
+    .css-deinq {
+      margin: 0;
+      font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+      font-weight: 400;
+      font-size: 2.125rem;
+      line-height: 1.235;
+      font-family: "Source Serif 4", Georgia, serif;
+      font-size: 28px;
+      font-weight: 600;
+      color: #23221C;
+      margin-bottom: 8px;
+      line-height: 1.25;
+    }
+
+    .css-93t5b1 {
+      margin: 0;
+      font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+      font-weight: 400;
+      font-size: 0.875rem;
+      line-height: 1.43;
+      font-size: 13.5px;
+      color: #5D5B4F;
+      margin-bottom: 24px;
+    }
+
+    .css-5jjof0 {
+      margin: 0;
+      font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.5;
+      font-family: "Source Serif 4", Georgia, serif;
+      font-size: 16.5px;
+      line-height: 1.6;
+      padding-left: 16px;
+      border-left: 3px solid #7F6000;
+      margin-bottom: 26px;
+      color: #23221C;
+    }
+
+    .css-ddcaxd {
+      border: 1px solid #E4E2D7;
+      border-radius: 10px;
+      background-color: #FCFCF9;
+      padding-left: 18px;
+      padding-right: 18px;
+      padding-top: 16px;
+      padding-bottom: 16px;
+      margin-bottom: 12px;
+    }
+
+    .css-1izc8db {
+      margin: 0;
+      font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.5;
+      font-size: 11.5px;
+      font-weight: 600;
+      letter-spacing: .6px;
+      text-transform: uppercase;
+      color: #5D5B4F;
+      margin-bottom: 12px;
+    }
+
+    .css-ylmh5d {
+      display: grid;
+      grid-template-columns: 110px 1fr 130px;
+      gap: 12px;
+      -webkit-align-items: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .css-1y5f8r {
+      margin: 0;
+      font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.5;
+      font-size: 13.5px;
+      font-weight: 500;
+    }
+
+    .css-wik0da-MuiLink-root {
+      -webkit-text-decoration: underline;
+      text-decoration: underline;
+      text-decoration-color: var(--Link-underlineColor);
+      --Link-underlineColor: rgba(74, 111, 165, 0.4);
+      color: #23221C;
+      -webkit-text-decoration: none;
+      text-decoration: none;
+    }
+
+    .css-wik0da-MuiLink-root:hover {
+      text-decoration-color: inherit;
+    }
+
+    .css-wik0da-MuiLink-root:hover {
+      color: #22506F;
+    }
+
+    .css-1jqb7vw {
+      margin: 0;
+      font: inherit;
+      line-height: inherit;
+      letter-spacing: inherit;
+      color: #4A6FA5;
+      -webkit-text-decoration: underline;
+      text-decoration: underline;
+      text-decoration-color: var(--Link-underlineColor);
+      --Link-underlineColor: rgba(74, 111, 165, 0.4);
+      color: #23221C;
+      -webkit-text-decoration: none;
+      text-decoration: none;
+    }
+
+    .css-1jqb7vw:hover {
+      text-decoration-color: inherit;
+    }
+
+    .css-1jqb7vw:hover {
+      color: #22506F;
+    }
+
+    .css-153s843 {
+      color: #5D5B4F;
+      font-weight: 400;
+    }
+
+    .css-162dlcy {
+      position: relative;
+      height: 16px;
+    }
+
+    .css-1ejq7ge {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      height: 16px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .css-5k15gt {
+      width: 50%;
+      background-color: #2E794C;
+    }
+
+    .css-1pfdzrq {
+      width: 50%;
+      background-color: #9E4C0D;
+    }
+
+    .css-aoeb4e {
+      position: absolute;
+      left: 50%;
+      top: -3px;
+      bottom: -3px;
+      width: 1px;
+      background-color: #5D5B4F;
+    }
+
+    .css-19dkvvb {
+      margin: 0;
+      font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.5;
+      font-size: 12px;
+      text-align: right;
+      white-space: nowrap;
+      color: #5D5B4F;
+    }
+
+    .css-1pkzot8 {
+      width: 66.66666666666666%;
+      background-color: #A63A2B;
+    }
+
+    .css-qrrz0b {
+      width: 33.33333333333333%;
+      background-color: #2E794C;
+    }
+
+    .css-1vt9rle {
+      position: absolute;
+      left: 66.66666666666666%;
+      top: -3px;
+      bottom: -3px;
+      width: 1px;
+      background-color: #5D5B4F;
+    }
+
+    .css-17y5lsf {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-flex-wrap: wrap;
+      -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid #E4E2D7;
+      font-size: 12.5px;
+      color: #5D5B4F;
+    }
+
+    .css-172hjuw {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-align-items: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .css-1arh3nf {
+      width: 9px;
+      height: 9px;
+      border-radius: 2px;
+      background-color: #2E794C;
+    }
+
+    .css-12xjk0m {
+      width: 9px;
+      height: 9px;
+      border-radius: 2px;
+      background-color: #9E4C0D;
+    }
+
+    .css-m3fk6 {
+      width: 9px;
+      height: 9px;
+      border-radius: 2px;
+      background-color: #A63A2B;
+    }
+
+    .css-exud1z {
+      width: 9px;
+      height: 9px;
+      border-radius: 2px;
+      background-color: #68665F;
+    }
+
+    .css-lnnctj {
+      width: 9px;
+      height: 9px;
+      border-radius: 2px;
+      background-color: #7F6000;
+    }
+
+    .css-dtuww2 {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-align-items: baseline;
+      -webkit-box-align: baseline;
+      -ms-flex-align: baseline;
+      align-items: baseline;
+      gap: 14px;
+      margin-top: 32px;
+      margin-bottom: 4px;
+      border-bottom: 2px solid #23221C;
+      padding-bottom: 8px;
+    }
+
+    .css-7w3mk3 {
+      margin: 0;
+      font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.5;
+      font-size: 16px;
+      font-weight: 600;
+      margin: 0px;
+      color: #23221C;
+    }
+
+    .css-farc2d {
+      margin: 0;
+      font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.5;
+      font-size: 13px;
+      color: #5D5B4F;
+    }
+
+    .css-1fqobi {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-flex-wrap: wrap;
+      -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+      gap: 8px;
+      -webkit-align-items: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      border-bottom: 1px solid #E4E2D7;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      margin-bottom: 6px;
+    }
+
+    .css-hi808z {
+      font-size: 13px;
+      border: 1px solid #22506F;
+      border-radius: 20px;
+      padding-left: 12px;
+      padding-right: 12px;
+      padding-top: 4px;
+      padding-bottom: 4px;
+      cursor: pointer;
+      color: #22506F;
+      background-color: #E8EEF2;
+    }
+
+    .css-hi808z:hover {
+      border-color: #22506F;
+      color: #22506F;
+    }
+
+    .css-jvbkeq {
+      font-size: 13px;
+      border: 1px solid #E4E2D7;
+      border-radius: 20px;
+      padding-left: 12px;
+      padding-right: 12px;
+      padding-top: 4px;
+      padding-bottom: 4px;
+      cursor: pointer;
+      color: #5D5B4F;
+      background-color: transparent;
+    }
+
+    .css-jvbkeq:hover {
+      border-color: #22506F;
+      color: #22506F;
+    }
+
+    .css-1j5ozyi {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      gap: 14px;
+      padding-top: 16px;
+      padding-bottom: 16px;
+      padding-left: 4px;
+      padding-right: 4px;
+      border-bottom: 1px solid #E4E2D7;
+      -webkit-align-items: flex-start;
+      -webkit-box-align: flex-start;
+      -ms-flex-align: flex-start;
+      align-items: flex-start;
+      -webkit-text-decoration: none;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .css-1j5ozyi:hover {
+      background-color: #FCFCF9;
+    }
+
+    .css-5on9ey {
+      -webkit-flex: none;
+      -ms-flex: none;
+      flex: none;
+      width: 26px;
+      text-align: right;
+      font-size: 13px;
+      color: #5D5B4F;
+      padding-top: 3.2px;
+    }
+
+    .css-1fjtzvx {
+      -webkit-flex: 1;
+      -ms-flex: 1;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .css-1tvmhmr {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-align-items: baseline;
+      -webkit-box-align: baseline;
+      -ms-flex-align: baseline;
+      align-items: baseline;
+      gap: 8.8px;
+      -webkit-box-flex-wrap: wrap;
+      -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+    }
+
+    .css-1i86ghc {
+      margin: 0;
+      font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.5;
+      margin: 0px;
+      font-family: "Source Serif 4", Georgia, serif;
+      font-size: 17.5px;
+      font-weight: 600;
+      line-height: 1.35;
+      color: #23221C;
+    }
+
+    .css-1r6gvao {
+      font-size: 10.5px;
+      font-weight: 500;
+      letter-spacing: .4px;
+      text-transform: uppercase;
+      color: #5D5B4F;
+      border: 1px solid #E4E2D7;
+      border-radius: 20px;
+      padding-left: 8px;
+      padding-right: 8px;
+      padding-top: 0.8px;
+      padding-bottom: 0.8px;
+      background-color: #FCFCF9;
+    }
+
+    .css-1cri79p {
+      margin: 0;
+      font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.5;
+      margin-top: 4px;
+      margin-bottom: 0px;
+      font-size: 14.5px;
+      color: #5D5B4F;
+      line-height: 1.55;
+    }
+
+    .css-18uujtv {
+      margin: 0;
+      font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.5;
+      margin-bottom: 6px;
+      font-size: 14.5px;
+      color: #5D5B4F;
+      line-height: 1.55;
+      font-style: italic;
+    }
+
+    .css-pfi42a {
+      margin: 0;
+      font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.5;
+      font-size: 12.5px;
+      color: #5D5B4F;
+    }
+
+    .css-14m2n3d {
+      font-weight: 500;
+      color: #23221C;
+    }
+
+    .css-l007jw {
+      -webkit-flex: none;
+      -ms-flex: none;
+      flex: none;
+      width: 122px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .3px;
+      border-radius: 6px;
+      padding-top: 4.8px;
+      padding-bottom: 4.8px;
+      margin-top: 2px;
+      border: 1px solid #9E4C0D;
+      color: #9E4C0D;
+      background-color: rgba(158, 76, 13, 0.1);
+    }
+
+    .css-yk664i {
+      -webkit-flex: none;
+      -ms-flex: none;
+      flex: none;
+      width: 122px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .3px;
+      border-radius: 6px;
+      padding-top: 4.8px;
+      padding-bottom: 4.8px;
+      margin-top: 2px;
+      border: 1px solid #2E794C;
+      color: #2E794C;
+      background-color: rgba(46, 121, 76, 0.1);
+    }
+
+    .css-1aphblq {
+      -webkit-flex: none;
+      -ms-flex: none;
+      flex: none;
+      width: 122px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .3px;
+      border-radius: 6px;
+      padding-top: 4.8px;
+      padding-bottom: 4.8px;
+      margin-top: 2px;
+      border: 1px solid #A63A2B;
+      color: #A63A2B;
+      background-color: rgba(166, 58, 43, 0.1);
+    }
+
+    .css-5lz4th {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      gap: 14px;
+      padding-top: 16px;
+      padding-bottom: 16px;
+      padding-left: 4px;
+      padding-right: 4px;
+      border-bottom: 1px solid #E4E2D7;
+      -webkit-align-items: flex-start;
+      -webkit-box-align: flex-start;
+      -ms-flex-align: flex-start;
+      align-items: flex-start;
+      -webkit-text-decoration: none;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .css-p460jh {
+      margin: 0;
+      font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.5;
+      margin-top: 4px;
+      margin-bottom: 6px;
+      font-size: 14.5px;
+      color: #5D5B4F;
+      line-height: 1.55;
+    }
+
+    .css-1lomgqw {
+      -webkit-flex: none;
+      -ms-flex: none;
+      flex: none;
+      width: 122px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .3px;
+      border-radius: 6px;
+      padding-top: 4.8px;
+      padding-bottom: 4.8px;
+      margin-top: 2px;
+      border: 1px solid #22506F;
+      color: #22506F;
+      background-color: #E8EEF2;
+    }
+
+    .css-15h8v06 {
+      -webkit-flex: none;
+      -ms-flex: none;
+      flex: none;
+      width: 122px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .3px;
+      border-radius: 6px;
+      padding-top: 4.8px;
+      padding-bottom: 4.8px;
+      margin-top: 2px;
+      border: 1px solid #5D5B4F;
+      color: #5D5B4F;
+      background-color: transparent;
+    }
+
+    .css-r3djoj-MuiTouchRipple-root {
+      overflow: hidden;
+      pointer-events: none;
+      position: absolute;
+      z-index: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      border-radius: inherit;
+    }
+
+    .css-y4cjyz-MuiTouchRipple-ripple {
+      opacity: 0;
+      position: absolute;
+    }
+
+    .css-y4cjyz-MuiTouchRipple-ripple.MuiTouchRipple-rippleVisible {
+      opacity: 0.3;
+      -webkit-transform: scale(1);
+      -moz-transform: scale(1);
+      -ms-transform: scale(1);
+      transform: scale(1);
+      -webkit-animation-name: animation-1taevns;
+      animation-name: animation-1taevns;
+      -webkit-animation-duration: 550ms;
+      animation-duration: 550ms;
+      -webkit-animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .css-y4cjyz-MuiTouchRipple-ripple.MuiTouchRipple-ripplePulsate {
+      -webkit-animation-duration: 200ms;
+      animation-duration: 200ms;
+    }
+
+    .css-y4cjyz-MuiTouchRipple-ripple .MuiTouchRipple-child {
+      opacity: 1;
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background-color: currentColor;
+    }
+
+    .css-y4cjyz-MuiTouchRipple-ripple .MuiTouchRipple-childLeaving {
+      opacity: 0;
+      -webkit-animation-name: animation-5ich1p;
+      animation-name: animation-5ich1p;
+      -webkit-animation-duration: 550ms;
+      animation-duration: 550ms;
+      -webkit-animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .css-y4cjyz-MuiTouchRipple-ripple .MuiTouchRipple-childPulsate {
+      position: absolute;
+      left: 0px;
+      top: 0;
+      -webkit-animation-name: animation-f6tr5a;
+      animation-name: animation-f6tr5a;
+      -webkit-animation-duration: 2500ms;
+      animation-duration: 2500ms;
+      -webkit-animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      -webkit-animation-iteration-count: infinite;
+      animation-iteration-count: infinite;
+      -webkit-animation-delay: 200ms;
+      animation-delay: 200ms;
+    }
+
+    @-webkit-keyframes animation-f6tr5a {
+      0% {
+        -webkit-transform: scale(1);
+        -moz-transform: scale(1);
+        -ms-transform: scale(1);
+        transform: scale(1);
+      }
+
+      50% {
+        -webkit-transform: scale(0.92);
+        -moz-transform: scale(0.92);
+        -ms-transform: scale(0.92);
+        transform: scale(0.92);
+      }
+
+      100% {
+        -webkit-transform: scale(1);
+        -moz-transform: scale(1);
+        -ms-transform: scale(1);
+        transform: scale(1);
+      }
+    }
+
+    @keyframes animation-f6tr5a {
+      0% {
+        -webkit-transform: scale(1);
+        -moz-transform: scale(1);
+        -ms-transform: scale(1);
+        transform: scale(1);
+      }
+
+      50% {
+        -webkit-transform: scale(0.92);
+        -moz-transform: scale(0.92);
+        -ms-transform: scale(0.92);
+        transform: scale(0.92);
+      }
+
+      100% {
+        -webkit-transform: scale(1);
+        -moz-transform: scale(1);
+        -ms-transform: scale(1);
+        transform: scale(1);
+      }
+    }
+
+    @-webkit-keyframes animation-5ich1p {
+      0% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0;
+      }
+    }
+
+    @keyframes animation-5ich1p {
+      0% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0;
+      }
+    }
+
+    @-webkit-keyframes animation-1taevns {
+      0% {
+        -webkit-transform: scale(0);
+        -moz-transform: scale(0);
+        -ms-transform: scale(0);
+        transform: scale(0);
+        opacity: 0.1;
+      }
+
+      100% {
+        -webkit-transform: scale(1);
+        -moz-transform: scale(1);
+        -ms-transform: scale(1);
+        transform: scale(1);
+        opacity: 0.3;
+      }
+    }
+
+    @keyframes animation-1taevns {
+      0% {
+        -webkit-transform: scale(0);
+        -moz-transform: scale(0);
+        -ms-transform: scale(0);
+        transform: scale(0);
+        opacity: 0.1;
+      }
+
+      100% {
+        -webkit-transform: scale(1);
+        -moz-transform: scale(1);
+        -ms-transform: scale(1);
+        transform: scale(1);
+        opacity: 0.3;
+      }
+    }
+
+    .css-ne1rt3 {
+      width: 16.666666666666664%;
+      background-color: #2E794C;
+    }
+
+    .css-19acdmn {
+      width: 83.33333333333334%;
+      background-color: #9E4C0D;
+    }
+
+    .css-1oz8hkl {
+      width: 80.0%;
+      background-color: #A63A2B;
+    }
+
+    .css-1oq3xj4 {
+      width: 20.0%;
+      background-color: #6E6C60;
+    }
+
+    .css-1txhhen {
+      -webkit-flex: none;
+      -ms-flex: none;
+      flex: none;
+      width: 122px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .3px;
+      border-radius: 6px;
+      padding-top: 4.8px;
+      padding-bottom: 4.8px;
+      margin-top: 2px;
+      border: 1px solid #6E6C60;
+      color: #6E6C60;
+      background-color: rgba(110, 108, 96, 0.1);
+    }
+  </style>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap");
+
+    .assay-header {
+      position: sticky;
+      top: 0;
+      z-index: 1200;
+      display: flex;
+      align-items: center;
+      height: 64px;
+      padding: 0 24px;
+      background: rgba(252, 252, 249, 0.92);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-bottom: 1px dashed #e4e2d7;
+      font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    }
+
+    .assay-header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .assay-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .assay-logo img {
+      width: 28px;
+      height: 28px;
+      display: block;
+    }
+
+    .assay-logo span {
+      font-family: 'Instrument Serif', serif;
+      font-size: 20px;
+      line-height: 1;
+      font-weight: 400;
+      color: #23221c;
+    }
+
+    .assay-logo span b {
+      color: #22506f;
+      font-weight: 400;
+    }
+
+    .assay-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .assay-link {
+      font-size: 14px;
+      font-weight: 500;
+      color: #5d5b4f;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .assay-link:hover {
+      color: #22506f;
+    }
+
+    .assay-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 9px 18px;
+      border-radius: 10px;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: transform .2s ease, background-color .2s ease, border-color .2s ease, color .2s ease;
+    }
+
+    .assay-btn-fill {
+      background: #22506f;
+      color: #fcfcf9;
+      box-shadow: 0 2px 3px rgba(0, 0, 0, .1);
+    }
+
+    .assay-btn-fill:hover {
+      background: #183d57;
+      transform: translateY(-1px);
+    }
+
+    .assay-btn-outline {
+      border: 1px solid #d3d0c2;
+      color: #23221c;
+    }
+
+    .assay-btn-outline:hover {
+      border-color: #22506f;
+      color: #22506f;
+    }
+
+    .assay-cta {
+      max-width: 1200px;
+      margin: 16px auto 0;
+      padding: 32px 24px 0;
+      border-top: 1px dashed #e4e2d7;
+      text-align: center;
+      font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    }
+
+    .assay-cta .eyebrow {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: #7c7a6c;
+      margin: 0 0 8px;
+    }
+
+    .assay-cta h3 {
+      font-family: 'Instrument Serif', serif;
+      font-weight: 400;
+      font-size: 28px;
+      color: #23221c;
+      margin: 0 0 8px;
+    }
+
+    .assay-cta p {
+      font-size: 14px;
+      color: #5d5b4f;
+      margin: 0 0 20px;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .assay-cta .actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="assay-header">
+    <div class="assay-header-inner">
+      <a class="assay-logo" href="/">
+        <img src="/assets/logo.svg" alt="assay.it logo" width="28" height="28">
+        <span>assay<b>.it</b></span>
+      </a>
+      <div class="assay-actions">
+        <a class="assay-link" href="https://app.assay.it">Analyze a document</a>
+        <a class="assay-btn assay-btn-fill" href="scaling-agile-at-spotify-full.html">See Full Report</a>
+      </div>
+    </div>
+  </header>
+  <div style="max-width: 840px; margin: 0 auto; padding: 40px 24px 80px;">
+<div class="MuiBox-root css-0"><h4 class="MuiTypography-root MuiTypography-h4 css-deinq">Scaling Autonomy: What Works, What Breaks, and What Remains Unsolved in Large-Scale Agile…</h4><p class="MuiTypography-root MuiTypography-body2 css-93t5b1">Analyzed 12 Aug 2026 · 12 hypotheses · 5 problems</p><p class="MuiTypography-root MuiTypography-body1 css-5jjof0">Small, self-contained teams with full technical ownership move faster and cut coordination overhead, and combining vertical team structures with horizontal communities of practice can preserve that autonomy while sharing knowledge across a large organization. Slack time, shared roadmaps, dependency mapping, and dedicated coaching further support this model, and keeping groups small enough for trust-based relationships reduces the need for formal rules. Yet as organizations grow, hidden dependencies accumulate and erode the autonomy that the model promises, and no standard framework exists to track or resolve this drift in non-crisis knowledge work environments. The cost of full independence remains unquantified against shared-resource efficiencies, distributed ownership leaves no single point of accountability for system-wide architectural health, and the gap between how a living organization actually operates and any written description of it widens faster than documentation or external understanding can close.</p><div class="MuiBox-root css-ddcaxd"><p class="MuiTypography-root MuiTypography-body1 css-1izc8db">At a glance</p><div class="MuiBox-root css-ylmh5d"><span class="MuiTypography-root MuiTypography-body1 css-1y5f8r"><a class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-1jqb7vw" href="#hyp">Hypotheses</a> <span class="MuiBox-root css-153s843">· 12</span></span><div class="MuiBox-root css-162dlcy"><div class="MuiBox-root css-1ejq7ge" role="img" aria-label="Hypotheses by 2 supported, 10 contested, 0 contradicted, 0 unverifiable"><div class="MuiBox-root css-ne1rt3" title="Supported · 2"></div><div class="MuiBox-root css-19acdmn" title="Contested · 10"></div></div></div><p class="MuiTypography-root MuiTypography-body1 css-19dkvvb"></p></div><div class="MuiBox-root css-ylmh5d"><span class="MuiTypography-root MuiTypography-body1 css-1y5f8r"><a class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-1jqb7vw" href="#prob">Problems</a> <span class="MuiBox-root css-153s843">· 5</span></span><div class="MuiBox-root css-162dlcy"><div class="MuiBox-root css-1ejq7ge" role="img" aria-label="Problems by 4 critical gap, 0 solved problem, 1 unverified"><div class="MuiBox-root css-1oz8hkl" title="Critical gap · 4"></div><div class="MuiBox-root css-1oq3xj4" title="Unverified · 1"></div></div></div><p class="MuiTypography-root MuiTypography-body1 css-19dkvvb"><span class="MuiBox-root css-0">4 open gaps</span></p></div><div class="MuiBox-root css-17y5lsf"><div class="MuiBox-root css-172hjuw"><div class="MuiBox-root css-1arh3nf"></div>Holds — supported / solved</div><div class="MuiBox-root css-172hjuw"><div class="MuiBox-root css-12xjk0m"></div>Contested</div><div class="MuiBox-root css-172hjuw"><div class="MuiBox-root css-m3fk6"></div>Fails — contradicted / open gap</div><div class="MuiBox-root css-172hjuw"><div class="MuiBox-root css-exud1z"></div>Unverifiable</div><div class="MuiBox-root css-172hjuw"><div class="MuiBox-root css-lnnctj"></div>◆ Novel — no prior art</div></div></div><div class="MuiBox-root css-0"><div class="MuiBox-root css-dtuww2" id="hyp"><h2 class="MuiTypography-root MuiTypography-body1 css-7w3mk3">Hypotheses</h2><span class="MuiTypography-root MuiTypography-body1 css-farc2d">12 extracted</span></div><div class="MuiBox-root css-1fqobi" role="toolbar" aria-label="Filter hypotheses"><span class="MuiBox-root css-hi808z" data-testid="filter-all">All · 12</span><span class="MuiBox-root css-jvbkeq" data-testid="filter-standing-supported">Supported · 2</span><span class="MuiBox-root css-jvbkeq" data-testid="filter-standing-contested">Contested · 10</span><span class="MuiBox-root css-jvbkeq" data-testid="filter-standing-contradicted">Contradicted · 0</span><span class="MuiBox-root css-jvbkeq" data-testid="filter-standing-unverifiable">Unverifiable · 0</span></div><a class="MuiBox-root css-1j5ozyi" data-discover="true"><div class="MuiBox-root css-5on9ey">1</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">Squad-Based Mini-Startup Model</h3><span class="facet MuiBox-root css-1r6gvao">general</span></div><p class="MuiTypography-root MuiTypography-body1 css-1cri79p">Organizing product development around small, self-contained teams with full technical autonomy and end-to-end responsibility encourages agile practices and reduces coordination overhead at organizational scale.</p><p class="MuiTypography-root MuiTypography-body1 css-18uujtv" data-testid="verdict">A fully established mechanism of cross-functional autonomous team design, but the claim is contested because regulated-industry constraints and persistent inter-team dependencies mean the coordination-reduction benefit does not hold unconditionally.</p><p class="MuiTypography-root MuiTypography-body1 css-pfi42a">Prior art <b class="MuiBox-root css-14m2n3d">established</b> · confidence <b class="MuiBox-root css-14m2n3d">high</b> · 5 citations · addresses 2 problems</p></div><div class="MuiBox-root css-l007jw">Contested</div></a><a class="MuiBox-root css-1j5ozyi" data-discover="true"><div class="MuiBox-root css-5on9ey">2</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">Dual Alignment for Scaling Without Loss</h3><span class="facet MuiBox-root css-1r6gvao">domain</span></div><p class="MuiTypography-root MuiTypography-body1 css-1cri79p">Combining vertical Squad alignment with horizontal Chapter and Guild structures preserves local autonomy while enabling knowledge sharing and cross-team coordination across large organizations.</p><p class="MuiTypography-root MuiTypography-body1 css-18uujtv" data-testid="verdict">A fully established combination of matrix structure and Communities of Practice, contested because CoPs reduce fragmentation only when tied to a clear business purpose, and matrix designs create coordination confusion without careful implementation — two conditions the claim does not state.</p><p class="MuiTypography-root MuiTypography-body1 css-pfi42a">Prior art <b class="MuiBox-root css-14m2n3d">established</b> · confidence <b class="MuiBox-root css-14m2n3d">high</b> · 5 citations · addresses 3 problems</p></div><div class="MuiBox-root css-l007jw">Contested</div></a><a class="MuiBox-root css-1j5ozyi" data-discover="true"><div class="MuiBox-root css-5on9ey">3</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">Measurement-Driven Organizational Improvement at Scale</h3><span class="facet MuiBox-root css-1r6gvao">domain</span></div><p class="MuiTypography-root MuiTypography-body1 css-1cri79p">Regular surveys measuring squad autonomy and support reveal patterns across teams, allowing focused improvement efforts rather than blanket changes.</p><p class="MuiTypography-root MuiTypography-body1 css-18uujtv" data-testid="verdict">A well-established mechanism of aggregated team self-assessment driving targeted interventions, but the core assumption that self-reports accurately reflect real constraints is directly challenged by evidence of systematic overconfidence bias in team self-assessment.</p><p class="MuiTypography-root MuiTypography-body1 css-pfi42a">Prior art <b class="MuiBox-root css-14m2n3d">established</b> · confidence <b class="MuiBox-root css-14m2n3d">high</b> · 5 citations · addresses 2 problems</p></div><div class="MuiBox-root css-l007jw">Contested</div></a><a class="MuiBox-root css-1j5ozyi" data-discover="true"><div class="MuiBox-root css-5on9ey">4</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">Structured Slack Time Drives Incremental Innovation</h3><span class="facet MuiBox-root css-1r6gvao">general</span></div><p class="MuiTypography-root MuiTypography-body1 css-1cri79p">Allocating roughly ten percent of squad time to self-directed experimentation produces both innovation and skill development.</p><p class="MuiTypography-root MuiTypography-body1 css-18uujtv" data-testid="verdict">An established mechanism confirmed across 70 years of practice, but contested because Google's program showed sustainability problems and the claim that high-frequency small sessions outperform isolated innovation phases has no direct empirical backing in the evidence.</p><p class="MuiTypography-root MuiTypography-body1 css-pfi42a">Prior art <b class="MuiBox-root css-14m2n3d">established</b> · confidence <b class="MuiBox-root css-14m2n3d">high</b> · 5 citations · addresses 0 problems</p></div><div class="MuiBox-root css-l007jw">Contested</div></a><a class="MuiBox-root css-1j5ozyi" data-discover="true"><div class="MuiBox-root css-5on9ey">5</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">External Coaching Enables Process Improvement at Scale</h3><span class="facet MuiBox-root css-1r6gvao">domain</span></div><p class="MuiTypography-root MuiTypography-body1 css-1cri79p">Providing dedicated agile coaches to squads accelerates process evolution and removes impediments without creating management overhead.</p><p class="MuiTypography-root MuiTypography-body1 css-18uujtv" data-testid="verdict">An established agile coaching practice, but the claim that external coaching is reliably superior to peer improvement and sufficient on its own is contested because peer coaching shows comparable benefits in some contexts and organisational design factors matter independently.</p><p class="MuiTypography-root MuiTypography-body1 css-pfi42a">Prior art <b class="MuiBox-root css-14m2n3d">established</b> · confidence <b class="MuiBox-root css-14m2n3d">medium</b> · 5 citations · addresses 1 problem</p></div><div class="MuiBox-root css-l007jw">Contested</div></a><a class="MuiBox-root css-1j5ozyi" data-discover="true"><div class="MuiBox-root css-5on9ey">6</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">Cross-Squad Roadmap Alignment Without Central Control</h3><span class="facet MuiBox-root css-1r6gvao">domain</span></div><p class="MuiTypography-root MuiTypography-body1 css-1cri79p">Product owners across squads collaborating on a shared high-level roadmap maintain strategic coherence without requiring centralized decision-making.</p><p class="MuiTypography-root MuiTypography-body1 css-18uujtv" data-testid="verdict">Squad autonomy maintained through shared strategic context is an established mechanism, but the claim's assumption that a shared roadmap alone prevents critical conflicts is contested because the literature consistently shows active reinforcement — OKRs, rituals, and communication loops — is required to prevent fragmentation and deadlock.</p><p class="MuiTypography-root MuiTypography-body1 css-pfi42a">Prior art <b class="MuiBox-root css-14m2n3d">established</b> · confidence <b class="MuiBox-root css-14m2n3d">high</b> · 5 citations · addresses 1 problem</p></div><div class="MuiBox-root css-l007jw">Contested</div></a><a class="MuiBox-root css-1j5ozyi" data-discover="true"><div class="MuiBox-root css-5on9ey">7</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">Dependency Mapping Enables Strategic Reorganization</h3><span class="facet MuiBox-root css-1r6gvao">general</span></div><p class="MuiTypography-root MuiTypography-body1 css-1cri79p">Regularly surveying and visualizing which squads depend on each other reveals blocking dependencies that can be resolved through prioritization, reorganization, or architectural changes.</p><p class="MuiTypography-root MuiTypography-body1 css-18uujtv" data-testid="verdict">A well-documented agile scaling practice where visualizing cross-team dependencies surfaces blockers and enables structural response, with no aspect of the claimed mechanism — visibility leading to prioritization, reorganization, or architectural resolution — absent from existing SAFe, Scrum, and agile program management literature.</p><p class="MuiTypography-root MuiTypography-body1 css-pfi42a">Prior art <b class="MuiBox-root css-14m2n3d">established</b> · confidence <b class="MuiBox-root css-14m2n3d">high</b> · 5 citations · addresses 2 problems</p></div><div class="MuiBox-root css-yk664i">Supported</div></a><a class="MuiBox-root css-1j5ozyi" data-discover="true"><div class="MuiBox-root css-5on9ey">8</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">Dunbar-Limited Groups Avoid Bureaucratic Overhead</h3><span class="facet MuiBox-root css-1r6gvao">general</span></div><p class="MuiTypography-root MuiTypography-body1 css-1cri79p">Keeping organizational groups below the Dunbar limit of about 100 people prevents the emergence of restrictive rules, bureaucracy, politics, and management layers.</p><p class="MuiTypography-root MuiTypography-body1 css-18uujtv" data-testid="verdict">The Dunbar limit and the size-to-formalization link are established, but the causal claim that group size alone prevents bureaucracy is contested because two JSTOR studies show only a weak size-structure relationship and the Springer source identifies environmental demands as a competing driver.</p><p class="MuiTypography-root MuiTypography-body1 css-pfi42a">Prior art <b class="MuiBox-root css-14m2n3d">extended</b> · confidence <b class="MuiBox-root css-14m2n3d">medium</b> · 5 citations · addresses 1 problem</p></div><div class="MuiBox-root css-l007jw">Contested</div></a><a class="MuiBox-root css-1j5ozyi" data-discover="true"><div class="MuiBox-root css-5on9ey">9</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">Autonomy Through Choice and Influence</h3><span class="facet MuiBox-root css-1r6gvao">general</span></div><p class="MuiTypography-root MuiTypography-body1 css-1cri79p">Squad members who can influence their work, choose tasks, and participate in planning develop stronger ownership and continuous improvement behaviors.</p><p class="MuiTypography-root MuiTypography-body1 css-18uujtv" data-testid="verdict">Autonomy driving ownership and continuous improvement is an established, well-documented mechanism, but the claim is contested because participation does not automatically produce improvement without organizational fit and personal responsibility as mediating conditions.</p><p class="MuiTypography-root MuiTypography-body1 css-pfi42a">Prior art <b class="MuiBox-root css-14m2n3d">established</b> · confidence <b class="MuiBox-root css-14m2n3d">high</b> · 5 citations · addresses 1 problem</p></div><div class="MuiBox-root css-l007jw">Contested</div></a><a class="MuiBox-root css-1j5ozyi" data-discover="true"><div class="MuiBox-root css-5on9ey">10</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">Demand-Driven Coordination Over Standing Meetings</h3><span class="facet MuiBox-root css-1r6gvao">general</span></div><p class="MuiTypography-root MuiTypography-body1 css-1cri79p">Large projects need temporary daily coordination only during periods of high interdependence, not permanent standing structures.</p><p class="MuiTypography-root MuiTypography-body1 css-18uujtv" data-testid="verdict">Daily synchronous coordination for dependency resolution is well-supported and partially covered in existing literature, but the explicit model of cross-squad structures that activate and dissolve based on project interdependence — rather than scaling meeting frequency — is a new dimension not stated in the sources.</p><p class="MuiTypography-root MuiTypography-body1 css-pfi42a">Prior art <b class="MuiBox-root css-14m2n3d">extended</b> · confidence <b class="MuiBox-root css-14m2n3d">medium</b> · 5 citations · addresses 2 problems</p></div><div class="MuiBox-root css-yk664i">Supported</div></a><a class="MuiBox-root css-1j5ozyi" data-discover="true"><div class="MuiBox-root css-5on9ey">11</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">System Owner Pairing for Architectural Integrity</h3><span class="facet MuiBox-root css-1r6gvao">domain</span></div><p class="MuiTypography-root MuiTypography-body1 css-1cri79p">Pairing system owners with complementary perspectives prevents architectural degradation in distributed service architectures.</p><p class="MuiTypography-root MuiTypography-body1 css-18uujtv" data-testid="verdict">Distributed ownership preventing architectural decay is well-supported, but the specific dev-plus-ops pairing mechanism has no direct evidence behind it, and the bottleneck assumption remains untested.</p><p class="MuiTypography-root MuiTypography-body1 css-pfi42a">Prior art <b class="MuiBox-root css-14m2n3d">extended</b> · confidence <b class="MuiBox-root css-14m2n3d">medium</b> · 4 citations · addresses 1 problem</p></div><div class="MuiBox-root css-l007jw">Contested</div></a><a class="MuiBox-root css-1j5ozyi" data-discover="true"><div class="MuiBox-root css-5on9ey">12</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">Professor-Entrepreneur Tension for Technical Balance</h3><span class="facet MuiBox-root css-1r6gvao">domain</span></div><p class="MuiTypography-root MuiTypography-body1 css-1cri79p">Healthy organizational balance requires both an entrepreneur role that pushes for speed and a professor role that advocates for quality, creating productive conflict.</p><p class="MuiTypography-root MuiTypography-body1 css-18uujtv" data-testid="verdict">A well-established dual-role mechanism for balancing speed and quality, but the claim that equal organisational weight alone makes the tension productive is contested because Gartner's findings show that without clear governance structures, the same setup can become a destructive power struggle.</p><p class="MuiTypography-root MuiTypography-body1 css-pfi42a">Prior art <b class="MuiBox-root css-14m2n3d">established</b> · confidence <b class="MuiBox-root css-14m2n3d">medium</b> · 5 citations · addresses 1 problem</p></div><div class="MuiBox-root css-l007jw">Contested</div></a></div><div class="MuiBox-root css-0"><div class="MuiBox-root css-dtuww2" id="prob"><h2 class="MuiTypography-root MuiTypography-body1 css-7w3mk3">Problems</h2><span class="MuiTypography-root MuiTypography-body1 css-farc2d">5 extracted</span></div><div class="MuiBox-root css-1fqobi" role="toolbar" aria-label="Filter problems"><span class="MuiBox-root css-hi808z" data-testid="filter-problems-all">All · 5</span><span class="MuiBox-root css-jvbkeq" data-testid="filter-class-critical-gap">Critical gap · 4</span><span class="MuiBox-root css-jvbkeq" data-testid="filter-class-solved-problem">Solved problem · 0</span><span class="MuiBox-root css-jvbkeq" data-testid="filter-class-unverified">Unverified · 1</span></div><a class="MuiBox-root css-1j5ozyi" data-discover="true"><div class="MuiBox-root css-5on9ey">1</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">Documentation Lag in Fast-Changing Organizations</h3><span class="facet MuiBox-root css-1r6gvao">observability</span></div><p class="MuiTypography-root MuiTypography-body1 css-1cri79p">Temporal obsolescence of organizational documentation prevents reliable external alignment with current operating practices.</p><p class="MuiTypography-root MuiTypography-body1 css-18uujtv" data-testid="verdict">Stakeholder misalignment is confirmed as costly, but no source in the brief links it to documentation lag as a cause, leaving the core blocker unverified.</p><p class="MuiTypography-root MuiTypography-body1 css-pfi42a">Confidence <b class="MuiBox-root css-14m2n3d">low</b> · 4 issues · 3 candidate solutions</p></div><div class="MuiBox-root css-1txhhen">Unverified</div></a><a class="MuiBox-root css-1j5ozyi" data-discover="true"><div class="MuiBox-root css-5on9ey">2</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">Autonomy Collapse at Organizational Scale</h3><span class="facet MuiBox-root css-1r6gvao">observability</span></div><p class="MuiTypography-root MuiTypography-body1 css-1cri79p">Organizational complexity prevents full squad autonomy and direct stakeholder engagement.</p><p class="MuiTypography-root MuiTypography-body1 css-18uujtv" data-testid="verdict">A critical gap — architectural guardrail frameworks reduce inter-squad dependencies but leave the direct stakeholder engagement breakdown at scale unsolved, and dependency measurement remains non-standard in practice.</p><p class="MuiTypography-root MuiTypography-body1 css-pfi42a">Confidence <b class="MuiBox-root css-14m2n3d">high</b> · 4 issues · 5 candidate solutions</p></div><div class="MuiBox-root css-1aphblq">Critical gap</div></a><a class="MuiBox-root css-1j5ozyi" data-discover="true"><div class="MuiBox-root css-5on9ey">3</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">Organizational Scaling Beyond Stable Group Limits</h3><span class="facet MuiBox-root css-1r6gvao">predictability</span></div><p class="MuiTypography-root MuiTypography-body1 css-1cri79p">Absence of context-specific coordination models prevents accurate prediction of team effectiveness at organizational scale.</p><p class="MuiTypography-root MuiTypography-body1 css-18uujtv" data-testid="verdict">No existing framework — including SAFe, LeSS, or Dunbar-derived models — has been empirically validated for large-scale coordination in non-survival knowledge work environments, as the Springer agile scaling study confirms none of them measurably improve team effectiveness.</p><p class="MuiTypography-root MuiTypography-body1 css-pfi42a">Confidence <b class="MuiBox-root css-14m2n3d">high</b> · 3 issues · 5 candidate solutions</p></div><div class="MuiBox-root css-1aphblq">Critical gap</div></a><a class="MuiBox-root css-1j5ozyi" data-discover="true"><div class="MuiBox-root css-5on9ey">4</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">Autonomy-Efficiency Cost Tradeoff</h3><span class="facet MuiBox-root css-1r6gvao">predictability</span></div><p class="MuiTypography-root MuiTypography-body1 css-1cri79p">Absence of clarity on autonomy-cost tradeoffs prevents optimal decisions about system independence.</p><p class="MuiTypography-root MuiTypography-body1 css-18uujtv" data-testid="verdict">A critical gap — no tool or framework in the brief recovers the bulk purchasing power and scale economies that Strategic Source and the OECD confirm are lost permanently when organizations move to decentralized autonomy.</p><p class="MuiTypography-root MuiTypography-body1 css-pfi42a">Confidence <b class="MuiBox-root css-14m2n3d">high</b> · 4 issues · 4 candidate solutions</p></div><div class="MuiBox-root css-1aphblq">Critical gap</div></a><a class="MuiBox-root css-1j5ozyi" data-discover="true"><div class="MuiBox-root css-5on9ey">5</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">Loss of Architectural Integrity in Distributed Systems</h3><span class="facet MuiBox-root css-1r6gvao">observability</span></div><p class="MuiTypography-root MuiTypography-body1 css-1cri79p">Missing unified system-wide accountability prevents early detection of architectural degradation.</p><p class="MuiTypography-root MuiTypography-body1 css-18uujtv" data-testid="verdict">A critical gap — SOA governance frameworks and unified observability tools both exist but neither assigns system-wide ownership nor automatically enforces architectural principles across independent services.</p><p class="MuiTypography-root MuiTypography-body1 css-pfi42a">Confidence <b class="MuiBox-root css-14m2n3d">high</b> · 4 issues · 5 candidate solutions</p></div><div class="MuiBox-root css-1aphblq">Critical gap</div></a></div><div class="MuiBox-root css-0"><div class="MuiBox-root css-dtuww2" id="ent"><h2 class="MuiTypography-root MuiTypography-body1 css-7w3mk3">Entities</h2><span class="MuiTypography-root MuiTypography-body1 css-farc2d">25 recorded</span></div><div class="MuiBox-root css-1fqobi" role="toolbar" aria-label="Filter entities"><span class="MuiBox-root css-hi808z" data-testid="filter-entities-all">All · 25</span><span class="MuiBox-root css-jvbkeq" data-testid="filter-role-core">Core · 19</span><span class="MuiBox-root css-jvbkeq" data-testid="filter-role-supporting">Supporting · 6</span><span class="MuiBox-root css-jvbkeq" data-testid="filter-category-mediating">mediating · 9</span><span class="MuiBox-root css-jvbkeq" data-testid="filter-category-physical">physical · 21</span><span class="MuiBox-root css-jvbkeq" data-testid="filter-category-continuant">continuant · 21</span><span class="MuiBox-root css-jvbkeq" data-testid="filter-category-structure">structure · 7</span><span class="MuiBox-root css-jvbkeq" data-testid="filter-category-independent">independent · 8</span><span class="MuiBox-root css-jvbkeq" data-testid="filter-category-object">object · 5</span><span class="MuiBox-root css-jvbkeq" data-testid="filter-category-abstract">abstract · 4</span><span class="MuiBox-root css-jvbkeq" data-testid="filter-category-schema">schema · 2</span><span class="MuiBox-root css-jvbkeq" data-testid="filter-category-relative">relative · 8</span><span class="MuiBox-root css-jvbkeq" data-testid="filter-category-juncture">juncture · 6</span><span class="MuiBox-root css-jvbkeq" data-testid="filter-category-occurrent">occurrent · 4</span><span class="MuiBox-root css-jvbkeq" data-testid="filter-category-situation">situation · 1</span><span class="MuiBox-root css-jvbkeq" data-testid="filter-category-history">history · 1</span><span class="MuiBox-root css-jvbkeq" data-testid="filter-category-participation">participation · 1</span><span class="MuiBox-root css-jvbkeq" data-testid="filter-category-process">process · 1</span><span class="MuiBox-root css-jvbkeq" data-testid="filter-category-reason">reason · 1</span></div><div class="MuiBox-root css-5lz4th"><div class="MuiBox-root css-5on9ey">1</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">Squad</h3><span class="facet MuiBox-root css-1r6gvao">mediating</span><span class="facet MuiBox-root css-1r6gvao">physical</span><span class="facet MuiBox-root css-1r6gvao">continuant</span><span class="facet MuiBox-root css-1r6gvao">structure</span></div><p class="MuiTypography-root MuiTypography-body1 css-p460jh">The basic vertical-alignment unit of development at Spotify, functioning as a self-organizing mini-startup with all skills needed for design, development, testing, and production release. Squads are the fundamental building blocks of the Spotify organizational model and the primary locus of autonomy and decision-making.</p></div><div class="MuiBox-root css-1lomgqw">Core</div></div><div class="MuiBox-root css-5lz4th"><div class="MuiBox-root css-5on9ey">2</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">Spotify</h3><span class="facet MuiBox-root css-1r6gvao">independent</span><span class="facet MuiBox-root css-1r6gvao">physical</span><span class="facet MuiBox-root css-1r6gvao">continuant</span><span class="facet MuiBox-root css-1r6gvao">object</span></div><p class="MuiTypography-root MuiTypography-body1 css-p460jh">A music streaming company that has scaled agile practices to over 30 teams across 3 cities while maintaining an agile mindset and serving over 15 million active users. Spotify exemplifies successful organizational scaling in product development.</p></div><div class="MuiBox-root css-1lomgqw">Core</div></div><div class="MuiBox-root css-5lz4th"><div class="MuiBox-root css-5on9ey">3</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">Tribe</h3><span class="facet MuiBox-root css-1r6gvao">mediating</span><span class="facet MuiBox-root css-1r6gvao">physical</span><span class="facet MuiBox-root css-1r6gvao">continuant</span><span class="facet MuiBox-root css-1r6gvao">structure</span></div><p class="MuiTypography-root MuiTypography-body1 css-p460jh">A container-level organizational unit in the Spotify Agile model that groups multiple Squads and Chapters together under unified leadership. Tribes mediate the coordination of vertically-aligned Squads and horizontally-aligned Chapters, organizing them into coherent product delivery structures.</p></div><div class="MuiBox-root css-1lomgqw">Core</div></div><div class="MuiBox-root css-5lz4th"><div class="MuiBox-root css-5on9ey">4</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">Chapter</h3><span class="facet MuiBox-root css-1r6gvao">mediating</span><span class="facet MuiBox-root css-1r6gvao">physical</span><span class="facet MuiBox-root css-1r6gvao">continuant</span><span class="facet MuiBox-root css-1r6gvao">structure</span></div><p class="MuiTypography-root MuiTypography-body1 css-p460jh">A horizontal intra-Tribe alignment organizational unit that groups individuals with similar roles across different Squads within the same Tribe. Chapters facilitate expertise sharing and consistency in functional areas while maintaining Squad autonomy.</p></div><div class="MuiBox-root css-1lomgqw">Core</div></div><div class="MuiBox-root css-5lz4th"><div class="MuiBox-root css-5on9ey">5</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">Guild</h3><span class="facet MuiBox-root css-1r6gvao">mediating</span><span class="facet MuiBox-root css-1r6gvao">physical</span><span class="facet MuiBox-root css-1r6gvao">continuant</span><span class="facet MuiBox-root css-1r6gvao">structure</span></div><p class="MuiTypography-root MuiTypography-body1 css-p460jh">A cross-Tribe and cross-Squad organizational unit representing a broad community of practice that links people with shared interests across the entire organization. Guilds span organizational boundaries to enable knowledge transfer and collaboration on topics of common concern.</p></div><div class="MuiBox-root css-1lomgqw">Core</div></div><div class="MuiBox-root css-5lz4th"><div class="MuiBox-root css-5on9ey">6</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">Henrik Kniberg</h3><span class="facet MuiBox-root css-1r6gvao">independent</span><span class="facet MuiBox-root css-1r6gvao">physical</span><span class="facet MuiBox-root css-1r6gvao">continuant</span><span class="facet MuiBox-root css-1r6gvao">object</span></div><p class="MuiTypography-root MuiTypography-body1 css-p460jh">Co-author of the Spotify organizational model document alongside Anders Ivarsson. Kniberg has presented at conferences and engaged in discussions regarding Spotify's scaled agile practices.</p></div><div class="MuiBox-root css-15h8v06">Supporting</div></div><div class="MuiBox-root css-5lz4th"><div class="MuiBox-root css-5on9ey">7</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">Anders Ivarsson</h3><span class="facet MuiBox-root css-1r6gvao">independent</span><span class="facet MuiBox-root css-1r6gvao">physical</span><span class="facet MuiBox-root css-1r6gvao">continuant</span><span class="facet MuiBox-root css-1r6gvao">object</span></div><p class="MuiTypography-root MuiTypography-body1 css-p460jh">Co-author of the Spotify organizational model document alongside Henrik Kniberg. Ivarsson has presented at conferences and engaged in discussions regarding Spotify's scaled agile practices.</p></div><div class="MuiBox-root css-15h8v06">Supporting</div></div><div class="MuiBox-root css-5lz4th"><div class="MuiBox-root css-5on9ey">8</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">Spotify Agile Organizational Model</h3><span class="facet MuiBox-root css-1r6gvao">independent</span><span class="facet MuiBox-root css-1r6gvao">abstract</span><span class="facet MuiBox-root css-1r6gvao">continuant</span><span class="facet MuiBox-root css-1r6gvao">schema</span></div><p class="MuiTypography-root MuiTypography-body1 css-p460jh">An abstract organizational schema comprising Tribes, Squads, Chapters, and Guilds designed to maintain agile principles while scaling to hundreds of developers across multiple cities. The model represents a structural pattern for coordinating autonomous teams within hierarchical and matrix-based relationships.</p></div><div class="MuiBox-root css-1lomgqw">Core</div></div><div class="MuiBox-root css-5lz4th"><div class="MuiBox-root css-5on9ey">9</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">Product Owner</h3><span class="facet MuiBox-root css-1r6gvao">relative</span><span class="facet MuiBox-root css-1r6gvao">physical</span><span class="facet MuiBox-root css-1r6gvao">continuant</span><span class="facet MuiBox-root css-1r6gvao">juncture</span></div><p class="MuiTypography-root MuiTypography-body1 css-p460jh">A Product Owner is a relative physical continuant representing a stable relationship between a Squad and organizational priorities. The Product Owner maintains the connection between the Squad's work and business value, responsible for prioritizing the backlog while remaining detached from implementation details.</p></div><div class="MuiBox-root css-1lomgqw">Core</div></div><div class="MuiBox-root css-5lz4th"><div class="MuiBox-root css-5on9ey">10</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">Agile Coach</h3><span class="facet MuiBox-root css-1r6gvao">relative</span><span class="facet MuiBox-root css-1r6gvao">physical</span><span class="facet MuiBox-root css-1r6gvao">continuant</span><span class="facet MuiBox-root css-1r6gvao">juncture</span></div><p class="MuiTypography-root MuiTypography-body1 css-p460jh">An Agile Coach is a relative physical continuant that establishes a stable facilitative relationship between a Squad and its process improvement. Agile Coaches help Squads identify impediments, run ceremonies like retrospectives and sprint planning, and provide continuous coaching to evolve working practices.</p></div><div class="MuiBox-root css-1lomgqw">Core</div></div><div class="MuiBox-root css-5lz4th"><div class="MuiBox-root css-5on9ey">11</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">Hack Days</h3><span class="facet MuiBox-root css-1r6gvao">mediating</span><span class="facet MuiBox-root css-1r6gvao">physical</span><span class="facet MuiBox-root css-1r6gvao">occurrent</span><span class="facet MuiBox-root css-1r6gvao">situation</span></div><p class="MuiTypography-root MuiTypography-body1 css-p460jh">Hack days are mediating physical occurrents that organize Squad members into collaborative innovation events. These designated time periods (approximately 10% of working time) mediate the relationship between team members and experimental product development, enabling exploration of new tools and potential innovations.</p></div><div class="MuiBox-root css-15h8v06">Supporting</div></div><div class="MuiBox-root css-5lz4th"><div class="MuiBox-root css-5on9ey">12</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">Quarterly Survey</h3><span class="facet MuiBox-root css-1r6gvao">relative</span><span class="facet MuiBox-root css-1r6gvao">abstract</span><span class="facet MuiBox-root css-1r6gvao">occurrent</span><span class="facet MuiBox-root css-1r6gvao">history</span></div><p class="MuiTypography-root MuiTypography-body1 css-p460jh">A quarterly survey is a relative abstract occurrent—a periodic record-gathering instrument used to assess and track Squad autonomy and organizational health. The survey captures both current state and trend data, enabling identification of impediments requiring organizational focus.</p></div><div class="MuiBox-root css-15h8v06">Supporting</div></div><div class="MuiBox-root css-5lz4th"><div class="MuiBox-root css-5on9ey">13</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">Squad Workspace</h3><span class="facet MuiBox-root css-1r6gvao">independent</span><span class="facet MuiBox-root css-1r6gvao">physical</span><span class="facet MuiBox-root css-1r6gvao">continuant</span><span class="facet MuiBox-root css-1r6gvao">object</span></div><p class="MuiTypography-root MuiTypography-body1 css-p460jh">A Squad workspace is an independent physical continuant—the physical environment housing Squad members and resources. Workspaces typically include desk areas, lounge areas, huddle rooms, and whiteboards, designed to facilitate collaboration and creative problem-solving.</p></div><div class="MuiBox-root css-15h8v06">Supporting</div></div><div class="MuiBox-root css-5lz4th"><div class="MuiBox-root css-5on9ey">14</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">Dependency</h3><span class="facet MuiBox-root css-1r6gvao">relative</span><span class="facet MuiBox-root css-1r6gvao">physical</span><span class="facet MuiBox-root css-1r6gvao">occurrent</span><span class="facet MuiBox-root css-1r6gvao">participation</span></div><p class="MuiTypography-root MuiTypography-body1 css-p460jh">A relative relationship between squads where one squad's work is contingent upon or affected by another squad's work. Dependencies can be blocking, slowing, or neutral; the organization actively tracks and minimizes problematic dependencies.</p></div><div class="MuiBox-root css-1lomgqw">Core</div></div><div class="MuiBox-root css-5lz4th"><div class="MuiBox-root css-5on9ey">15</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">Large Project</h3><span class="facet MuiBox-root css-1r6gvao">independent</span><span class="facet MuiBox-root css-1r6gvao">physical</span><span class="facet MuiBox-root css-1r6gvao">occurrent</span><span class="facet MuiBox-root css-1r6gvao">process</span></div><p class="MuiTypography-root MuiTypography-body1 css-p460jh">A recent initiative at Spotify that required coordinated work from multiple squads over several months. The large project serves as a concrete example of when formal synchronization mechanisms become necessary despite squad autonomy.</p></div><div class="MuiBox-root css-1lomgqw">Core</div></div><div class="MuiBox-root css-5lz4th"><div class="MuiBox-root css-5on9ey">16</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">Operations Team</h3><span class="facet MuiBox-root css-1r6gvao">mediating</span><span class="facet MuiBox-root css-1r6gvao">physical</span><span class="facet MuiBox-root css-1r6gvao">continuant</span><span class="facet MuiBox-root css-1r6gvao">structure</span></div><p class="MuiTypography-root MuiTypography-body1 css-p460jh">A specialized team at Spotify responsible for providing infrastructure, scripts, and routines that enable individual squads to release code independently. The operations team shifts from the traditional dev-ops handoff model to a supportive, self-service paradigm.</p></div><div class="MuiBox-root css-1lomgqw">Core</div></div><div class="MuiBox-root css-5lz4th"><div class="MuiBox-root css-5on9ey">17</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">Autonomy</h3><span class="facet MuiBox-root css-1r6gvao">mediating</span><span class="facet MuiBox-root css-1r6gvao">abstract</span><span class="facet MuiBox-root css-1r6gvao">continuant</span><span class="facet MuiBox-root css-1r6gvao">reason</span></div><p class="MuiTypography-root MuiTypography-body1 css-p460jh">The degree of independent decision-making and operational freedom granted to squads. Full autonomy is presented as a double-edged proposition that risks losing economies of scale and organizational coherence.</p></div><div class="MuiBox-root css-1lomgqw">Core</div></div><div class="MuiBox-root css-5lz4th"><div class="MuiBox-root css-5on9ey">18</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">System</h3><span class="facet MuiBox-root css-1r6gvao">independent</span><span class="facet MuiBox-root css-1r6gvao">physical</span><span class="facet MuiBox-root css-1r6gvao">continuant</span><span class="facet MuiBox-root css-1r6gvao">object</span></div><p class="MuiTypography-root MuiTypography-body1 css-p460jh">An independent physical continuant representing individual technical systems within Spotify's architecture. Over 100 distinct systems exist at Spotify, each maintainable and deployable separately, and each requiring a system owner to preserve architectural integrity.</p></div><div class="MuiBox-root css-1lomgqw">Core</div></div><div class="MuiBox-root css-5lz4th"><div class="MuiBox-root css-5on9ey">19</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">System Owner</h3><span class="facet MuiBox-root css-1r6gvao">relative</span><span class="facet MuiBox-root css-1r6gvao">physical</span><span class="facet MuiBox-root css-1r6gvao">continuant</span><span class="facet MuiBox-root css-1r6gvao">juncture</span></div><p class="MuiTypography-root MuiTypography-body1 css-p460jh">A stable relational role responsible for maintaining the integrity and coherent architecture of individual systems within Spotify's service-oriented environment. All systems at Spotify have system owners (typically paired), with operationally critical systems assigned a Dev-Ops pair combining developer and operations perspectives.</p></div><div class="MuiBox-root css-1lomgqw">Core</div></div><div class="MuiBox-root css-5lz4th"><div class="MuiBox-root css-5on9ey">20</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">Matrix Organization</h3><span class="facet MuiBox-root css-1r6gvao">mediating</span><span class="facet MuiBox-root css-1r6gvao">physical</span><span class="facet MuiBox-root css-1r6gvao">continuant</span><span class="facet MuiBox-root css-1r6gvao">structure</span></div><p class="MuiTypography-root MuiTypography-body1 css-p460jh">A mediating organizational structure that integrates multiple dimensions of reporting and collaboration. Spotify's variant differs from standard matrix organizations by prioritizing delivery-oriented squads (vertical dimension) over functional department pooling, with horizontal knowledge-sharing dimensions mediated by chapter leads.</p></div><div class="MuiBox-root css-1lomgqw">Core</div></div><div class="MuiBox-root css-5lz4th"><div class="MuiBox-root css-5on9ey">21</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">Chapter Lead</h3><span class="facet MuiBox-root css-1r6gvao">relative</span><span class="facet MuiBox-root css-1r6gvao">physical</span><span class="facet MuiBox-root css-1r6gvao">continuant</span><span class="facet MuiBox-root css-1r6gvao">juncture</span></div><p class="MuiTypography-root MuiTypography-body1 css-p460jh">A stable relational role that facilitates and supports the horizontal dimension of Spotify's matrix organization, focused on sharing knowledge, tools, and code among squad members. The chapter lead embodies the 'professor' archetype, emphasizing technical excellence and competency development.</p></div><div class="MuiBox-root css-1lomgqw">Core</div></div><div class="MuiBox-root css-5lz4th"><div class="MuiBox-root css-5on9ey">22</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">PO</h3><span class="facet MuiBox-root css-1r6gvao">relative</span><span class="facet MuiBox-root css-1r6gvao">physical</span><span class="facet MuiBox-root css-1r6gvao">continuant</span><span class="facet MuiBox-root css-1r6gvao">juncture</span></div><p class="MuiTypography-root MuiTypography-body1 css-p460jh">A stable relational role (Product Owner) that embodies the 'entrepreneur' or 'product champion' archetype, focused on delivering great products and determining prioritization priorities. The PO role creates productive tension with the chapter lead by prioritizing speed and feature delivery.</p></div><div class="MuiBox-root css-1lomgqw">Core</div></div><div class="MuiBox-root css-5lz4th"><div class="MuiBox-root css-5on9ey">23</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">Dev-Ops Pair</h3><span class="facet MuiBox-root css-1r6gvao">mediating</span><span class="facet MuiBox-root css-1r6gvao">physical</span><span class="facet MuiBox-root css-1r6gvao">continuant</span><span class="facet MuiBox-root css-1r6gvao">structure</span></div><p class="MuiTypography-root MuiTypography-body1 css-p460jh">A mediating physical structure pairing a developer perspective with an operations perspective to jointly serve as system owner for operationally critical systems at Spotify. This structural arrangement mediates the tensions between development speed and operational stability in critical infrastructure.</p></div><div class="MuiBox-root css-15h8v06">Supporting</div></div><div class="MuiBox-root css-5lz4th"><div class="MuiBox-root css-5on9ey">24</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">Scaling Model</h3><span class="facet MuiBox-root css-1r6gvao">independent</span><span class="facet MuiBox-root css-1r6gvao">abstract</span><span class="facet MuiBox-root css-1r6gvao">continuant</span><span class="facet MuiBox-root css-1r6gvao">schema</span></div><p class="MuiTypography-root MuiTypography-body1 css-p460jh">An abstract organizational structure introduced at Spotify to manage rapid growth through squads, tribes, chapters, and guilds. The model provides a framework for maintaining coordination and autonomy.</p></div><div class="MuiBox-root css-1lomgqw">Core</div></div><div class="MuiBox-root css-5lz4th"><div class="MuiBox-root css-5on9ey">25</div><div class="MuiBox-root css-1fjtzvx"><div class="MuiBox-root css-1tvmhmr"><h3 class="MuiTypography-root MuiTypography-body1 css-1i86ghc">Chief Architect</h3><span class="facet MuiBox-root css-1r6gvao">relative</span><span class="facet MuiBox-root css-1r6gvao">physical</span><span class="facet MuiBox-root css-1r6gvao">continuant</span><span class="facet MuiBox-root css-1r6gvao">juncture</span></div><p class="MuiTypography-root MuiTypography-body1 css-p460jh">A role responsible for coordinating high-level architectural decisions across multiple systems. The chief architect provides guidance and ensures alignment with organizational architectural vision without making final decisions.</p></div><div class="MuiBox-root css-1lomgqw">Core</div></div></div></div>
+</div>
+  <div class="assay-cta">
+    <p class="eyebrow">This is the summary view</p>
+    <h3>See the full evidence trail</h3>
+    <p>Every claim above, unabridged — full citations, entity relationships, and reviewer confidence for each hypothesis
+      and problem.</p>
+    <div class="actions">
+      <a class="assay-btn assay-btn-fill" href="scaling-agile-at-spotify-full.html">See Full Report</a>
+      <a class="assay-btn assay-btn-outline" href="https://app.assay.it">Analyze Your Own Document</a>
+    </div>
+  </div>
+</body>
+
+<script defer src="https://cloud.umami.is/script.js" data-website-id="bae4b2a1-d1ab-4491-8e63-b3a296a20aab"></script>
+
+</html>

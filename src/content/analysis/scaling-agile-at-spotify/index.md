@@ -139,7 +139,7 @@ related:
 
 In 2012 two coaches at Spotify published a paper describing how the company organized its engineering: autonomous Squads grouped into Tribes, cut horizontally by Chapters and Guilds. It became the most copied org chart in software. The authors opened it with a warning that this was a snapshot of a company and still figuring things out. However, the industry cited it as a grond truth blueprint.
 
-We ran the full document through Assay. Twelve hypotheses and five problems extracted, each verified independently against public sources. Two hypotheses came back supported, ten contested, and none novel.
+We ran the full document through https://app.assay.it. Twelve hypotheses and five problems extracted, each verified independently against public sources. Two hypotheses came back supported, ten contested, and none novel.
 
 The structure itself is reasonable and not a new. Vertical teams crossed with horizontal communities is a matrix organization plus communities of practice. It is documented since the mid-20th century. What the paper contributes is the honesty of its open problems, and four of the five it names remain critical gaps today: (i) autonomy erodes into hidden dependencies as team count grows, (ii) no scaling framework has been shown to improve team effectiveness, (iii) the cost of independence is still unquantified, and (iv) distributed ownership still leaves nobody accountable for the architecture as a whole.
 

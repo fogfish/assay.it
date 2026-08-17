@@ -9,12 +9,12 @@ import Button from "@/components/ui/Button.astro";
 import { ArrowRight } from "@lucide/astro";
 
 interface Props {
-	/** Route to the exported full report, when the folder ships one. */
-	reportUrl?: string;
-	reportLabel?: string;
+  /** Route to the exported full report, when the folder ships one. */
+  reportUrl?: string;
+  reportLabel?: string;
 }
 
-const { reportUrl, reportLabel = "Open the full dossier" } = Astro.props;
+const { reportUrl, reportLabel = "Open the full analysis" } = Astro.props;
 ---
 
 <!-- No reveal animation here on purpose: this is the page's conversion

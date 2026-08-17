@@ -122,7 +122,7 @@ reports:
 
 In 2023 a team inside Amazon Prime Video published what became the most-argued-about engineering post of the decade: they collapsed a serverless audio/video monitoring microservice architecture into a monolith and cut costs by about 90%. The internet read it as *Amazon abandons microservices*.
 
-We ran the full document through Assay. Four hypotheses and three problems extracted, each verified independently against public sources. The headline result is not that the post is wrong.
+We ran the full document through https://app.assay.it. Four hypotheses and three problems extracted, each verified independently against public sources. The headline result is not that the post is wrong.
 
 Keeping processing stages inside a single container with shared memory cuts inter-stage latency to near zero, and this trade-off between efficiency and scalability is well understood. However, the performance gains attributed to distributed design patterns cannot be cleanly separated from the specific tools and storage choices used to implement them, making it impossible to judge whether the architecture itself is sound.
 

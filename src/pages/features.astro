@@ -1,105 +1,115 @@
 ---
-import Layout from "@/layouts/Layout.astro";
-import PageHeader from "@/components/elements/PageHeader.astro";
-import Button from "@/components/ui/Button.astro";
-import BrowserFrame from "@/components/ui/BrowserFrame.astro";
-import DossierIndexPreview from "@/components/widgets/DossierIndexPreview.astro";
-import DossierEntryPreview from "@/components/widgets/DossierEntryPreview.astro";
-import { examples } from "@/collections/dossier-demo.js";
 import { getCollection } from "astro:content";
-import { ANALYSIS_BASE, analysisPath, featuredAnalysis } from "@/utils/analysis.js";
+import { examples } from "@/collections/dossier-demo.js";
+import PageHeader from "@/components/elements/PageHeader.astro";
+import BrowserFrame from "@/components/ui/BrowserFrame.astro";
+import Button from "@/components/ui/Button.astro";
+import DossierEntryPreview from "@/components/widgets/DossierEntryPreview.astro";
+import DossierIndexPreview from "@/components/widgets/DossierIndexPreview.astro";
+import Layout from "@/layouts/Layout.astro";
 import {
-  FileSearch, ScanSearch, FileCheck, Scale, Link2, ShieldAlert,
-  ArrowRight, Check,
+	ANALYSIS_BASE,
+	analysisPath,
+	featuredAnalysis,
+} from "@/utils/analysis.js";
+import {
+	ArrowRight,
+	Check,
+	FileCheck,
+	FileSearch,
+	Link2,
+	Scale,
+	ScanSearch,
+	ShieldAlert,
 } from "@lucide/astro";
 
 // The published example the closing CTA points at — resolved from the
 // analysis collection so no slug is hardcoded here.
 const featuredEntry = featuredAnalysis(await getCollection("analysis"));
 const featuredExample = featuredEntry
-  ? analysisPath(featuredEntry.id)
-  : ANALYSIS_BASE;
+	? analysisPath(featuredEntry.id)
+	: ANALYSIS_BASE;
 
 const featureModules = [
-  {
-    icon: FileSearch,
-    title: "Claim extraction, not summarization",
-    desc: "Assay reads the full document and isolates every substantive claim the author stated, the vendor's performance numbers, the migration story's savings, the benchmark's methodology. It builds a claim inventory, not a summary.",
-    points: [
-      "Typically 9 - 10 claims per 10 page document",
-      "Works on whitepapers, benchmarks, blog posts, design docs",
-      "The claim inventory is the input to downstream validation",
-    ],
-    direction: "left",
-    visual: "extract",
-    url: "https://app.assay.it",
-  },
-  {
-    icon: ScanSearch,
-    title: "An independent validation of each claim",
-    desc: "Each claim gets its own deep validation against public documentation, academic papers, articles, blogs and web sources. Not one search across the whole document, but a dedicated verification pass per claim.",
-    points: [
-      "Each claim is validated independently",
-      "Runs on Anthropic models",
-      "Typical run time: 9–10 minutes for a 5-page document",
-    ],
-    direction: "right",
-    visual: "verify",
-    url: "https://app.assay.it",
-  },
-  {
-    icon: FileCheck,
-    title: "A decision-ready one-pager",
-    desc: "You get a paper: every claim, a verdict, the evidence behind it, and links to every source, so you can check the checker before you cite it in your own work.",
-    points: [
-      "Claim-by-claim verdict with citations",
-      "Exported as Markdown or styled HTML",
-      "Provides both one-pager executive summary and detailed analysis",
-    ],
-    direction: "left",
-    visual: "deliver",
-    url: "https://app.assay.it",
-  },
-  {
-    icon: Scale,
-    title: "Four verdicts, not a confidence score",
-    desc: "Every claim resolves to one of four states — no vague percentage, no false precision. You know exactly how much weight a claim can bear.",
-    points: [
-      "Supported — confirmed by prior art or an independent source",
-      "Contested — evidence is mixed or context-dependent",
-      "Contradicted — current evidence disagrees with the claim",
-      "Unverifiable — no independent source exists, and Assay says so instead of guessing",
-    ],
-    direction: "right",
-    visual: "verdicts",
-    url: "https://app.assay.it",
-  },
-  {
-    icon: Link2,
-    title: "Every verdict cites its sources",
-    desc: "No verdict without a citation. Documentation pages, benchmark repos, issue threads, postmortems — the evidence trail is part of the deliverable, not an afterthought.",
-    points: [
-      "Every verdict links the evidence behind it",
-      "Disagree with a verdict? Check the same sources Assay did",
-      "Treat it as a research assistant you can audit, not an oracle",
-    ],
-    direction: "left",
-    visual: "sources",
-    url: "https://app.assay.it",
-  },
-  {
-    icon: ShieldAlert,
-    title: "Won't oversell what it can't do",
-    desc: "A verification tool that oversells itself would be a bad joke. Assay tells you when it doesn't know, and leaves the judgment calls to you.",
-    points: [
-      "No “absolute certainty” — verdicts are evidence-backed judgments",
-      "Unverifiable means unverifiable, not “probably fine”",
-      "Won't tell you if the technology fits your context — that's still your call",
-    ],
-    direction: "right",
-    visual: "limits",
-    url: "https://app.assay.it",
-  },
+	{
+		icon: FileSearch,
+		title: "Claim extraction, not summarization",
+		desc: "Assay reads the full document and isolates every substantive claim the author stated, the vendor's performance numbers, the migration story's savings, the benchmark's methodology. It builds a claim inventory, not a summary.",
+		points: [
+			"Typically 9 - 10 claims per 10 page document",
+			"Works on whitepapers, benchmarks, blog posts, design docs",
+			"The claim inventory is the input to downstream validation",
+		],
+		direction: "left",
+		visual: "extract",
+		url: "https://app.assay.it",
+	},
+	{
+		icon: ScanSearch,
+		title: "An independent validation of each claim",
+		desc: "Each claim gets its own deep validation against public documentation, academic papers, articles, blogs and web sources. Not one search across the whole document, but a dedicated verification pass per claim.",
+		points: [
+			"Each claim is validated independently",
+			"Runs on Anthropic models",
+			"Typical run time: 9–10 minutes for a 5-page document",
+		],
+		direction: "right",
+		visual: "verify",
+		url: "https://app.assay.it",
+	},
+	{
+		icon: FileCheck,
+		title: "A decision-ready one-pager",
+		desc: "You get a paper: every claim, a verdict, the evidence behind it, and links to every source, so you can check the checker before you cite it in your own work.",
+		points: [
+			"Claim-by-claim verdict with citations",
+			"Exported as Markdown or styled HTML",
+			"Provides both one-pager executive summary and detailed analysis",
+		],
+		direction: "left",
+		visual: "deliver",
+		url: "https://app.assay.it",
+	},
+	{
+		icon: Scale,
+		title: "Four verdicts, not a confidence score",
+		desc: "Every claim resolves to one of four states — no vague percentage, no false precision. You know exactly how much weight a claim can bear.",
+		points: [
+			"Supported — confirmed by prior art or an independent source",
+			"Contested — evidence is mixed or context-dependent",
+			"Contradicted — current evidence disagrees with the claim",
+			"Unverifiable — no independent source exists, and Assay says so instead of guessing",
+		],
+		direction: "right",
+		visual: "verdicts",
+		url: "https://app.assay.it",
+	},
+	{
+		icon: Link2,
+		title: "Every verdict cites its sources",
+		desc: "No verdict without a citation. Documentation pages, benchmark repos, issue threads, postmortems — the evidence trail is part of the deliverable, not an afterthought.",
+		points: [
+			"Every verdict links the evidence behind it",
+			"Disagree with a verdict? Check the same sources Assay did",
+			"Treat it as a research assistant you can audit, not an oracle",
+		],
+		direction: "left",
+		visual: "sources",
+		url: "https://app.assay.it",
+	},
+	{
+		icon: ShieldAlert,
+		title: "Won't oversell what it can't do",
+		desc: "A verification tool that oversells itself would be a bad joke. Assay tells you when it doesn't know, and leaves the judgment calls to you.",
+		points: [
+			"No “absolute certainty” — verdicts are evidence-backed judgments",
+			"Unverifiable means unverifiable, not “probably fine”",
+			"Won't tell you if the technology fits your context — that's still your call",
+		],
+		direction: "right",
+		visual: "limits",
+		url: "https://app.assay.it",
+	},
 ];
 
 // The same claim, followed end to end: appears in the dossier list, gets

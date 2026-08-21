@@ -1,46 +1,46 @@
 ---
-import Layout from "@/layouts/Layout.astro";
 import PageHeader from "@/components/elements/PageHeader.astro";
 import Button from "@/components/ui/Button.astro";
+import Layout from "@/layouts/Layout.astro";
 import {
-  ArrowRight,
-  Scale,
-  CircleQuestionMark,
-  Link2,
-  User,
-  FileCheck,
-  ShieldCheck,
-  UserCheck,
+	ArrowRight,
+	CircleQuestionMark,
+	FileCheck,
+	Link2,
+	Scale,
+	ShieldCheck,
+	User,
+	UserCheck,
 } from "@lucide/astro";
 
 const values = [
-  {
-    icon: Scale,
-    title: "Evidence over confidence",
-    desc: "Verdicts are evidence-backed judgments, not a manufactured certainty score. Every one links its sources so you can disagree with it.",
-  },
-  {
-    icon: CircleQuestionMark,
-    title: "Honest about unverifiable",
-    desc: "When no independent source exists, Assay says so instead of guessing. Knowing what rests on the author's word alone is half the value.",
-  },
-  {
-    icon: Link2,
-    title: "Cite everything",
-    desc: "No verdict without a citation. The evidence trail is part of the deliverable, so you can check the checker in minutes.",
-  },
-  {
-    icon: User,
-    title: "Small by design",
-    desc: "Built and run by one engineer. No growth targets to hit, no roadmap shaped by anyone but the people actually using it.",
-  },
+	{
+		icon: Scale,
+		title: "Evidence over confidence",
+		desc: "Verdicts are evidence-backed judgments, not a manufactured certainty score. Every one links its sources so you can disagree with it.",
+	},
+	{
+		icon: CircleQuestionMark,
+		title: "Honest about unverifiable",
+		desc: "When no independent source exists, Assay says so instead of guessing. Knowing what rests on the author's word alone is half the value.",
+	},
+	{
+		icon: Link2,
+		title: "Cite everything",
+		desc: "No verdict without a citation. The evidence trail is part of the deliverable, so you can check the checker in minutes.",
+	},
+	{
+		icon: User,
+		title: "Small by design",
+		desc: "Built and run by one engineer. No growth targets to hit, no roadmap shaped by anyone but the people actually using it.",
+	},
 ];
 
 const personas = [
-  { icon: FileCheck, label: "RFC & ADR authors" },
-  { icon: Scale, label: "Build-vs-buy evaluators" },
-  { icon: ShieldCheck, label: "Architects vetting vendors" },
-  { icon: UserCheck, label: "Anyone whose name goes on the doc" },
+	{ icon: FileCheck, label: "RFC & ADR authors" },
+	{ icon: Scale, label: "Build-vs-buy evaluators" },
+	{ icon: ShieldCheck, label: "Architects vetting vendors" },
+	{ icon: UserCheck, label: "Anyone whose name goes on the doc" },
 ];
 ---
 

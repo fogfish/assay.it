@@ -1,21 +1,26 @@
 ---
-const { content, layout = "vertical", "data-aos": dataAos, "data-aos-delay": dataAosDelay } = Astro.props;
+const {
+	content,
+	layout = "vertical",
+	"data-aos": dataAos,
+	"data-aos-delay": dataAosDelay,
+} = Astro.props;
 
 const {
-  title,
-  description,
-  publishDate,
-  tags = [] as string[],
-  img,
-  img_alt,
-  slug,
-  link
+	title,
+	description,
+	publishDate,
+	tags = [] as string[],
+	img,
+	img_alt,
+	slug,
+	link,
 } = content;
 
-const formattedDate = new Date(publishDate).toLocaleDateString('en-US', {
-  year: 'numeric',
-  month: 'short',
-  day: 'numeric'
+const formattedDate = new Date(publishDate).toLocaleDateString("en-US", {
+	year: "numeric",
+	month: "short",
+	day: "numeric",
 });
 
 const postLink = link || `/blog/${slug}`;

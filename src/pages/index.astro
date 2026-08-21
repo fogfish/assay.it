@@ -1,32 +1,36 @@
 ---
-import Layout from "@/layouts/Layout.astro";
-import HeroSection from "@/components/home/HeroSection.astro";
-import SectionHeader from "@/components/elements/SectionHeader.astro";
-import Pricing from "@/components/sections/Pricing.astro";
-import FAQ from "@/components/sections/FAQ.astro";
-import Button from "@/components/ui/Button.astro";
-import BrowserFrame from "@/components/ui/BrowserFrame.astro";
-import DossierIndexPreview from "@/components/widgets/DossierIndexPreview.astro";
-import DossierEntryPreview from "@/components/widgets/DossierEntryPreview.astro";
-import { examples } from "@/collections/dossier-demo.js";
 import { getCollection } from "astro:content";
-import { ANALYSIS_BASE, analysisPath, featuredAnalysis } from "@/utils/analysis.js";
+import { examples } from "@/collections/dossier-demo.js";
+import SectionHeader from "@/components/elements/SectionHeader.astro";
+import HeroSection from "@/components/home/HeroSection.astro";
+import FAQ from "@/components/sections/FAQ.astro";
+import Pricing from "@/components/sections/Pricing.astro";
+import BrowserFrame from "@/components/ui/BrowserFrame.astro";
+import Button from "@/components/ui/Button.astro";
+import DossierEntryPreview from "@/components/widgets/DossierEntryPreview.astro";
+import DossierIndexPreview from "@/components/widgets/DossierIndexPreview.astro";
+import Layout from "@/layouts/Layout.astro";
 import {
-  Search,
-  Clock,
-  TriangleAlert,
-  FileSearch,
-  ScanSearch,
-  FileCheck,
-  CircleQuestionMark,
-  Scale,
-  UserCheck,
-  ShieldCheck,
-  Bot,
-  Quote,
-  Award,
-  ArrowRight,
-  User,
+	ANALYSIS_BASE,
+	analysisPath,
+	featuredAnalysis,
+} from "@/utils/analysis.js";
+import {
+	ArrowRight,
+	Award,
+	Bot,
+	CircleQuestionMark,
+	Clock,
+	FileCheck,
+	FileSearch,
+	Quote,
+	Scale,
+	ScanSearch,
+	Search,
+	ShieldCheck,
+	TriangleAlert,
+	User,
+	UserCheck,
 } from "@lucide/astro";
 
 // The published example this page's CTAs point at — resolved from the
@@ -36,112 +40,112 @@ const featuredExample = featured ? analysisPath(featured.id) : ANALYSIS_BASE;
 
 // FAQ data
 const faqItems = [
-  {
-    question: "What exactly counts as one document analysis?",
-    answer:
-      "One uploaded document, including claim extraction, per-claim verification, and the exported one-pager and full assessment document. Longer documents show a higher estimate before the run. Nothing is charged without your approval.",
-  },
-  {
-    question: "Can I use it on internal / confidential documents?",
-    answer:
-      "Yes, if you're comfortable doing so. Access to your document is restricted to you. Your documents are processed within our own isolated AWS infrastructure, and access to the production environment is restricted to the service owner. We do not use your documents to train AI models. That said, no online service can promise zero risk. If your organisation has strict security or compliance requirements (for example, policies that prohibit uploading confidential information to third-party services), you should follow those policies before using the service. If you have specific security or compliance questions, feel free to get in touch.",
-  },
-  {
-    question: "What models does it use?",
-    answer:
-      "The service uses Anthropic models. Your content is not used to train models.",
-  },
-  {
-    question: "How is this different from ChatGPT / Gemini deep research?",
-    answer:
-      'Deep research tools answer a question you pose. Assay interrogates a document someone else wrote: it inventories the author\'s claims and checks each one independently. It\'s the difference between "tell me about X" and "is this document about X telling the truth."',
-  },
-  {
-    question: "What if a verdict is wrong?",
-    answer:
-      "It can be. That's why every verdict links every source it used. Treat the output as a fast, thorough research assistant whose work you can audit in minutes, not an oracle. If the output is garbage, contact us and we'll refund your run.",
-  },
-  {
-    question: "Is there a free way to evaluate it?",
-    answer:
-      "The full example analysis of Amazon Prime Video above is public — that's real output, not a mockup.",
-    // "The full example analysis of Amazon Prime Video above is public — that's real output, not a mockup. Sign up to the service to get first analysis for free.",
-  },
+	{
+		question: "What exactly counts as one document analysis?",
+		answer:
+			"One uploaded document, including claim extraction, per-claim verification, and the exported one-pager and full assessment document. Longer documents show a higher estimate before the run. Nothing is charged without your approval.",
+	},
+	{
+		question: "Can I use it on internal / confidential documents?",
+		answer:
+			"Yes, if you're comfortable doing so. Access to your document is restricted to you. Your documents are processed within our own isolated AWS infrastructure, and access to the production environment is restricted to the service owner. We do not use your documents to train AI models. That said, no online service can promise zero risk. If your organisation has strict security or compliance requirements (for example, policies that prohibit uploading confidential information to third-party services), you should follow those policies before using the service. If you have specific security or compliance questions, feel free to get in touch.",
+	},
+	{
+		question: "What models does it use?",
+		answer:
+			"The service uses Anthropic models. Your content is not used to train models.",
+	},
+	{
+		question: "How is this different from ChatGPT / Gemini deep research?",
+		answer:
+			'Deep research tools answer a question you pose. Assay interrogates a document someone else wrote: it inventories the author\'s claims and checks each one independently. It\'s the difference between "tell me about X" and "is this document about X telling the truth."',
+	},
+	{
+		question: "What if a verdict is wrong?",
+		answer:
+			"It can be. That's why every verdict links every source it used. Treat the output as a fast, thorough research assistant whose work you can audit in minutes, not an oracle. If the output is garbage, contact us and we'll refund your run.",
+	},
+	{
+		question: "Is there a free way to evaluate it?",
+		answer:
+			"The full example analysis of Amazon Prime Video above is public — that's real output, not a mockup.",
+		// "The full example analysis of Amazon Prime Video above is public — that's real output, not a mockup. Sign up to the service to get first analysis for free.",
+	},
 ];
 
 // Problem cards data
 const problems = [
-  {
-    icon: Search,
-    title: "You already suspect it's lying somewhere",
-    desc: "Every technology decision starts with reading: the vendor's whitepaper, the “we migrated and cut costs 40%” blog post, the benchmark that somehow always favors its author. You can't take any of it at face value.",
-  },
-  {
-    icon: Clock,
-    title: "Finding where takes all day",
-    desc: "So you check it claim by claim, tab by tab, hours per document. Or you don't, and hope the claim you skipped isn't the one that fails in production.",
-  },
-  {
-    icon: TriangleAlert,
-    title: "AI summaries don't solve this",
-    desc: "A summary compresses the document; it doesn't challenge it. If the source is wrong, the summary is wrong faster.",
-  },
+	{
+		icon: Search,
+		title: "You already suspect it's lying somewhere",
+		desc: "Every technology decision starts with reading: the vendor's whitepaper, the “we migrated and cut costs 40%” blog post, the benchmark that somehow always favors its author. You can't take any of it at face value.",
+	},
+	{
+		icon: Clock,
+		title: "Finding where takes all day",
+		desc: "So you check it claim by claim, tab by tab, hours per document. Or you don't, and hope the claim you skipped isn't the one that fails in production.",
+	},
+	{
+		icon: TriangleAlert,
+		title: "AI summaries don't solve this",
+		desc: "A summary compresses the document; it doesn't challenge it. If the source is wrong, the summary is wrong faster.",
+	},
 ];
 
 // How it works
 const steps = [
-  {
-    icon: FileSearch,
-    step: "01",
-    title: "Extract",
-    desc: "Assay reads the full document and isolates every substantive claim the author stated or implied. It doesn't summarize. It builds a claim inventory. Typically 9 - 12 claims per document.",
-  },
-  {
-    icon: ScanSearch,
-    step: "02",
-    title: "Verify",
-    desc: "Each claim gets its own research run against public sources: documentation, independent benchmarks, issue trackers, papers, postmortems. Not a single search, an agent per claim!",
-  },
-  {
-    icon: FileCheck,
-    step: "03",
-    title: "Deliver",
-    desc: "You get a paper: every claim, a verdict (Supported / Contested / Contradicted / Unverifiable), the evidence, and links to every source, so you can check the checker.",
-  },
+	{
+		icon: FileSearch,
+		step: "01",
+		title: "Extract",
+		desc: "Assay reads the full document and isolates every substantive claim the author stated or implied. It doesn't summarize. It builds a claim inventory. Typically 9 - 12 claims per document.",
+	},
+	{
+		icon: ScanSearch,
+		step: "02",
+		title: "Verify",
+		desc: "Each claim gets its own research run against public sources: documentation, independent benchmarks, issue trackers, papers, postmortems. Not a single search, an agent per claim!",
+	},
+	{
+		icon: FileCheck,
+		step: "03",
+		title: "Deliver",
+		desc: "You get a paper: every claim, a verdict (Supported / Contested / Contradicted / Unverifiable), the evidence, and links to every source, so you can check the checker.",
+	},
 ];
 
 // What Assay won't do
 const limits = [
-  {
-    icon: Scale,
-    title: "No “absolute certainty”",
-    desc: "Verdicts are evidence-backed judgments, not truth oracles. That's why every verdict links its sources so you can disagree with it.",
-  },
-  {
-    icon: CircleQuestionMark,
-    title: "Unverifiable means unverifiable",
-    desc: "When no independent source exists, Assay says so instead of guessing. In practice, knowing which claims rest on the author's word alone is half the value.",
-  },
-  {
-    icon: UserCheck,
-    title: "It won't read your mind",
-    desc: "Assay checks what the document says against what the internet knows. Whether the technology fits your context is still your call. The analysis just makes it an informed one.",
-  },
+	{
+		icon: Scale,
+		title: "No “absolute certainty”",
+		desc: "Verdicts are evidence-backed judgments, not truth oracles. That's why every verdict links its sources so you can disagree with it.",
+	},
+	{
+		icon: CircleQuestionMark,
+		title: "Unverifiable means unverifiable",
+		desc: "When no independent source exists, Assay says so instead of guessing. In practice, knowing which claims rest on the author's word alone is half the value.",
+	},
+	{
+		icon: UserCheck,
+		title: "It won't read your mind",
+		desc: "Assay checks what the document says against what the internet knows. Whether the technology fits your context is still your call. The analysis just makes it an informed one.",
+	},
 ];
 
 // Who it's for
 const personas = [
-  { icon: FileCheck, label: "RFC & ADR authors" },
-  { icon: Scale, label: "Build-vs-buy evaluators" },
-  { icon: ShieldCheck, label: "Architects vetting vendors" },
-  { icon: UserCheck, label: "Anyone whose name goes on the doc" },
+	{ icon: FileCheck, label: "RFC & ADR authors" },
+	{ icon: Scale, label: "Build-vs-buy evaluators" },
+	{ icon: ShieldCheck, label: "Architects vetting vendors" },
+	{ icon: UserCheck, label: "Anyone whose name goes on the doc" },
 ];
 
 // Credibility strip
 const credibility = [
-  { icon: Award, text: "Built by a principal engineer" },
-  { icon: Bot, text: "Runs on Anthropic models" },
-  { icon: Quote, text: "Every verdict cites its sources" },
+	{ icon: Award, text: "Built by a principal engineer" },
+	{ icon: Bot, text: "Runs on Anthropic models" },
+	{ icon: Quote, text: "Every verdict cites its sources" },
 ];
 ---
 

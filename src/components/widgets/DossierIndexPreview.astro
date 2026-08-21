@@ -4,42 +4,38 @@
 // src/collections/dossier-demo.js — edit that file's named examples (or add
 // a new one) to swap in different content without touching this component.
 import { examples } from "@/collections/dossier-demo.js";
-import {
-  frictionMeta,
-  legend,
-  standingMeta,
-} from "@/collections/verdicts.js";
+import { frictionMeta, legend, standingMeta } from "@/collections/verdicts.js";
 import { FileText } from "@lucide/astro";
 
 type HighlightArea = "toolbar" | "abstract" | "glance" | "entries";
 
 interface Props {
-  dossier?: (typeof examples)["realAnalysis"]["dossier"];
-  compact?: boolean;
-  showHypotheses?: boolean;
-  maxHypotheses?: number;
-  showProblems?: boolean;
-  maxProblems?: number;
-  highlight?: HighlightArea | HighlightArea[];
-  className?: string;
+	dossier?: (typeof examples)["realAnalysis"]["dossier"];
+	compact?: boolean;
+	showHypotheses?: boolean;
+	maxHypotheses?: number;
+	showProblems?: boolean;
+	maxProblems?: number;
+	highlight?: HighlightArea | HighlightArea[];
+	className?: string;
 }
 
 const {
-  dossier = examples.realAnalysis.dossier,
-  compact = false,
-  showHypotheses = true,
-  maxHypotheses = compact ? 3 : dossier.hypotheses.length,
-  showProblems = true,
-  maxProblems = compact ? 2 : dossier.problems.length,
-  highlight,
-  className = "",
+	dossier = examples.realAnalysis.dossier,
+	compact = false,
+	showHypotheses = true,
+	maxHypotheses = compact ? 3 : dossier.hypotheses.length,
+	showProblems = true,
+	maxProblems = compact ? 2 : dossier.problems.length,
+	highlight,
+	className = "",
 } = Astro.props;
 
 const hypotheses = dossier.hypotheses.slice(0, maxHypotheses);
 const problems = dossier.problems.slice(0, maxProblems);
 
 const plural = (n: number, singular: string, irregularPlural?: string) =>
-  `${n} ${n === 1 ? singular : (irregularPlural ?? `${singular}s`)}`;
+	`${n} ${n === 1 ? singular : irregularPlural ?? `${singular}s`}`;
 
 // "Elevates" one area of the screen — its own opaque card layer with a
 // soft drop shadow, no border — while the rest dims down, so a feature
@@ -50,23 +46,23 @@ const plural = (n: number, singular: string, irregularPlural?: string) =>
 // clipped (overflow-hidden) ancestor (e.g. the entry rows list) into
 // horizontal scroll.
 const lit = highlight
-  ? Array.isArray(highlight)
-    ? highlight
-    : [highlight]
-  : [];
+	? Array.isArray(highlight)
+		? highlight
+		: [highlight]
+	: [];
 const SPOT_BASE =
-  "relative z-20 rounded-lg bg-bg-primary/95 dark:bg-neutral-800/95 shadow-[0_8px_20px_-8px_rgba(15,23,42,0.25)] dark:shadow-[0_8px_20px_-8px_rgba(0,0,0,0.5)]";
+	"relative z-20 rounded-lg bg-bg-primary/95 dark:bg-neutral-800/95 shadow-[0_8px_20px_-8px_rgba(15,23,42,0.25)] dark:shadow-[0_8px_20px_-8px_rgba(0,0,0,0.5)]";
 const SPOT_EXTRA: Record<HighlightArea, string> = {
-  toolbar: "px-3 py-2",
-  abstract: "px-3 py-2",
-  glance: "px-3 py-2",
-  // "entries" already owns pt-2/border-t, so only pad the other sides.
-  entries: "px-3 pb-2",
+	toolbar: "px-3 py-2",
+	abstract: "px-3 py-2",
+	glance: "px-3 py-2",
+	// "entries" already owns pt-2/border-t, so only pad the other sides.
+	entries: "px-3 pb-2",
 };
 const spot = (area: HighlightArea) =>
-  lit.includes(area) ? `${SPOT_BASE} ${SPOT_EXTRA[area]}` : "";
+	lit.includes(area) ? `${SPOT_BASE} ${SPOT_EXTRA[area]}` : "";
 const dim = (area: HighlightArea) =>
-  lit.length && !lit.includes(area) ? "opacity-35 dark:opacity-25" : "";
+	lit.length && !lit.includes(area) ? "opacity-35 dark:opacity-25" : "";
 
 // One shared color grammar across both heat-map tracks and both row-chip
 // vocabularies — green=holds, amber=contested, brick=fails, gray=unknown.

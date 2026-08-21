@@ -1,5 +1,5 @@
-import type { APIRoute } from "astro";
 import { reportPaths, serveReport } from "@/utils/reports.js";
+import type { APIRoute } from "astro";
 
 // Serves the app-exported reports verbatim alongside the landing page they
 // belong to:

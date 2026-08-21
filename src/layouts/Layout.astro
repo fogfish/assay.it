@@ -1,18 +1,18 @@
 ---
-import Meta from "./Meta.astro";
-import TopBg from "@/components/ui/TopBg.astro";
 import Footer from "@/components/sections/Footer.astro";
 import Header from "@/components/sections/Header.astro";
+import TopBg from "@/components/ui/TopBg.astro";
 import TrackGa from "@/components/widgets/TrackGa.astro";
+import Meta from "./Meta.astro";
 interface Props {
-  title?: string | undefined;
-  description?: string | undefined;
-  keywords?: string | undefined;
-  /** Canonical URL — defaults to the site root in Meta. */
-  url?: string | undefined;
-  /** Per-page share card, absolute or site-root-relative. */
-  ogImage?: string | undefined;
-  ogType?: "website" | "article" | undefined;
+	title?: string | undefined;
+	description?: string | undefined;
+	keywords?: string | undefined;
+	/** Canonical URL — defaults to the site root in Meta. */
+	url?: string | undefined;
+	/** Per-page share card, absolute or site-root-relative. */
+	ogImage?: string | undefined;
+	ogType?: "website" | "article" | undefined;
 }
 
 const { title, description, keywords, url, ogImage, ogType } = Astro.props;

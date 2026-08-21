@@ -1,36 +1,36 @@
 ---
-import Button from "@/components/ui/Button.astro";
 import SectionHeader from "@/components/elements/SectionHeader.astro";
-import { Check, ArrowRight, Sparkles, Mail } from "@lucide/astro";
+import Button from "@/components/ui/Button.astro";
+import { ArrowRight, Check, Mail, Sparkles } from "@lucide/astro";
 
 interface Props {
-  title?: string;
-  description?: string;
-  showHeader?: boolean;
+	title?: string;
+	description?: string;
+	showHeader?: boolean;
 }
 
 const {
-  title = "Simple, transparent pricing",
-  description = "Pay per document. See the cost before you run it.",
-  showHeader = true,
+	title = "Simple, transparent pricing",
+	description = "Pay per document. See the cost before you run it.",
+	showHeader = true,
 } = Astro.props;
 
 // claims extracted, per-claim verification runs, exported dossier, source links, library persistence
 const payAsYouGoFeatures = [
-  "Support Markdown, Plain text, PDF is coming soon",
-  "Per-claim deep verification run",
-  "Claim-by-claim verdicts and citations",
-  "Export analysis as HTML reports",
-  "Direct email support, usually within a day",
-  "Your documents are never used for training and can be deleted anytime",
+	"Support Markdown, Plain text, PDF is coming soon",
+	"Per-claim deep verification run",
+	"Claim-by-claim verdicts and citations",
+	"Export analysis as HTML reports",
+	"Direct email support, usually within a day",
+	"Your documents are never used for training and can be deleted anytime",
 ];
 
 const teamsFeatures = [
-  "Monthly plans for recurring analysis",
-  "Shared Libraries across a team",
-  "Team's research and analysis memory",
-  "Seats per user, with role-based access control",
-  "API and MCP access",
+	"Monthly plans for recurring analysis",
+	"Shared Libraries across a team",
+	"Team's research and analysis memory",
+	"Seats per user, with role-based access control",
+	"API and MCP access",
 ];
 ---
 

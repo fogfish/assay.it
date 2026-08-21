@@ -7,18 +7,18 @@ const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
 // 确定要显示的页码范围
 const maxVisiblePages = 5;
 let startPage = Math.max(currentPage - Math.floor(maxVisiblePages / 2), 1);
-let endPage = Math.min(startPage + maxVisiblePages - 1, totalPages);
+const endPage = Math.min(startPage + maxVisiblePages - 1, totalPages);
 
 if (endPage - startPage + 1 < maxVisiblePages) {
-  startPage = Math.max(endPage - maxVisiblePages + 1, 1);
+	startPage = Math.max(endPage - maxVisiblePages + 1, 1);
 }
 
 // 生成页面链接
 const getPageLink = (pageNum: number): string => {
-  if (pageNum === 1) {
-    return `/${collection}/`;
-  }
-  return `/${collection}/page/${pageNum}`;
+	if (pageNum === 1) {
+		return `/${collection}/`;
+	}
+	return `/${collection}/page/${pageNum}`;
 };
 ---
 

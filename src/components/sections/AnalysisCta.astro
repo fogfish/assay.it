@@ -7,14 +7,6 @@
 // there changes, change it here too.
 import Button from "@/components/ui/Button.astro";
 import { ArrowRight } from "@lucide/astro";
-
-interface Props {
-  /** Route to the exported full report, when the folder ships one. */
-  reportUrl?: string;
-  reportLabel?: string;
-}
-
-const { reportUrl, reportLabel = "Open the full analysis" } = Astro.props;
 ---
 
 <!-- No reveal animation here on purpose: this is the page's conversion
@@ -41,7 +33,6 @@ const { reportUrl, reportLabel = "Open the full analysis" } = Astro.props;
     <Button url="https://app.assay.it" type="fill">
       Analyze your document <ArrowRight size={16} />
     </Button>
-    {reportUrl && <Button url={reportUrl}>{reportLabel}</Button>}
   </div>
 
   <p class="mt-4 text-xs text-neutral-500 dark:text-neutral-400">

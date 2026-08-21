@@ -8,50 +8,50 @@
 import { classMeta, examples } from "@/collections/dossier-demo.js";
 
 type HighlightArea =
-  | "breadcrumb"
-  | "banner"
-  | "title"
-  | "assumptions"
-  | "aporias"
-  | "analysis"
-  | "citations";
+	| "breadcrumb"
+	| "banner"
+	| "title"
+	| "assumptions"
+	| "aporias"
+	| "analysis"
+	| "citations";
 
 interface Props {
-  entry?: (typeof examples)["realAnalysis"]["featuredEntry"];
-  compact?: boolean;
-  showBreadcrumb?: boolean;
-  showBanner?: boolean;
-  showTitle?: boolean;
-  showAbout?: boolean;
-  showAssumptions?: boolean;
-  maxAssumptions?: number;
-  showAporias?: boolean;
-  showAnalysis?: boolean;
-  maxAnalysis?: number;
-  showCitations?: boolean;
-  maxCitations?: number;
-  showPager?: boolean;
-  highlight?: HighlightArea | HighlightArea[];
-  className?: string;
+	entry?: (typeof examples)["realAnalysis"]["featuredEntry"];
+	compact?: boolean;
+	showBreadcrumb?: boolean;
+	showBanner?: boolean;
+	showTitle?: boolean;
+	showAbout?: boolean;
+	showAssumptions?: boolean;
+	maxAssumptions?: number;
+	showAporias?: boolean;
+	showAnalysis?: boolean;
+	maxAnalysis?: number;
+	showCitations?: boolean;
+	maxCitations?: number;
+	showPager?: boolean;
+	highlight?: HighlightArea | HighlightArea[];
+	className?: string;
 }
 
 const {
-  entry = examples.realAnalysis.featuredEntry,
-  compact = false,
-  showBreadcrumb = !compact,
-  showBanner = true,
-  showTitle = true,
-  showAbout = !compact,
-  showAssumptions = true,
-  maxAssumptions = compact ? 2 : entry.assumptions.length,
-  showAporias = !compact,
-  showAnalysis = !compact,
-  maxAnalysis = compact ? 1 : entry.analysis.length,
-  showCitations = true,
-  maxCitations = compact ? 2 : entry.citations.length,
-  showPager = !compact,
-  highlight,
-  className = "",
+	entry = examples.realAnalysis.featuredEntry,
+	compact = false,
+	showBreadcrumb = !compact,
+	showBanner = true,
+	showTitle = true,
+	showAbout = !compact,
+	showAssumptions = true,
+	maxAssumptions = compact ? 2 : entry.assumptions.length,
+	showAporias = !compact,
+	showAnalysis = !compact,
+	maxAnalysis = compact ? 1 : entry.analysis.length,
+	showCitations = true,
+	maxCitations = compact ? 2 : entry.citations.length,
+	showPager = !compact,
+	highlight,
+	className = "",
 } = Astro.props;
 
 const meta = classMeta[entry.class];
@@ -65,33 +65,33 @@ const meta = classMeta[entry.class];
 // clipped (overflow-hidden) assumptions/analysis/citations column into
 // horizontal scroll.
 const lit = highlight
-  ? Array.isArray(highlight)
-    ? highlight
-    : [highlight]
-  : [];
+	? Array.isArray(highlight)
+		? highlight
+		: [highlight]
+	: [];
 const SPOT_BASE =
-  "relative z-20 rounded-lg bg-bg-primary/95 dark:bg-neutral-800/95 shadow-[0_8px_20px_-8px_rgba(15,23,42,0.25)] dark:shadow-[0_8px_20px_-8px_rgba(0,0,0,0.5)]";
+	"relative z-20 rounded-lg bg-bg-primary/95 dark:bg-neutral-800/95 shadow-[0_8px_20px_-8px_rgba(15,23,42,0.25)] dark:shadow-[0_8px_20px_-8px_rgba(0,0,0,0.5)]";
 // "banner" already carries its own padding/background, so it only gets
 // the shadow, not a duplicate padding box.
 const SPOT_EXTRA: Record<HighlightArea, string> = {
-  breadcrumb: "px-3 py-1.5",
-  banner: "",
-  title: "px-3 py-2",
-  assumptions: "px-3 py-2",
-  aporias: "px-3 py-2",
-  analysis: "px-3 py-2",
-  citations: "px-3 py-2",
+	breadcrumb: "px-3 py-1.5",
+	banner: "",
+	title: "px-3 py-2",
+	assumptions: "px-3 py-2",
+	aporias: "px-3 py-2",
+	analysis: "px-3 py-2",
+	citations: "px-3 py-2",
 };
 const spot = (area: HighlightArea) =>
-  lit.includes(area) ? `${SPOT_BASE} ${SPOT_EXTRA[area]}` : "";
+	lit.includes(area) ? `${SPOT_BASE} ${SPOT_EXTRA[area]}` : "";
 const dim = (area: HighlightArea) =>
-  lit.length && !lit.includes(area) ? "opacity-35 dark:opacity-25" : "";
+	lit.length && !lit.includes(area) ? "opacity-35 dark:opacity-25" : "";
 // Marks the elevated section so the scroll-into-view script (below) can find
 // it — needed because a highlighted section can sit lower than the card's
 // own clipped (overflow-hidden) viewport (e.g. "citations" is the last thing
 // in the column), and CSS alone can't bring it into view.
 const spotAttrs = (area: HighlightArea) =>
-  lit.includes(area) ? { "data-highlight-active": true } : {};
+	lit.includes(area) ? { "data-highlight-active": true } : {};
 ---
 
 <div class={`flex flex-col gap-3 h-full ${className}`}>

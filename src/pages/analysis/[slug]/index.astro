@@ -15,9 +15,12 @@ import FindingRow from "@/components/cards/FindingRow.astro";
 import AnalysisCta from "@/components/sections/AnalysisCta.astro";
 import AnalysisMethodology from "@/components/sections/AnalysisMethodology.astro";
 import AnalysisStandout from "@/components/sections/AnalysisStandout.astro";
+import FreeTrialCta from "@/components/sections/FreeTrialCta.astro";
+import Badge from "@/components/ui/Badge.astro";
 import StructuredData from "@/components/widgets/StructuredData.astro";
 import { siteConfig } from "@/config/site.js";
 import Layout from "@/layouts/Layout.astro";
+import { ArrowRight } from "@lucide/astro";
 import {
   ANALYSIS_BASE,
   analysisPath,
@@ -25,7 +28,6 @@ import {
   relatedFor,
   reportPath,
 } from "@/utils/analysis.js";
-import Badge from "@/components/ui/Badge.astro";
 
 export async function getStaticPaths() {
   const entries = await getCollection("analysis");
@@ -154,6 +156,30 @@ const schema = [
       <Content />
     </div>
 
+    <!-- <FreeTrialCta className="mt-7" /> -->
+    <FreeTrialCta theme="hallmark-dim" className="mt-7" />
+    <!-- <FreeTrialCta theme="white" className="mt-7" /> -->
+    <!-- <FreeTrialCta theme="grey" className="mt-7" /> -->
+    <!-- <FreeTrialCta theme="primary" className="mt-7" /> -->
+    <!-- <FreeTrialCta theme="ink" className="mt-7" /> -->
+
+    <!-- Marks the hand-off from the pitch above to the real pipeline
+         output below, so the free-trial box doesn't read as part of
+         this document's own findings. -->
+    <div
+      class="mt-10 flex items-center gap-3"
+      data-aos="fade-up-xs"
+      data-aos-once="true"
+    >
+      <span class="h-px flex-1 bg-accent/30 dark:bg-accent/25"></span>
+      <h2
+        class="shrink-0 text-[11.5px] font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400"
+      >
+        The analysis
+      </h2>
+      <span class="h-px flex-1 bg-accent/30 dark:bg-accent/25"></span>
+    </div>
+
     <AnalysisGlanceCard
       source={data.source}
       glance={data.glance}
@@ -181,12 +207,28 @@ const schema = [
       )
     }
 
+    {
+      (fullReport ?? onePager) && (
+        <p class="mt-8">
+          <a
+            href={fullReport ?? onePager}
+            class="inline-flex items-center gap-1.5 text-[15px] font-medium text-primary dark:text-primary-light hover:underline"
+          >
+            Continue to the complete report
+            <ArrowRight size={15} />
+          </a>
+        </p>
+      )
+    }
+
     <AnalysisMethodology
       methodology={data.methodology}
       analyzedDate={data.source.analyzedDate}
     />
 
-    <AnalysisCta reportUrl={fullReport ?? onePager} />
+    <!-- <AnalysisCta /> -->
+
+    <FreeTrialCta theme="white" variant="chip" className="mt-6" />
 
     <!-- Always links back to the shelf, even before there are neighbours
          to cross-link — this is the page's only route onward to the rest

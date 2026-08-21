@@ -1,43 +1,43 @@
 ---
-import Layout from "@/layouts/Layout.astro";
 import PageHeader from "@/components/elements/PageHeader.astro";
 import PricingSection from "@/components/sections/Pricing.astro";
 import AccordionItem from "@/components/ui/AccordionItem.astro";
 import Button from "@/components/ui/Button.astro";
+import Layout from "@/layouts/Layout.astro";
 import { ArrowRight } from "@lucide/astro";
 
 const faqItems = [
-  {
-    question: "What exactly counts as one document analysis?",
-    answer:
-      "One uploaded document, including claim extraction, per-claim verification, and the exported one-pager and full assessment document. Longer documents show a higher estimate before the run. Nothing is charged without your approval.",
-  },
-  {
-    question: "Can I use it on internal / confidential documents?",
-    answer:
-      "Yes, if you're comfortable doing so. Access to your document is restricted to you. Your documents are processed within our own isolated AWS infrastructure, and access to the production environment is restricted to the service owner. We do not use your documents to train AI models. That said, no online service can promise zero risk. If your organisation has strict security or compliance requirements (for example, policies that prohibit uploading confidential information to third-party services), you should follow those policies before using the service. If you have specific security or compliance questions, feel free to get in touch.",
-  },
-  {
-    question: "What models does it use?",
-    answer:
-      "The service uses Anthropic models. Your content is not used to train models.",
-  },
-  {
-    question: "How is this different from ChatGPT / Gemini deep research?",
-    answer:
-      'Deep research tools answer a question you pose. Assay interrogates a document someone else wrote: it inventories the author\'s claims and checks each one independently. It\'s the difference between "tell me about X" and "is this document about X telling the truth."',
-  },
-  {
-    question: "What if a verdict is wrong?",
-    answer:
-      "It can be. That's why every verdict links every source it used. Treat the output as a fast, thorough research assistant whose work you can audit in minutes, not an oracle. If the output is garbage, contact us and we'll refund your run.",
-  },
-  {
-    question: "Is there a free way to evaluate it?",
-    answer:
-      "The full example analysis of Amazon Prime Video above is public — that's real output, not a mockup.",
-    // "The full example analysis of Amazon Prime Video above is public — that's real output, not a mockup. Sign up to the service to get first analysis for free.",
-  },
+	{
+		question: "What exactly counts as one document analysis?",
+		answer:
+			"One uploaded document, including claim extraction, per-claim verification, and the exported one-pager and full assessment document. Longer documents show a higher estimate before the run. Nothing is charged without your approval.",
+	},
+	{
+		question: "Can I use it on internal / confidential documents?",
+		answer:
+			"Yes, if you're comfortable doing so. Access to your document is restricted to you. Your documents are processed within our own isolated AWS infrastructure, and access to the production environment is restricted to the service owner. We do not use your documents to train AI models. That said, no online service can promise zero risk. If your organisation has strict security or compliance requirements (for example, policies that prohibit uploading confidential information to third-party services), you should follow those policies before using the service. If you have specific security or compliance questions, feel free to get in touch.",
+	},
+	{
+		question: "What models does it use?",
+		answer:
+			"The service uses Anthropic models. Your content is not used to train models.",
+	},
+	{
+		question: "How is this different from ChatGPT / Gemini deep research?",
+		answer:
+			'Deep research tools answer a question you pose. Assay interrogates a document someone else wrote: it inventories the author\'s claims and checks each one independently. It\'s the difference between "tell me about X" and "is this document about X telling the truth."',
+	},
+	{
+		question: "What if a verdict is wrong?",
+		answer:
+			"It can be. That's why every verdict links every source it used. Treat the output as a fast, thorough research assistant whose work you can audit in minutes, not an oracle. If the output is garbage, contact us and we'll refund your run.",
+	},
+	{
+		question: "Is there a free way to evaluate it?",
+		answer:
+			"The full example analysis of Amazon Prime Video above is public — that's real output, not a mockup.",
+		// "The full example analysis of Amazon Prime Video above is public — that's real output, not a mockup. Sign up to the service to get first analysis for free.",
+	},
 ];
 ---
 

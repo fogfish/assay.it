@@ -1,14 +1,14 @@
 // 1. 从 `astro:content` 导入工具函数
-import { defineCollection } from 'astro:content';
-import { z } from 'astro/zod';
+import { defineCollection } from "astro:content";
+import { z } from "astro/zod";
 
 // 2. 导入加载器
-import { glob } from 'astro/loaders';
+import { glob } from "astro/loaders";
 
 // 3. 定义你的集合
 const post = defineCollection({
 	// 使用 glob 加载器从 src/content/post 目录加载所有 .mdx 文件
-	loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/post' }),
+	loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/post" }),
 	// Type-check frontmatter using a schema
 	schema: z.object({
 		title: z.string(),
@@ -23,7 +23,7 @@ const post = defineCollection({
 });
 
 const changelog = defineCollection({
-	loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/changelog' }),
+	loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/changelog" }),
 	schema: z.object({
 		title: z.string(),
 		publishDate: z.coerce.date(),

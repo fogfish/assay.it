@@ -1,45 +1,45 @@
 ---
-import Layout from "@/layouts/Layout.astro";
 import Button from "@/components/ui/Button.astro";
 import { siteConfig } from "@/config/site";
+import Layout from "@/layouts/Layout.astro";
 import {
-  ArrowRight,
-  Bug,
-  Clock3,
-  LifeBuoy,
-  Mail,
-  Send,
-  Sparkles,
+	ArrowRight,
+	Bug,
+	Clock3,
+	LifeBuoy,
+	Mail,
+	Send,
+	Sparkles,
 } from "@lucide/astro";
 
 const contactTopics = [
-  { value: "general", label: "General inquiry" },
-  { value: "pricing", label: "Pricing" },
-  { value: "confidentiality", label: "Confidential documents" },
-  { value: "teams", label: "Teams waitlist" },
-  { value: "bug", label: "Bug report" },
+	{ value: "general", label: "General inquiry" },
+	{ value: "pricing", label: "Pricing" },
+	{ value: "confidentiality", label: "Confidential documents" },
+	{ value: "teams", label: "Teams waitlist" },
+	{ value: "bug", label: "Bug report" },
 ];
 
 const channels = [
-  {
-    icon: Mail,
-    label: "Email",
-    text: siteConfig.mail,
-    href: `mailto:${siteConfig.mail}`,
-  },
+	{
+		icon: Mail,
+		label: "Email",
+		text: siteConfig.mail,
+		href: `mailto:${siteConfig.mail}`,
+	},
 ];
 
 const expectations = [
-  {
-    icon: Clock3,
-    title: "Reply window",
-    desc: "Most messages get a response within 1 business day.",
-  },
-  {
-    icon: LifeBuoy,
-    title: "Confidential documents",
-    desc: "Ask before you upload anything sensitive — see the FAQ for what's handled today.",
-  },
+	{
+		icon: Clock3,
+		title: "Reply window",
+		desc: "Most messages get a response within 1 business day.",
+	},
+	{
+		icon: LifeBuoy,
+		title: "Confidential documents",
+		desc: "Ask before you upload anything sensitive — see the FAQ for what's handled today.",
+	},
 ];
 ---
 

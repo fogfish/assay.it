@@ -1,0 +1,421 @@
+---
+// Free-trial capture CTA: "run your first document free."
+//
+// Pluggable across marketing pages — carries no page-specific wiring, so
+// it can be dropped anywhere a conversion moment makes sense (the analysis
+// landing page embeds it right after the at-a-glance card). Submits
+// through the same messaging endpoint as /contact (Google Apps Script
+// relay), tagged with subject "free trial" so the reply lands in the same
+// inbox as every other contact-form message.
+//
+// Two layout variants, sharing one script (it queries by class, not id,
+// so several instances can co-exist on a page):
+//   - "stripe" (default) breaks full-bleed out of the narrow article
+//     column it sits in, title and form side by side, so the offer reads
+//     as a deliberate interruption of the content.
+//   - "chip" is a contained, centered box — title, subtitle, then the
+//     form stacked (name+email paired, URL below, button centered) —
+//     modelled on the home page's final CTA section (src/pages/index.astro)
+//     for pages that aren't a single narrow reading column, like the
+//     gallery shelf.
+//
+// Color is a separate axis, set via the `theme` prop — pick whichever
+// reads right against the section it's dropped into:
+//   - "hallmark"      Gold accent border/fill (default). The brand's
+//                      "assay mark" color — ties the offer to the
+//                      verdict/finding grammar used elsewhere on the page.
+//   - "hallmark-dim"   Same gold, turned down — thinner border, faint
+//                      fill, muted text. For a second CTA lower on a page
+//                      that's already made its pitch once and shouldn't
+//                      shout again.
+//   - "white"          Paper/white surface with primary-blue accents on
+//                      the icon and border. Reads as a neutral card
+//                      rather than a promo, closest to the rest of the
+//                      site's default surfaces.
+//   - "grey"           Fully neutral grayscale, no brand color at all.
+//                      For placement inside already-colorful surroundings
+//                      where another accent would compete.
+//   - "primary"        Primary-blue tint throughout (border, fill, icon).
+//                      A punchier, more "product" toned alternative to
+//                      hallmark for pages where gold doesn't fit the mood.
+//   - "ink"            Dark ink surface with light text, independent of
+//                      site light/dark mode — a deliberate high-contrast
+//                      banner for a single standout placement.
+import Button from "@/components/ui/Button.astro";
+import { LoaderCircle, ArrowRight, Sparkles } from "@lucide/astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+  className?: string;
+  variant?: "stripe" | "chip";
+  theme?: "hallmark" | "hallmark-dim" | "white" | "grey" | "primary" | "ink";
+}
+
+const {
+  title = "Your first analysis is on us — try the app on your own document.",
+  description = "Paste the link, tell us who you are, and we'll run it through the same pipeline. No card, no subscription.",
+  className = "",
+  variant = "stripe",
+  theme = "hallmark",
+} = Astro.props;
+
+const isChip = variant === "chip";
+
+const endpoint =
+  "https://script.google.com/macros/s/AKfycbzyYzkb2w9EkIWzbGcG0m9VBJzCKZ_Hgv0nHG0caXsqzTWQAcuiH318mj6HcoSvQxJxmw/exec";
+
+// Border-color + fill + text tokens only — border *width/style* and the
+// box shape come from the layout variant below, so the two axes compose
+// freely (any theme with any variant).
+const themes = {
+  hallmark: {
+    wrap: "border-accent/50 dark:border-accent/35 bg-accent/10 dark:bg-accent/[0.07]",
+    icon: "bg-accent/25 text-neutral-800 dark:bg-accent/20 dark:text-accent",
+    text: "text-neutral-800 dark:text-neutral-100",
+    muted: "text-neutral-600 dark:text-neutral-400",
+  },
+  "hallmark-dim": {
+    wrap: "border-accent/25 dark:border-accent/20 bg-accent/5 dark:bg-accent/[0.03]",
+    icon: "bg-accent/15 text-accent dark:bg-accent/15 dark:text-accent-light",
+    text: "text-neutral-700 dark:text-neutral-300",
+    muted: "text-neutral-500 dark:text-neutral-500",
+  },
+  white: {
+    wrap: "border-primary/20 dark:border-primary-light/25 bg-bg-secondary dark:bg-bg-secondary-dark",
+    icon: "bg-primary/10 text-primary dark:bg-primary-light/15 dark:text-primary-light",
+    text: "text-neutral-800 dark:text-neutral-100",
+    muted: "text-neutral-600 dark:text-neutral-400",
+  },
+  grey: {
+    wrap: "border-neutral-200 dark:border-neutral-700 bg-neutral-100 dark:bg-neutral-900/60",
+    icon: "bg-neutral-200 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300",
+    text: "text-neutral-800 dark:text-neutral-100",
+    muted: "text-neutral-600 dark:text-neutral-400",
+  },
+  primary: {
+    wrap: "border-primary/30 dark:border-primary-light/30 bg-primary/[0.08] dark:bg-primary-light/[0.08]",
+    icon: "bg-primary/20 text-primary dark:bg-primary-light/20 dark:text-primary-light",
+    text: "text-neutral-800 dark:text-neutral-100",
+    muted: "text-neutral-600 dark:text-neutral-400",
+  },
+  ink: {
+    wrap: "border-neutral-700 bg-neutral-900",
+    icon: "bg-white/10 text-accent-light",
+    text: "text-neutral-50",
+    muted: "text-neutral-300",
+  },
+} as const;
+
+const t = themes[theme];
+
+const variantStructural = isChip
+  ? "rounded-2xl border px-6 py-10 md:py-12 text-center"
+  : "relative left-1/2 w-screen -translate-x-1/2 border-y border-solid py-5";
+---
+
+<section
+  class={`free-trial-cta ${variantStructural} ${t.wrap} ${className}`}
+  data-endpoint={endpoint}
+>
+  {
+    isChip ? (
+      <div class="mx-auto max-w-xl">
+        <span
+          class={`mx-auto mb-3 flex h-9 w-9 items-center justify-center rounded-full ${t.icon}`}
+        >
+          <Sparkles size={16} />
+        </span>
+        <h2 class={`font-brand text-2xl sm:text-3xl ${t.text}`}>{title}</h2>
+        <p class={`mt-3 text-[15px] leading-relaxed ${t.muted}`}>
+          {description}
+        </p>
+
+        <form class="free-trial-form mt-7 space-y-4 text-left">
+          <div class="grid gap-4 sm:grid-cols-2">
+            <div>
+              <label
+                for="free-trial-name-chip"
+                class={`mb-1.5 block text-xs font-medium ${t.muted}`}
+              >
+                Name
+              </label>
+              <input
+                type="text"
+                id="free-trial-name-chip"
+                name="name"
+                autocomplete="name"
+                required
+                placeholder="Your full name"
+                class="free-trial-field"
+              />
+            </div>
+
+            <div>
+              <label
+                for="free-trial-email-chip"
+                class={`mb-1.5 block text-xs font-medium ${t.muted}`}
+              >
+                Email
+              </label>
+              <input
+                type="email"
+                id="free-trial-email-chip"
+                name="email"
+                autocomplete="email"
+                required
+                placeholder="you@example.com"
+                class="free-trial-field"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label
+              for="free-trial-url-chip"
+              class={`mb-1.5 block text-xs font-medium ${t.muted}`}
+            >
+              Document URL
+            </label>
+            <input
+              type="url"
+              id="free-trial-url-chip"
+              name="url"
+              required
+              placeholder="https://example.com/your-document"
+              class="free-trial-field"
+            />
+          </div>
+
+          <div class="free-trial-submit flex justify-center pt-1">
+            <Button
+              type="fill"
+              className="justify-center whitespace-nowrap"
+              url="javascript:void(0);"
+            >
+              Claim Your Free Trial
+              <ArrowRight size={16} />
+            </Button>
+          </div>
+        </form>
+
+        <div class="free-trial-status mt-5">
+          <p
+            class={`free-trial-progress hidden flex items-center justify-center gap-2 text-sm font-medium ${t.muted}`}
+          >
+            <LoaderCircle size={16} class="animate-spin" />
+            Sending your request…
+          </p>
+          <p class={`free-trial-success hidden text-sm font-medium ${t.text}`}>
+            Thanks — your free trial request is on its way. The site owner will
+            reply within 24 hours.
+          </p>
+        </div>
+      </div>
+    ) : (
+      <div class="site-container flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+        <div class="flex items-center gap-2 sm:shrink-0">
+          <span
+            class={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full ${t.icon}`}
+          >
+            <Sparkles size={14} />
+          </span>
+          <h2 class={`font-brand text-lg sm:text-xl ${t.text}`}>{title}</h2>
+        </div>
+
+        <form class="free-trial-form flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end sm:justify-start">
+          <div class="sm:w-52">
+            <label
+              for="free-trial-url"
+              class={`mb-1.5 block text-xs font-medium ${t.muted}`}
+            >
+              Document URL
+            </label>
+            <input
+              type="url"
+              id="free-trial-url"
+              name="url"
+              required
+              placeholder="https://example.com/your-document"
+              class="free-trial-field"
+            />
+          </div>
+
+          <div class="sm:w-36">
+            <label
+              for="free-trial-name"
+              class={`mb-1.5 block text-xs font-medium ${t.muted}`}
+            >
+              Name
+            </label>
+            <input
+              type="text"
+              id="free-trial-name"
+              name="name"
+              autocomplete="name"
+              required
+              placeholder="Your full name"
+              class="free-trial-field"
+            />
+          </div>
+
+          <div class="sm:w-44">
+            <label
+              for="free-trial-email"
+              class={`mb-1.5 block text-xs font-medium ${t.muted}`}
+            >
+              Email
+            </label>
+            <input
+              type="email"
+              id="free-trial-email"
+              name="email"
+              autocomplete="email"
+              required
+              placeholder="you@example.com"
+              class="free-trial-field"
+            />
+          </div>
+
+          <div class="free-trial-submit">
+            <Button
+              type="fill"
+              size="sm"
+              className="w-full max-w-none justify-center whitespace-nowrap sm:w-auto"
+              url="javascript:void(0);"
+            >
+              Claim Your Free Trial <ArrowRight size={16} />
+            </Button>
+          </div>
+        </form>
+
+        <div class="free-trial-status">
+          <p
+            class={`free-trial-progress hidden flex items-center gap-2 text-sm font-medium ${t.muted}`}
+          >
+            <LoaderCircle size={16} class="animate-spin" />
+            Sending your request…
+          </p>
+          <p class={`free-trial-success hidden text-sm font-medium ${t.text}`}>
+            Thanks — your free trial request is on its way. The site owner will
+            reply within 24 hours.
+          </p>
+        </div>
+      </div>
+    )
+  }
+</section>
+
+<style>
+  .free-trial-field {
+    width: 100%;
+    border-radius: 0.625rem;
+    border: 1px solid var(--color-neutral-200);
+    background: color-mix(in srgb, var(--color-bg-secondary) 90%, transparent);
+    padding: 0.55rem 0.75rem;
+    font-size: 0.875rem;
+    color: var(--color-neutral-800);
+    outline: none;
+    transition:
+      border-color 180ms ease,
+      box-shadow 180ms ease,
+      background-color 180ms ease;
+  }
+
+  .free-trial-field::placeholder {
+    color: var(--color-neutral-400);
+  }
+
+  .free-trial-field:focus {
+    border-color: var(--color-primary);
+    background: var(--color-bg-secondary);
+    box-shadow: 0 0 0 3px
+      color-mix(in srgb, var(--color-primary) 22%, transparent);
+  }
+
+  :global(.dark) .free-trial-field {
+    border-color: var(--color-neutral-700);
+    background: color-mix(
+      in srgb,
+      var(--color-bg-secondary-dark) 90%,
+      transparent
+    );
+    color: var(--color-neutral-100);
+  }
+
+  :global(.dark) .free-trial-field::placeholder {
+    color: var(--color-neutral-500);
+  }
+
+  :global(.dark) .free-trial-field:focus {
+    border-color: var(--color-primary-light);
+    background: var(--color-bg-secondary-dark);
+    box-shadow: 0 0 0 3px
+      color-mix(in srgb, var(--color-primary-light) 18%, transparent);
+  }
+</style>
+
+<script>
+  // Every instance on the page wires itself up independently, since the
+  // component is meant to be droppable more than once per site.
+  interface FreeTrialMessage {
+    name: string;
+    email: string;
+    subject: string;
+    message: string;
+  }
+
+  async function sendMessage(
+    endpoint: string,
+    payload: FreeTrialMessage,
+  ): Promise<void> {
+    await fetch(endpoint, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+  }
+
+  document
+    .querySelectorAll<HTMLElement>(".free-trial-cta")
+    .forEach((section) => {
+      const endpoint = section.dataset.endpoint;
+      const form = section.querySelector<HTMLFormElement>(".free-trial-form");
+      const progress = section.querySelector<HTMLElement>(
+        ".free-trial-progress",
+      );
+      const success = section.querySelector<HTMLElement>(".free-trial-success");
+      const submitBtn = section.querySelector<HTMLAnchorElement>(
+        ".free-trial-submit a",
+      );
+
+      if (!endpoint || !form || !progress || !success || !submitBtn) return;
+
+      submitBtn.addEventListener("click", async (event) => {
+        event.preventDefault();
+
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
+
+        submitBtn.classList.add("hidden");
+        progress.classList.remove("hidden");
+
+        const formData = new FormData(form);
+        await sendMessage(endpoint, {
+          name: String(formData.get("name") ?? ""),
+          email: String(formData.get("email") ?? ""),
+          subject: "free trial",
+          message: String(formData.get("url") ?? ""),
+        });
+
+        progress.classList.add("hidden");
+        form.classList.add("hidden");
+        success.classList.remove("hidden");
+      });
+    });
+</script>

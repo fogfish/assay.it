@@ -1,24 +1,24 @@
 ---
-import { siteConfig } from '@/config/site.js';
-import StructuredData from '@/components/widgets/StructuredData.astro';
+import StructuredData from "@/components/widgets/StructuredData.astro";
+import { siteConfig } from "@/config/site.js";
 export interface Props {
-  title?: string;
-  description?: string;
-  keywords?: string;
-  url?: string;
-  ogImage?: string;
-  ogType?: "website" | "article";
-  twitterHandle?: string;
+	title?: string;
+	description?: string;
+	keywords?: string;
+	url?: string;
+	ogImage?: string;
+	ogType?: "website" | "article";
+	twitterHandle?: string;
 }
 
 const {
-  title,
-  description,
-  keywords = "",
-  url = siteConfig.url, //
-  ogImage = "/og.jpg",
-  ogType = "website",
-  twitterHandle = siteConfig.social.twitterName || '',
+	title,
+	description,
+	keywords = "",
+	url = siteConfig.url, //
+	ogImage = "/og.jpg",
+	ogType = "website",
+	twitterHandle = siteConfig.social.twitterName || "",
 } = Astro.props;
 
 // Crawlers resolve neither relative og:image paths nor relative canonicals,
@@ -27,31 +27,32 @@ const canonicalUrl = new URL(url, siteConfig.url).href;
 const ogImageUrl = new URL(ogImage, siteConfig.url).href;
 
 // Sitewide structured data: brand identity + site-level metadata.
-const sameAs = Object.values(siteConfig.social)
-  .filter((v) => typeof v === 'string' && v.startsWith('http'));
+const sameAs = Object.values(siteConfig.social).filter(
+	(v) => typeof v === "string" && v.startsWith("http"),
+);
 
 const orgId = `${siteConfig.url}#organization`;
 
 const siteSchema = [
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "@id": orgId,
-    name: siteConfig.title,
-    url: siteConfig.url,
-    logo: new URL('/favicon.png', siteConfig.url).href,
-    description: siteConfig.meta.description,
-    ...(sameAs.length ? { sameAs } : {}),
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "@id": `${siteConfig.url}#website`,
-    name: siteConfig.title,
-    url: siteConfig.url,
-    description: siteConfig.meta.description,
-    publisher: { "@id": orgId },
-  },
+	{
+		"@context": "https://schema.org",
+		"@type": "Organization",
+		"@id": orgId,
+		name: siteConfig.title,
+		url: siteConfig.url,
+		logo: new URL("/favicon.png", siteConfig.url).href,
+		description: siteConfig.meta.description,
+		...(sameAs.length ? { sameAs } : {}),
+	},
+	{
+		"@context": "https://schema.org",
+		"@type": "WebSite",
+		"@id": `${siteConfig.url}#website`,
+		name: siteConfig.title,
+		url: siteConfig.url,
+		description: siteConfig.meta.description,
+		publisher: { "@id": orgId },
+	},
 ];
 ---
 
